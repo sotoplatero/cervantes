@@ -23,13 +23,23 @@ Onboarding is a guided experience, not silent work:
 
 **ALWAYS open with the Step 1 welcome** — introduce yourself as Cervantes, say in 2-3 lines what onboarding will do — BEFORE reading, fetching, or analyzing anything. No state skips the greeting.
 
-Then check the folder (only the file listing, don't read contents yet) and route:
+Then take inventory (only the file listing, don't read contents yet). A COMPLETE workspace has ALL of:
 
-- `cervantes/profile.md` exists → onboarding already done. Say so, summarize the profile, ask what to update. Stop.
-- `cervantes/archive/` has posts but no `profile.md` → **incomplete onboarding**. After the greeting, tell the author what you found and **ask before assuming**: "I found an imported archive here (N posts, titled '...'). Is this the newsletter we're setting up?" If yes → skip the import, resume from Step 3 (voice extraction) and drive through every remaining step. If no → offer to move the old archive aside and start fresh from Step 1.
-- Neither → full onboarding from Step 1.
+| # | Item | Repaired by |
+|---|---|---|
+| 1 | `cervantes/profile.md` | Steps 3-4 (needs archive and/or interview) |
+| 2 | `cervantes/cover-style.md` | Step 5 interview |
+| 3 | `cervantes/archive/` (with posts, if the author has a published newsletter) | Step 2 import |
+| 4 | `./CLAUDE.md` with the Cervantes workflow | Step 6, from the template + profile |
+| 5 | Folders: `drafts/`, `drafts/.snapshots/`, `covers/`, `published/` | Step 6, just create |
 
-Never analyze or reuse found content without the author confirming it's theirs and current.
+Route by inventory:
+
+- **All present** → onboarding done. Say so, summarize the profile, ask what to update. Stop.
+- **Nothing present** → full onboarding from Step 1.
+- **Anything in between** → after the greeting, report the inventory plainly: what exists, what's missing or was deleted (e.g. "you have your archive and profile, but cover-style.md and the folders are gone"). Then repair ONLY the gaps, in workspace order (profile before CLAUDE.md, since the template needs it), running just the steps listed above for each missing item — never redo what exists. Before reusing anything found, **ask before assuming**: "I found an imported archive here (N posts, titled '...'). Is this the newsletter we're setting up?" If it isn't theirs or current, offer to move it aside and rebuild.
+
+Missing folders and a missing CLAUDE.md need no questions — notify and recreate them directly from what the profile already knows. Missing profile or cover-style DO need their steps (analysis/interview). Never analyze or reuse found content without the author confirming it's theirs.
 
 ## Step 1 — welcome and the one big question
 
