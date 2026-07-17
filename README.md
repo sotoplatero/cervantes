@@ -2,15 +2,17 @@
 
 **Your newsletter writing system, inside Claude Code.**
 
-Cervantes turns any folder into a personal editorial workspace. It learns your voice from what you've already published, drafts new issues from your ideas and data, polishes your edits without erasing you, and keeps your cover art visually consistent — in your language, whatever it is.
+Cervantes turns any folder into a personal editorial workspace. It learns your voice from what you've already published, drafts complete issues from your ideas and data, polishes your edits without erasing you, keeps your covers visually consistent — and gets better at being you with every issue, in your language, whatever it is.
 
 ## What makes it different
 
-- **It learns your voice first.** Give it the URL of your newsletter and it downloads your published archive, studies it, and builds a voice profile. Everything it writes afterwards is measured against *you*, not a generic "engaging tone".
-- **Your edits are sacred.** Cervantes distinguishes between text it drafted and text you wrote by hand. When polishing, it fixes typos and rhythm in your passages — it never rewrites your opinions, anecdotes, or judgment calls.
-- **You write anywhere.** Your issues are plain Markdown files. Edit them in VS Code, Obsidian, Notepad — Cervantes works on the same files when you call it.
-- **Consistent covers.** Define your visual style once; every issue gets cover art (or a ready-to-paste image prompt) that looks like part of the same publication.
-- **Any language.** The system is written in English, but it detects and writes in *your* language automatically.
+- **It learns your voice first — from evidence.** Give it your newsletter URL and it downloads your published archive, extracts a voice fingerprint (rhythm, signature phrases, humor, openings — each with quoted proof), and shows it to you for corrections before writing a word in your name.
+- **It knows the craft.** Every workspace ships with a writing engine: hook formulas, open-loop and rhythm techniques, issue skeletons, subject-line archetypes, and a hard **anti-slop** rule set that bans the patterns that make text smell like AI ("It's not X, it's Y", "What if I told you…", inflated adjectives, unearned morals). A quality checklist runs before anything is handed back.
+- **Your edits are sacred — and it learns from them.** Cervantes distinguishes its text from yours. Polishing fixes typos in your passages, never your opinions. Then it diffs what you changed, logs the lesson to a journal, and updates your voice profile — so the next draft needs less fixing.
+- **Nothing invented, ever.** Your facts, quotes, and anecdotes come only from your material. Outside context arrives researched, with real inline links. Where only YOUR detail would land harder, it leaves a deletable `[[enrich:]]` note instead of making something up.
+- **You write anywhere.** Issues are plain Markdown in your folder. Edit in VS Code, Obsidian, Notepad — Cervantes works on the same files when you call it.
+- **Consistent covers.** One fixed visual style, defined once; every issue's cover looks like the same publication.
+- **Any language.** The engine is English; Cervantes detects your newsletter's language and writes everything in it.
 
 ## Requirements
 
@@ -24,60 +26,65 @@ Cervantes turns any folder into a personal editorial workspace. It learns your v
 /plugin install cervantes@cervantes
 ```
 
-Then open your newsletter folder in Claude Code and run:
+Open your newsletter folder in Claude Code and type:
 
 ```
-/cervantes:start
+cervantes
 ```
 
-Cervantes will interview you (and read your published archive if you share the URL), then set up your workspace.
+That's it — and it's the only "command" you'll ever need. Cervantes onboards you (reads your archive, shows you what it learned, asks only what it couldn't infer) and sets up your workspace.
 
-## The workflow
-
-You run **one command, once**: `/cervantes:start`. After that, you just talk — in your own language, in your own words:
+## The workflow — you just talk
 
 > "Write a draft about X — here are my notes and a couple of links."
 > "Polish what I wrote."
-> "Give me title options and a subject line."
-> "Make the cover for this issue."
+> "Titles?"
+> "Make the cover."
 
-Cervantes recognizes what you want and runs the right specialist. A typical issue:
+A typical issue:
 
 ```
-you: "draft this from my notes"  →  first draft lands in drafts/
+"draft this from my notes"   →  angles offered → hooks offered → complete draft
+                                in issues/2026-07-17-your-topic/draft.md
         ↓
 you edit the draft by hand, in any editor, on your own time
         ↓
-you: "polish it"                 →  fixes and tightens WITHOUT touching your voice
-you: "titles?"                   →  title options + email subject + preheader
-you: "cover"                     →  cover art in your visual style
+"polish it"                  →  cleans WITHOUT touching your voice,
+                                learns from your edits, logs the lesson
+"titles?"                    →  3 concrete subjects + preheaders, strongest marked
+"cover"                      →  cover in your fixed style (or a ready-to-paste prompt)
 ```
 
-Or start from your own raw text: drop it in `drafts/` and say "polish what I wrote" — when every word is yours, Cervantes protects all of it.
+Or start from your own raw text: drop it in and say "polish what I wrote" — when every word is yours, Cervantes protects all of it.
 
-## Your workspace after setup
+## Your workspace
 
 ```
 your-newsletter/
-├── CLAUDE.md              ← Cervantes' brain for this folder
+├── CLAUDE.md                  ← Cervantes' brain here (versioned)
 ├── cervantes/
-│   ├── profile.md         ← your voice, audience, language, structure
-│   ├── cover-style.md     ← your visual identity for covers
-│   └── archive/           ← your imported published issues
-├── drafts/                ← work in progress
-├── covers/                ← generated cover images / prompts
-└── published/             ← finished issues
+│   ├── engine/                ← the writing craft (hooks, anti-slop, checklists)
+│   ├── profile.md             ← your voice fingerprint — YOURS, never auto-overwritten
+│   ├── journal.md             ← what it learns from your edits, issue by issue
+│   ├── cover-style.md         ← your fixed visual identity
+│   └── archive/               ← your imported published issues
+├── issues/2026-07-17-slug/    ← one folder per issue: material, draft, snapshot, cover
+└── published/
 ```
 
-Everything is plain text in your folder. Nothing leaves your machine except what you choose to publish.
+Updates refresh the engine and never touch your memory: profile, journal, archive, and issues are sacred.
 
 ## FAQ
 
 **Do I have to write inside Claude Code?**
-No. Your drafts are Markdown files. Write and edit wherever you like; call Cervantes when you want research, a first draft, a polish pass, or headlines.
+No. Drafts are Markdown files. Write wherever; call Cervantes for research, a first draft, a polish pass, or headlines.
 
-**Will it make my newsletter sound like AI?**
-That's the whole point of the voice profile and the polish rules: Cervantes adapts to you, not the other way around. Your hand-written passages are never rewritten.
+**Will it sound like AI?**
+The anti-slop rules exist precisely for that, and the voice profile is built from your published text with quoted evidence. Your hand-written passages are never rewritten — and every edit you make teaches it your voice a little better.
 
 **What if I don't have a newsletter yet?**
-Run `/cervantes:start` anyway — the interview covers everything the archive would have taught it.
+Type `cervantes` anyway — a short interview and a writing sample replace the archive.
+
+---
+
+Craft libraries adapted from [newsletter-ghostwriter](https://github.com/sotoplatero) (MIT, same author). Hook formula library based on "75 fórmulas de ganchos" by Oscar Feito, used as internal reference.

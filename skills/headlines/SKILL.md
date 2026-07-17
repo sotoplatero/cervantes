@@ -1,37 +1,31 @@
 ---
 name: headlines
-description: Generate title options, email subject line, and preheader for a finished newsletter draft, in the author's voice and language. Use when the author asks for titles, headlines, subject lines, or naming help for an issue.
+description: Generates the final title options, email subject line, and preheader for a finished newsletter draft, in the author's voice and language, using the workspace's hook formulas and anti-slop rules. Triggers when the author asks for titles, headlines, subject lines, or naming help for an issue.
 ---
 
 # Cervantes: Headlines
 
-The title decides whether the issue gets opened. Generate options in the author's register — not clickbait unless clickbait IS their register.
+The subject decides the open. It gets written LAST, from the finished draft — by then the most compelling hook is known.
 
 ## Preconditions
 
-Read `cervantes/profile.md` (voice, taboos, language) and the target draft in `drafts/`. Scan 3-4 titles in `cervantes/archive/` to match the author's existing title style.
+Read `cervantes/profile.md` (voice, shortlist, taboos, language), the issue's `draft.md`, `engine/TEMPLATES.md` § Subject line, and `engine/HOOK-FORMULAS.md` (shortlist first). Scan 3–4 titles in `cervantes/archive/` to match the author's historical title style. Check `cervantes/journal.md` for winning subject archetypes from past resonance.
 
-## Produce
+## Method
 
-All in the profile's language:
-
-1. **6 title options**, deliberately varied across styles — label each:
-   - *Direct benefit* (what the reader gains)
-   - *Curiosity gap* (without lying)
-   - *Specific / number-driven*
-   - *Contrarian or tension*
-   - *Personal / story-led*
-   - *In the author's own historical style* (modeled on the archive)
-2. **Email subject line** for the top 2 titles — ≤ 50 characters, front-load the hook (mobile truncates).
-3. **Preheader** for each subject (≤ 90 chars) that adds information, never repeats the subject.
-4. One-line note: which option YOU would pick and why (one sentence, then shut up).
+1. **Name the tension** the finished draft actually delivers (one sentence).
+2. **Generate ~8–10 subject candidates** across different formulas, built from concrete details IN the draft — a real noun, number, or action. Filter through voice + `engine/ANTI-SLOP.md` (it applies to titles hardest of all).
+3. **Present 3 variants**, each labeled with its archetype (concrete noun/number · honest curiosity gap · first-person admission · specific question), **mark the most concrete one** and say in one line why. < ~50 characters each; "you/your" beats third person. If a variant could top anyone's post, it's already deleted.
+4. **Title + dek** for the post page (title can breathe longer than the subject; dek states the promise).
+5. **Preheader** for each subject variant: extends — never repeats — the subject, ~40–90 chars. Subject + preheader read as one two-line promise.
+6. **One CTA** suggestion if the draft's is weak (concrete and verbal; early lists: prompt a reply).
 
 ## Apply
 
-When the author picks one, update the draft's frontmatter `title:` and the working title in the body. Also refresh the snapshot in `drafts/.snapshots/` if one exists.
+When the author picks: update `draft.md`'s header (`subject:`, `preheader:`, `cta:`) and the title/dek in the body; refresh `draft.v1.md`. Log the shipped subject + archetype in `cervantes/journal.md` (resonance fields open, to be filled when numbers arrive).
 
 ## Anti-goals
 
-- No title that overpromises what the draft doesn't deliver.
-- Respect the profile's taboos in titles too.
-- Don't generate 20 options; six good ones beat a wall of noise.
+- Never promise what the draft doesn't deliver — the curiosity gap must be paid off in the body.
+- No anti-slop patterns in titles (antithesis, "What if I told you", colon formats, tricolons) unless the profile documents them as the author's signature.
+- Six good options beat twenty; don't flood.

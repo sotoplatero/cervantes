@@ -1,63 +1,43 @@
 ---
 name: draft
-description: Write the first draft of a newsletter issue from the author's topic, notes, links, and data — in the author's voice and language, per cervantes/profile.md. Use when the author wants to start a new issue, turn notes into a draft, or asks Cervantes to write an article.
+description: Writes the complete first draft of a newsletter issue from the author's topic, notes, links, and data — in their voice and language, applying the workspace's writing craft (hook method, open loops, rhythm, anti-slop). Triggers when the author wants to start a new issue, turn notes or ideas into a draft, or asks Cervantes to write an article or edition.
 ---
 
 # Cervantes: Draft
 
-Write a first draft the author will *want* to edit — in their voice, their language, their structure.
+Deliver a complete draft the author will *want* to edit — their voice, their language, one idea, a hook that grabs, zero AI noise.
 
 ## Preconditions
 
-- `cervantes/profile.md` must exist. If missing, stop and run `/cervantes:start` first.
-- Write ALL content in the profile's **Language**. Talk to the author in it too.
+- `cervantes/profile.md` exists with `Voice version` ≥ v0.1. Missing or v0.0 → run `cervantes:start` first.
+- Read the profile, the latest `cervantes/journal.md` entry (carry-forwards, resonance), and `cervantes/engine/WRITING-CRAFT.md` before writing. Open `engine/HOOK-FORMULAS.md` and `engine/TEMPLATES.md` when you reach hooks/structure.
+- All author-facing text in the profile's **Language**.
 
-## Step 1 — gather the raw material
+## The golden rule (never breaks)
 
-The draft is built from the AUTHOR'S inputs, not from thin air. You need:
+The author's facts, quotes, anecdotes, and emotions come **only** from their material. Bring outside context and verified real links; deliver a complete draft — no `[FILL IN]`, no gaps. Pick the angle the material **supports**; if an angle forces inventing connective tissue, it's the wrong angle.
 
-1. **Topic / angle** — what this issue is about.
-2. **Their material** — notes, bullet points, links, data, anecdotes, a voice-memo transcript... whatever they have.
+## Workflow
 
-If they gave you nothing but a topic, ask for their take first (2-3 questions max): What's YOUR opinion here? Any personal story? What should the reader do or feel at the end? A draft without the author's viewpoint is generic filler — don't write one.
+**1. Gather the material.** Needed: the topic AND the author's take — notes, opinions, anecdotes, data, links. If all you got is a topic, ask (2–3 questions max): what's YOUR opinion? any personal story? what should the reader do or feel at the end? A draft without the author's viewpoint is generic filler — don't write one. Fetch and read any links they provided.
 
-If they provided links, fetch and read them. Facts from sources must be attributable; never invent statistics, quotes, or events.
+**2. Research & verify.** Situate their story: what the thing is really called, prior art, the debate if any, real links (checked). Never invent what a source says.
 
-## Step 2 — load the voice
+**3. Find the angle.** Offer 2–3 angles the material supports; the author picks. For the hook: name the tension → generate 8–10 options from `HOOK-FORMULAS.md` (profile shortlist first) → filter through voice + `ANTI-SLOP.md` → present the 3 most concrete with one line each on why they work.
 
-1. Read `cervantes/profile.md` in full.
-2. Read 2-3 issues from `cervantes/archive/` (prefer recent ones or ones on a similar topic) to calibrate rhythm and structure.
+**4. Write the complete draft** into an issue folder:
+- Create `issues/YYYY-MM-DD-slug/` (today's date + short topic slug); move any loose material the author gave into it.
+- Write `draft.md`: a small header (`subject:`, `preheader:`, `cta:` — provisional; finals come from `cervantes:headlines`), then the body per `WRITING-CRAFT.md`: title + dek, internal subheads every 2–4 paragraphs, hook, story (before → change → after), open loops opened AND closed, callback, varied rhythm, inline links, ONE idea, ONE CTA.
+- Seed deletable `[[enrich: ...]]` / `[[note: ...]]` / `[[fact?: ...]]` notes where the author's own detail would land harder. The text must work if they delete every note.
+- Save an exact copy as `draft.v1.md` in the same folder — the learning diff baseline for `cervantes:polish`.
 
-## Step 3 — write the draft
+**5. Self-validate** against `engine/QUALITY-CHECKLIST.md` (substance, truth, craft, voice, form). Fix what fails BEFORE handing off — this is a loop, not a report.
 
-- Follow the profile's **Structure**, **Length**, **Tone**, **Signature moves**. Respect **Never does** absolutely.
-- Weave the author's material and opinions through the piece — their anecdotes and takes are the spine, sourced facts are support.
-- Working title at the top (final titles come later via `/cervantes:headlines`).
-
-Save to `drafts/YYYY-MM-DD-slug.md` (today's date, short slug from the topic) with frontmatter:
-
-```yaml
----
-title: "Working title"
-date: YYYY-MM-DD
-status: draft
----
-```
-
-## Step 4 — snapshot (critical for polish)
-
-Save an EXACT copy of the file to `drafts/.snapshots/<same-filename>`. This is how `/cervantes:polish` will later distinguish the author's hand edits from machine text. Overwrite any previous snapshot of the same file.
-
-## Step 5 — hand off
-
-Tell the author, briefly:
-
-- Where the draft is.
-- 1-3 spots where you most want THEIR voice or judgment (mark them in the text with `<!-- TODO: ... -->` comments if useful).
-- Next step: edit the file by hand in any editor, then run `/cervantes:polish`.
+**6. Hand off.** Tell the author: where the draft is, the 1–3 spots where their voice or judgment would help most, and that the next step is editing the file by hand in any editor — then "polish it".
 
 ## Anti-goals
 
-- No invented facts, quotes, or numbers. If a claim needs a source you don't have, mark it `<!-- VERIFY -->`.
-- Don't pad to hit a word count; the profile's length is a target, not a quota.
-- Don't ask permission for every paragraph — write the whole draft, then hand it over.
+- No invented facts, numbers, quotes, or feelings. Unverifiable claim → `[[fact?: ...]]`.
+- No padding to hit length; the profile's length is a target, not a quota.
+- Don't ask permission paragraph by paragraph — write the whole draft, then hand over.
+- Never skip the ANTI-SLOP sweep: one "in the fast-paced world of" undoes everything.

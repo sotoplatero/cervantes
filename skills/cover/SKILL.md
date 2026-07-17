@@ -1,43 +1,26 @@
 ---
 name: cover
-description: Create the cover image (or a ready-to-use image prompt) for a newsletter issue, following the fixed visual style in cervantes/cover-style.md. Use when the author asks for a cover, header image, or article artwork.
+description: Creates the cover image (or a ready-to-paste image prompt) for a newsletter issue, keeping the fixed visual style defined in the workspace's cover-style file so every issue looks like the same publication. Triggers when the author asks for a cover, header image, or artwork for an issue.
 ---
 
 # Cervantes: Cover
 
-Every issue gets a cover that looks like it belongs to the same publication. **The style is fixed; only the concept changes.**
+Every cover belongs to the SAME newsletter. **The style block is fixed; only the subject changes.**
 
-## Step 1 — load style and article
+## Workflow
 
-1. Read `cervantes/cover-style.md` in full. If missing, run the cover-style section of `/cervantes:start` first (a short interview), save the file, then continue.
-2. Read the target draft to understand its core idea.
+**1. Load.** `cervantes/cover-style.md` (fixed block + anchor + exclusions + aspect ratio; missing → run the cover-style step of `cervantes:start` first) and the issue's `draft.md` for the core idea. Maintenance rules: `engine/MEMORY-SCHEMA.md` § cover-style.
 
-## Step 2 — find the concept
+**2. The concept.** Derive ONE concrete visual concept from the issue — a specific metaphor or scene, not an abstraction ("a ladder leaning on a cloud" beats "success concept"). Check it against the Hard exclusions. Propose it in 1–2 sentences with one alternative; the author picks or tweaks.
 
-Derive ONE visual concept from the article: a concrete metaphor or scene that captures the core idea. Prefer specific over abstract ("a ladder leaning on a cloud" beats "success concept"). Check it against the style guide's **Hard exclusions**.
+**3. The prompt.** Per the formula in `MEMORY-SCHEMA.md`: subject first (1–2 concrete sentences), then the fixed style block **verbatim**, format line, then the exclusions as negatives. Prompt in English regardless of the newsletter's language. If a style anchor image exists, use it alongside ("same style, light, and stroke as this").
 
-Propose the concept to the author in one or two sentences, with one alternative. Let them pick or tweak — it's their cover.
+**4. Generate or hand off.** In order: an installed image-generation skill/CLI → an image-capable MCP tool → nothing available (normal): save the prompt as `cover-prompt.txt` in the issue folder with the aspect ratio and negatives noted, ready to paste into their tool. Generated images go in the issue folder as `cover.png` (or the tool's format). One round of variation if asked — vary the concept, never the fixed style.
 
-## Step 3 — build the prompt
-
-Fill the style guide's **Base prompt skeleton**: insert the concept, keep every fixed style element verbatim (medium, palette, mood, composition, texture, aspect ratio, exclusions as negative hints). The result must be a single self-contained prompt in English (image models respond best to English, regardless of the author's language).
-
-## Step 4 — generate or hand off
-
-Check what image generation is actually available in this environment, in order:
-
-1. **An installed image-generation skill or CLI** (e.g. an `ai-image-generation` skill, `inference.sh`, or similar) — use it, at the style guide's aspect ratio.
-2. **An image-capable MCP tool** connected to the session — use it.
-3. **Nothing available** — this is normal and fine: save the prompt to `covers/<draft-slug>-prompt.txt` and tell the author to paste it into their image tool (Midjourney, DALL·E, Ideogram, Canva...). Include the aspect ratio and, if their tool supports it, the negative prompt separately.
-
-When an image is generated, save it as `covers/<draft-slug>.png` (or the tool's output format). Show it to the author; offer ONE round of variation if they want changes (adjust the concept, never the fixed style).
-
-## Consistency check
-
-Before finishing, compare against previous covers/prompts in `covers/`: same medium, same palette, same mood? If something drifted, fix the prompt — consistency is the product.
+**5. Consistency check.** Compare against previous issues' covers/prompts: same medium, palette, mood? If drifted, fix before finishing. If this is the first shipped cover and no anchor exists, record it as the style anchor in `cervantes/cover-style.md`.
 
 ## Anti-goals
 
-- Never redesign the visual style per-issue; style changes only happen by editing `cervantes/cover-style.md` deliberately.
-- No text baked into the image unless the style guide says so (models garble text).
+- Never redesign the style per issue — style changes only by deliberately editing `cervantes/cover-style.md` (once).
+- No text baked into the image unless the style file says so.
 - Don't generate before the author approved the concept.
