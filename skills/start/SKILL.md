@@ -1,6 +1,6 @@
 ---
 name: start
-description: Set up Cervantes in this folder — one-time onboarding. Interviews the author, optionally imports their published newsletter archive from a URL, extracts their voice, defines a cover art style, and generates the workspace (profile, folders, CLAUDE.md). Use when the user wants to start/set up their newsletter workspace, or when any Cervantes skill finds cervantes/profile.md missing.
+description: Set up Cervantes in this folder — one-time onboarding. Interviews the author, optionally imports their published newsletter archive from a URL, extracts their voice, defines a cover art style, and generates the workspace (profile, folders, CLAUDE.md). Use when the user types just "cervantes" or "/cervantes", greets Cervantes, or wants to start/set up their newsletter workspace in a folder that has no cervantes/profile.md yet — and whenever any Cervantes skill finds cervantes/profile.md missing.
 ---
 
 # Cervantes: Start (onboarding)
