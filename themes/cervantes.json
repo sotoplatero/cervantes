@@ -1,0 +1,10 @@
+{
+  "name": "Cervantes",
+  "base": "dark",
+  "overrides": {
+    "claude": "#c9a227",
+    "promptBorder": "#8a7a4e",
+    "planMode": "#c9a227",
+    "success": "#7a8450"
+  }
+}

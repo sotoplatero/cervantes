@@ -78,6 +78,12 @@ your-newsletter/
 
 Updates refresh the engine and never touch your memory: profile, journal, archive, and issues are sacred.
 
+## Make it yours
+
+- **Theme.** Cervantes ships a gold-on-ink terminal theme. Run `/theme` and pick **Cervantes**.
+- **Statusline.** On setup, your workspace shows `✎ Cervantes · <your newsletter>` in the status bar, so you always know which newsletter you're in.
+- **Quiet self-check.** Open your newsletter folder and Cervantes silently confirms the workspace is healthy — and offers to repair or finish setup if anything's missing.
+
 ## FAQ
 
 **Do I have to write inside Claude Code?**

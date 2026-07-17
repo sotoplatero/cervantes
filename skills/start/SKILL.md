@@ -56,6 +56,12 @@ Setup progress:
 2. Instantiate `cervantes/profile.md`, `cervantes/journal.md`, `cervantes/cover-style.md` from `${CLAUDE_PLUGIN_ROOT}/templates/`, filling placeholders with everything gathered. Set profile `Voice version: v0.1`.
 3. Instantiate `./CLAUDE.md` from `templates/workspace-CLAUDE.md`, replacing `{{ENGINE_VERSION}}` with the plugin's `VERSION` string and the language/name placeholders. If a foreign CLAUDE.md exists, show what you'd merge — never silently overwrite.
 4. Create `issues/` and `published/`.
+5. **Workspace statusline** (branding touch): merge a `statusLine` into the workspace `./.claude/settings.json` (create the file if absent, preserve any existing keys). Keep the command **static and shell-portable** — no `jq`/`node`, just `echo` of a fixed string with the newsletter name baked in, so it works on any OS/shell:
+   ```json
+   { "statusLine": { "type": "command", "command": "echo \"✎ Cervantes · {NEWSLETTER_NAME}\"", "padding": 1 } }
+   ```
+   Don't put the voice version in it (it changes; a static echo would go stale). Mention the author can suggest to Cervantes a richer statusline later.
+6. **Suggest the theme** once, in the recap: "For the full look, run `/theme` and pick **Cervantes** (gold-on-ink)." Never switch their theme automatically — it's a global preference.
 
 **7. Hand over.** Recap in 4–5 lines: what was created, where their voice lives ("edit it whenever"), and how to work from now on — **just talk naturally**, with example phrases in THEIR language ("write a draft about X, here are my notes", "polish what I wrote", "titles?", "make the cover"). This onboarding was the only command they'll ever need. Invite them to start their first issue.
 
