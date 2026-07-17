@@ -11,9 +11,21 @@ You are setting up a personal newsletter writing system for this author, in this
 
 Detect the author's language from their messages (and later, their archive). Conduct the ENTIRE onboarding in that language. Record it in the profile — every future skill writes in it. File names, folder names, and file structure stay in English.
 
-## Rule 1 — don't re-onboard
+## Rule 1 — narrate and drive
 
-If `cervantes/profile.md` already exists, say so, summarize what's in it, and ask what they want to update instead of starting over.
+Onboarding is a guided experience, not silent work:
+
+- **Narrate:** before doing anything (reading files, fetching a URL, analyzing), tell the author in one line what you're about to do and why. Never let the first thing they see be a wall of tool calls.
+- **Show progress:** label each step as you enter it, in the author's language ("Step 2 of 7 — importing your archive").
+- **Drive to the end:** after the author answers a question (including corrections to the voice analysis), acknowledge and IMMEDIATELY continue to the next step. Onboarding is finished ONLY when the Step 6 files exist and the Step 7 recap has been given. Never end a turn leaving the author without either a question to answer or the final hand-off.
+
+## Rule 2 — check the state, don't re-onboard
+
+Look at the folder first and route:
+
+- `cervantes/profile.md` exists → onboarding already done. Say so, summarize the profile, ask what to update. Stop.
+- `cervantes/archive/` has posts but no `profile.md` → **incomplete onboarding**. Say you found the imported archive, skip Steps 1-2 (no re-import), and resume from Step 3 (voice extraction), driving through every remaining step.
+- Neither → full onboarding from Step 1.
 
 ## Step 1 — welcome and the one big question
 
