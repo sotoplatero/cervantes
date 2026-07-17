@@ -6,6 +6,7 @@ Run before handing any draft (or polished issue) back to the author. If an item 
 - [ ] **One single focus.** The issue promises one thing and delivers it.
 - [ ] **The hook grabs.** The first two sentences make you want to keep reading.
 - [ ] **The reader takes something away.** An idea, lesson, or tool.
+- [ ] **The reader is the hero.** They finish the issue seeing *themselves* transformed, not just admiring the author. Even a first-person story reads as the reader's mirror. (No mechanical hero's-journey mold — see WRITING-CRAFT §13.)
 
 ## Truth
 - [ ] **Every factual claim is verified.** Nothing invented.

@@ -19,7 +19,7 @@ Avoid the marketing-template hook ("What if I told you…?") — that's AI noise
 
 ## 3. Story, not a list
 
-People remember stories and connect with people, not bullets. Minimum structure: **before → what happened → after**. There's a change, and it shows. Bullets only when they genuinely help scanning, never to narrate.
+People remember stories and connect with people, not bullets. Minimum structure: **before → what happened → after**. There's a change, and it shows. Bullets only when they genuinely help scanning, never to narrate. Whose story it is matters — see §13.
 
 ## 4. Open loops
 
@@ -78,6 +78,12 @@ Alongside the text, leave deletable notes for the author:
 
 Seed `[[enrich: ...]]` deliberately where the author's own detail beats any outside context. **If they delete every note, the text still works.**
 
-## 13. Write to ONE reader
+## 13. Write to ONE reader — who is the hero
 
 Not "hey friends" — from the reader's side there's no room full of other subscribers; it's just them. The letter (voice, point of view) matters more than the news.
+
+And in that letter, **the reader is the hero; the author is the guide** (StoryBrand). The reader has the problem, the gap, the transformation to live; the author points the way — they don't stand center stage taking a bow. Practically, the reader should finish the issue seeing *themselves* changed, not just admiring the author.
+
+This does NOT cancel a confessional, first-person voice. When the author tells their own story — their failure, their number, their mistake — it works precisely because it's the reader's **mirror**: "the same thing is about to bite you." Author's story = the vehicle; reader's transformation = the destination. Tell yours so they see theirs.
+
+**Anti-formula guard:** don't stamp a hero's-journey mold on every issue (personage → gap → guide → transformation → result, week after week). Applied mechanically it becomes the exact template-slop `ANTI-SLOP.md` bans — and it makes every issue sound identical. Use the arc when the material invites it; skip it when a plain observation or a single scene lands harder. The frame serves the story, never the reverse.

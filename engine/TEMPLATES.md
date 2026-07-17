@@ -34,6 +34,16 @@ The engine format for almost any personal or creator newsletter.
 - The uncomfortable nuance (what almost no one says).
 - What you propose / what you keep.
 
+## 5. "The reader's transformation" (reader-as-hero arc)
+
+For tutorial/how-to issues where the reader is clearly the protagonist. Use when the material invites it — not as a default mold (see WRITING-CRAFT §13, anti-formula guard).
+
+- **The reader's gap:** where they are now vs. where they want to be — named so they recognize themselves in the first lines.
+- **The stakes:** what the gap is costing them (time, money, a recurring frustration).
+- **You as guide:** the plan/tool/insight you hand them — you point the way, you're not the hero.
+- **The transformation:** the steps, with the real errors and small wins along the way (yours or theirs).
+- **The new normal:** what changes for them after — and one concrete first step.
+
 ---
 
 ## What a complete draft looks like
