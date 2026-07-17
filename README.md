@@ -26,7 +26,7 @@ Cervantes turns any folder into a personal editorial workspace. It learns your v
 ## Install
 
 ```
-/plugin marketplace add <your-github-user>/cervantes
+/plugin marketplace add sotoplatero/cervantes
 /plugin install cervantes@cervantes
 ```
 

@@ -8,6 +8,8 @@
     "email": "support@krka.ca"
   },
   "keywords": ["newsletter", "writing", "editorial", "substack", "content"],
+  "homepage": "https://github.com/sotoplatero/cervantes",
+  "repository": "https://github.com/sotoplatero/cervantes",
   "experimental": {
     "themes": "./themes/"
   }
