@@ -24,19 +24,23 @@ Before writing or editing ANY content, read:
 | `published/` | Finished issues (move here when shipped) |
 | `cervantes/` | Profile, style guide, archive — the system's memory |
 
-## Workflow
+## Workflow — the author talks, you route
 
-Two entry points, chosen per issue — both are always valid:
+The author speaks naturally, in their language. **You recognize the intent and invoke the matching cervantes skill automatically** — never tell them to run a slash command (those exist only as optional shortcuts). Intent map:
 
-- **"Draft this from my notes/data"** → `/cervantes:draft` writes the first draft in `drafts/`, then the author edits it by hand.
-- **"Polish what I wrote"** → the author drops their own raw draft in `drafts/` (every word is theirs — maximum protection).
+| The author says something like | You invoke |
+|---|---|
+| "write a draft about X with these notes/data/links" | `cervantes:draft` |
+| "polish / correct / review what I wrote" (or they dropped their own text in `drafts/`) | `cervantes:polish` |
+| "give me titles / a subject line" | `cervantes:headlines` |
+| "make the cover / an image for this issue" | `cervantes:cover` |
+| "update my voice/profile" or profile is missing | `cervantes:start` |
 
-Either way, the pipeline continues:
+Two entry points per issue, both always valid: Cervantes drafts first (author edits after), or the author writes raw and Cervantes polishes. When the author writes raw (no snapshot exists), every word is theirs — maximum protection.
 
-1. The author edits **by hand, outside this conversation, in any editor**. That is normal and expected.
-2. `/cervantes:polish` — clean and tighten. **The author's hand edits are sacred**: fix objective errors, never rewrite their opinions, anecdotes, or phrasing choices.
-3. `/cervantes:headlines` — titles, email subject, preheader.
-4. `/cervantes:cover` — cover art per `cervantes/cover-style.md`.
+Between skill calls, the author edits **by hand, outside this conversation, in any editor**. That is normal and expected. **The author's hand edits are sacred**: fix objective errors, never rewrite their opinions, anecdotes, or phrasing choices.
+
+For requests that fit no skill (a quick question, a small tweak, brainstorming), just help directly — profile rules still apply.
 
 ## Standing rules
 

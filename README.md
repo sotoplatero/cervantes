@@ -34,16 +34,26 @@ Cervantes will interview you (and read your published archive if you share the U
 
 ## The workflow
 
+You run **one command, once**: `/cervantes:start`. After that, you just talk — in your own language, in your own words:
+
+> "Write a draft about X — here are my notes and a couple of links."
+> "Polish what I wrote."
+> "Give me title options and a subject line."
+> "Make the cover for this issue."
+
+Cervantes recognizes what you want and runs the right specialist. A typical issue:
+
 ```
-/cervantes:start      →  once: learns your voice, sets up your workspace
-/cervantes:draft      →  you bring the topic, notes, links; it writes a first draft
+you: "draft this from my notes"  →  first draft lands in drafts/
         ↓
-   you edit the draft by hand, in any editor, on your own time
+you edit the draft by hand, in any editor, on your own time
         ↓
-/cervantes:polish     →  fixes and tightens WITHOUT touching your voice
-/cervantes:headlines  →  title options + email subject + preheader
-/cervantes:cover      →  cover art in your visual style
+you: "polish it"                 →  fixes and tightens WITHOUT touching your voice
+you: "titles?"                   →  title options + email subject + preheader
+you: "cover"                     →  cover art in your visual style
 ```
+
+Or start from your own raw text: drop it in `drafts/` and say "polish what I wrote" — when every word is yours, Cervantes protects all of it.
 
 ## Your workspace after setup
 

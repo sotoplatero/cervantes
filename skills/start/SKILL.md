@@ -96,8 +96,8 @@ Templates live in this plugin at `${CLAUDE_PLUGIN_ROOT}/templates/`. Fill their 
 Close with a short recap in the author's language:
 
 - What was created and where their voice lives (`cervantes/profile.md` — "edit it whenever you like").
-- The workflow, with its two entry points (both always valid, per issue): "draft this from my notes" → `/cervantes:draft`, or "polish what I wrote" → drop their own draft in `drafts/`. Then: edit by hand in any editor → `/cervantes:polish` → `/cervantes:headlines` → `/cervantes:cover`.
-- Invite them to start their first issue now.
+- How to work from now on: **just talk naturally** — this onboarding was the only command they'll ever need. Give example phrases in THEIR language, e.g.: "write a draft about X, here are my notes", "polish what I wrote", "give me title options", "make the cover". Cervantes recognizes the intent and does the rest. Both entry points are always valid per issue: Cervantes drafts first, or they write raw and Cervantes polishes.
+- Invite them to start their first issue now, in their own words.
 
 ## Anti-goals
 
