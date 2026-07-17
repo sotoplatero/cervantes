@@ -11,7 +11,16 @@ Turns this folder into a self-contained newsletter workspace. After a successful
 
 This plugin must contain, next to its root: `VERSION`, `engine/` (6 files: WRITING-CRAFT, HOOK-FORMULAS, ANTI-SLOP, TEMPLATES, QUALITY-CHECKLIST, MEMORY-SCHEMA), and `templates/` (workspace-CLAUDE.md, profile.md, journal.md, cover-style.md). If anything is missing, STOP and tell the user to reinstall the plugin — **never improvise engine files or templates from recall**: an install from an incomplete payload produces a corrupt workspace.
 
-## Rule 1 — greet, then route by state
+## Rule 1 — preferences are gathered with the wizard, NOT chat
+
+Every preference choice with a small set of options — audience, reader address, typical length, cadence, emoji/caps, loanwords, polish intensity, cover-style direction — **MUST be asked by calling the `AskUserQuestion` tool**, never typed as questions in message text. This is what makes onboarding feel guided instead of like an interrogation. Rules:
+
+- Batch into `AskUserQuestion` calls of up to 4 questions each; each question offers 2–4 concrete options with the value inferred from the sample listed **first and marked "(Recommended)"**.
+- Skip any dimension the sample/archive already answers clearly — don't ask what you already know.
+- Only two things happen as plain chat: the initial free-text request for the URL/sample, and the voice-analysis recap. Everything else that has options goes through the wizard.
+- If (and only if) the `AskUserQuestion` tool is genuinely unavailable in the session, fall back to ONE compact chat message listing the choices with defaults — never a long multi-question form.
+
+## Rule 2 — greet, then route by state
 
 **Always open with a 2–3 line greeting** — who Cervantes is and what's about to happen — before reading, fetching, or analyzing anything (a directory listing to detect state is fine; reading file contents is not). Detect the author's language from their messages for the conversation; the workspace language comes later, from their newsletter content.
 
@@ -20,7 +29,7 @@ Read the plugin's `VERSION` (source of truth, `engine vX.Y`) and the first line 
 | Folder state | Action |
 |---|---|
 | No marker, no `cervantes/` content | **Install** (full onboarding) |
-| No marker, but `cervantes/` files exist (legacy or half-done workspace) | **Adopt**: report the inventory, confirm found content is theirs ("I found an archive here — N posts, titled '…'. Is this your newsletter?"), preserve confirmed memory, then run only the missing Install steps |
+| No marker, but `cervantes/` files exist (legacy or half-done workspace) | **Adopt**: report the inventory, confirm found content is theirs ("I found an archive here — N posts, titled '…'. Is this your newsletter?"), preserve confirmed memory, then run only the missing Install steps — including the preferences wizard (step 4) whenever the profile is missing or `Voice version: v0.0` |
 | Marker = `VERSION` | **Verify** (repair silently, then stand down) |
 | Marker < `VERSION` | **Update** |
 
@@ -47,7 +56,7 @@ Setup progress:
 
 **3. Voice fingerprint.** Read the archive/sample and fill the fingerprint dimensions listed in `${CLAUDE_PLUGIN_ROOT}/templates/profile.md` — only from what's observed, each dimension with a short quoted example. Also derive the hook-formula shortlist (per `engine/HOOK-FORMULAS.md` § Narrowing) and any anti-slop exceptions genuinely present in their published text. **Print the full analysis as visible message text** — never inside a question dialog or a file they haven't seen — then ask in plain conversation what to correct. Their corrections beat the analysis.
 
-**4. Preferences wizard.** The moment the fingerprint is settled, **invoke the `AskUserQuestion` tool** (a real tool call, not chat text): one call, up to 4 questions, covering only what the sample didn't answer — candidates: audience, reader address, typical length, cadence, emoji/caps, loanwords, polish intensity. Put the value inferred from the sample first as "(Recommended)". Skip dimensions the sample already answers. A second call only if truly needed. Do NOT ask about drafting workflow — both entry points (Cervantes drafts / author writes raw) are always available per issue.
+**4. Preferences wizard.** The moment the fingerprint is settled, **call the `AskUserQuestion` tool now** (per Rule 1 — this is a tool call, never chat questions). One call covering only what the sample didn't already answer — candidates: audience, reader address, typical length, cadence, emoji/caps, loanwords, polish intensity — inferred value first, marked "(Recommended)". A second call only if more than 4 gaps remain. Do NOT ask about drafting workflow — both entry points (Cervantes drafts / author writes raw) are always available per issue.
 
 **5. Cover style.** Build the fixed style block by priority: (a) the reference image from step 1 — describe what it actually shows (palette, treatment, mood, composition, medium) and record it as the style anchor; (b) the newsletter site's look; (c) one wizard question on style direction (illustration / photo / flat minimal / hand-drawn), stressing the choice stays FIXED across issues. Sensible default if they don't care.
 
