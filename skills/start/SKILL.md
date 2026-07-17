@@ -64,8 +64,10 @@ Ask ONLY what the archive couldn't answer — in batches of 2-3 questions, never
 1. Newsletter name, platform, cadence (if not evident).
 2. Audience: who reads it, what they come for, their knowledge level.
 3. Taboos: words, tones, clichés they never want to see.
-4. Workflow: do they prefer Cervantes to draft first from their notes ("ai-first"), or do they write raw and want polish only ("author-first")? Polish intensity: light / standard / deep.
+4. Polish intensity: light / standard / deep.
 5. Off-limits topics, if any.
+
+Do NOT ask whether they prefer Cervantes-drafts-first or author-writes-first: the system supports both, always, per issue. The author simply says "draft this from my notes" or "polish what I wrote".
 
 If the author has NO newsletter yet, this interview carries the full weight: add questions about tone by offering 2-3 contrasting sample paragraphs on their topic and asking which feels like them.
 
@@ -94,7 +96,7 @@ Templates live in this plugin at `${CLAUDE_PLUGIN_ROOT}/templates/`. Fill their 
 Close with a short recap in the author's language:
 
 - What was created and where their voice lives (`cervantes/profile.md` — "edit it whenever you like").
-- The workflow: `/cervantes:draft` → edit by hand in any editor → `/cervantes:polish` → `/cervantes:headlines` → `/cervantes:cover`.
+- The workflow, with its two entry points (both always valid, per issue): "draft this from my notes" → `/cervantes:draft`, or "polish what I wrote" → drop their own draft in `drafts/`. Then: edit by hand in any editor → `/cervantes:polish` → `/cervantes:headlines` → `/cervantes:cover`.
 - Invite them to start their first issue now.
 
 ## Anti-goals

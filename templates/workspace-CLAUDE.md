@@ -26,11 +26,17 @@ Before writing or editing ANY content, read:
 
 ## Workflow
 
-1. `/cervantes:draft` — author brings topic + notes/links/data → first draft in `drafts/`.
-2. The author edits the draft **by hand, outside this conversation**. That is normal and expected.
-3. `/cervantes:polish` — clean and tighten. **The author's hand edits are sacred**: fix objective errors, never rewrite their opinions, anecdotes, or phrasing choices.
-4. `/cervantes:headlines` — titles, email subject, preheader.
-5. `/cervantes:cover` — cover art per `cervantes/cover-style.md`.
+Two entry points, chosen per issue — both are always valid:
+
+- **"Draft this from my notes/data"** → `/cervantes:draft` writes the first draft in `drafts/`, then the author edits it by hand.
+- **"Polish what I wrote"** → the author drops their own raw draft in `drafts/` (every word is theirs — maximum protection).
+
+Either way, the pipeline continues:
+
+1. The author edits **by hand, outside this conversation, in any editor**. That is normal and expected.
+2. `/cervantes:polish` — clean and tighten. **The author's hand edits are sacred**: fix objective errors, never rewrite their opinions, anecdotes, or phrasing choices.
+3. `/cervantes:headlines` — titles, email subject, preheader.
+4. `/cervantes:cover` — cover art per `cervantes/cover-style.md`.
 
 ## Standing rules
 
