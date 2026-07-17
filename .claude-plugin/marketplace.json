@@ -1,0 +1,17 @@
+{
+  "name": "cervantes",
+  "metadata": {
+    "description": "Cervantes — a newsletter writing system for Claude Code: voice extraction from your published archive, drafting, human-first polishing, headlines, and consistent cover art."
+  },
+  "owner": {
+    "name": "Krka",
+    "email": "support@krka.ca"
+  },
+  "plugins": [
+    {
+      "name": "cervantes",
+      "source": "./",
+      "description": "Your newsletter writing system: voice extraction, drafting, human-first polishing, headlines, and cover art."
+    }
+  ]
+}
