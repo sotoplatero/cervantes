@@ -52,7 +52,10 @@ Read the imported posts and derive, with EVIDENCE (quote short examples):
 - Topics covered; what they clearly avoid
 - Language of publication
 
-Present this analysis to the author as "here's what I learned about your voice" and ask them to correct anything that feels wrong. **The author's corrections always beat your analysis.**
+Then present it and ask for corrections — in that order, as two separate acts:
+
+1. **First, print the full analysis as visible message text** — a structured summary ("here's what I learned about your voice") with the short quoted examples. NEVER bury the analysis inside a question dialog, a collapsed tool call, or a file the author hasn't seen: the author must be able to READ the analysis on screen before being asked anything about it.
+2. Only after the analysis is on screen, ask (in plain conversation, not a multiple-choice dialog) what feels wrong or missing. **The author's corrections always beat your analysis.**
 
 ## Step 4 — interview (fill the gaps)
 
@@ -96,6 +99,7 @@ Close with a short recap in the author's language:
 
 ## Anti-goals
 
+- Never ask the author to evaluate something they haven't seen — print it in full first, then ask.
 - Don't invent voice attributes the archive or the author didn't support.
 - Don't make onboarding feel like a tax form — keep it conversational, batch questions.
 - Don't touch anything outside this folder.
