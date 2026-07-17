@@ -1,6 +1,10 @@
-# Cervantes
+<p align="center">
+  <img src="assets/logo.svg" alt="Cervantes" width="140">
+</p>
 
-**Your newsletter writing system, inside Claude Code.**
+<h1 align="center">Cervantes</h1>
+
+<p align="center"><strong>Your newsletter writing system, inside Claude Code.</strong></p>
 
 Cervantes turns any folder into a personal editorial workspace. It learns your voice from what you've already published, drafts complete issues from your ideas and data, polishes your edits without erasing you, keeps your covers visually consistent — and gets better at being you with every issue, in your language, whatever it is.
 

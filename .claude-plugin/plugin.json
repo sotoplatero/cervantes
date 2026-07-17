@@ -1,7 +1,7 @@
 {
   "name": "cervantes",
   "displayName": "Cervantes",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Your newsletter writing system. Learns your voice from your published archive, drafts with your data, polishes without erasing you, and designs consistent cover art.",
   "author": {
     "name": "Krka",
