@@ -38,6 +38,17 @@ cervantes
 
 That's it — and it's the only "command" you'll ever need. Cervantes onboards you (reads your archive, shows you what it learned, asks only what it couldn't infer) and sets up your workspace.
 
+## Updating
+
+When a new version ships, update in two steps, then restart Claude Code:
+
+```
+/plugin marketplace update cervantes
+/plugin update cervantes@cervantes
+```
+
+Your work is safe: an update refreshes the writing engine and regenerates your workspace `CLAUDE.md`, but **never touches your `profile.md`, `journal.md`, `cover-style.md`, `archive/`, or `issues/`** — your voice, your learning log, and your drafts are yours. If nothing updates, you're already on the latest release.
+
 ## The workflow — you just talk
 
 > "Write a draft about X — here are my notes and a couple of links."
