@@ -22,7 +22,7 @@ Read `cervantes/profile.md` (voice, shortlist, taboos, language), the issue's `d
 
 ## Apply
 
-When the author picks: update `draft.md`'s header (`subject:`, `preheader:`, `cta:`) and the title/dek in the body; refresh `draft.v1.md`. Log the shipped subject + archetype in `cervantes/journal.md` (resonance fields open, to be filled when numbers arrive).
+When the author picks: update `draft.md`'s header (`subject:`, `preheader:`, `cta:`) and the title/dek in the body; refresh the single `.baseline.md`. Log the shipped subject + archetype in `cervantes/journal.md` (resonance fields open, to be filled when numbers arrive).
 
 ## Anti-goals
 

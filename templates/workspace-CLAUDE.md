@@ -51,7 +51,7 @@ Two entry points per issue, both always valid: Cervantes drafts first (author ed
 | `cervantes/journal.md` | Learning log | **SACRED** |
 | `cervantes/cover-style.md` | Fixed visual block | **SACRED** |
 | `cervantes/archive/` | Published issues | **SACRED** |
-| `issues/NNN-slug/` | Per-issue (NNN = edition number, e.g. `012`): material, `draft.md`, `draft.v1.md` snapshot, cover | **SACRED** |
+| `issues/NNN-slug/` | Per-issue (NNN = edition number, e.g. `012`): material, `draft.md` (the living draft), `.baseline.md` (the single snapshot), cover | **SACRED** |
 | `published/` | Shipped issues | **SACRED** |
 
 All drafting work happens on `draft.md` in the issue folder. Chat is for decisions; the Markdown file is the single source of truth.

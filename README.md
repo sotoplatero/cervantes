@@ -83,7 +83,7 @@ your-newsletter/
 │   ├── journal.md             ← what it learns from your edits, issue by issue
 │   ├── cover-style.md         ← your fixed visual identity
 │   └── archive/               ← your imported published issues
-├── issues/012-slug/           ← one folder per issue (NNN = edition number): material, draft, snapshot, cover
+├── issues/012-slug/           ← one folder per issue (NNN = edition number): material, draft.md, .baseline.md snapshot, cover
 └── published/
 ```
 

@@ -28,9 +28,15 @@ The author's facts, quotes, anecdotes, and emotions come **only** from their mat
 **4. Write the complete draft** into an issue folder:
 - Create `issues/NNN-slug/` where **NNN is the edition number, zero-padded to 3 digits** (e.g. `012`) and `slug` is a short topic slug — e.g. `issues/012-reader-as-hero/`. Move any loose material the author gave into it.
 - **Determine NNN** from the filesystem (the source of truth): the highest edition number already prefixing a folder in `issues/` and `published/`, plus 1. If none exist yet (first issue in this workspace), ask the author which edition number this is, suggesting `(count of posts in cervantes/archive/) + 1` as the default — then use it.
+
+**File naming — EXACT, no variants.** An issue folder holds exactly two text files, named literally:
+- `draft.md` — the living draft.
+- `.baseline.md` — the single snapshot (leading dot; hidden).
+
+Never invent variant names: no `draft.<topic>.md`, no `draft.v1/v2/v3.md`, no date or slug in a file name. The topic slug lives ONLY in the folder name (`NNN-slug/`). There is exactly ONE snapshot and it is always overwritten in place — never a second snapshot file.
 - Write `draft.md`: a small header (`subject:`, `preheader:`, `cta:` — provisional; finals come from `cervantes:headlines`), then the body per `WRITING-CRAFT.md`: title + dek, internal subheads every 2–4 paragraphs, hook, story (before → change → after), open loops opened AND closed, callback, varied rhythm, inline links, ONE idea, ONE CTA.
 - Seed deletable `[[enrich: ...]]` / `[[note: ...]]` / `[[fact?: ...]]` notes where the author's own detail would land harder. The text must work if they delete every note.
-- Save an exact copy as `draft.v1.md` in the same folder — the learning diff baseline for `cervantes:polish`.
+- Save an exact copy as `.baseline.md` in the same folder — the learning-diff baseline for `cervantes:polish`. This is the ONLY snapshot; polish overwrites it in place, it never multiplies.
 
 **5. Self-validate** against `engine/QUALITY-CHECKLIST.md` (substance, truth, craft, voice, form). Fix what fails BEFORE handing off — this is a loop, not a report.
 

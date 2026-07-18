@@ -22,7 +22,7 @@ Sections:
 
 ## `cervantes/journal.md` — the learning log
 
-Newest entries first. The learning signal comes from three places: the **edit diff** (`draft.v1.md` vs what the author edited/published), **explicit corrections** in chat ("I'd never say it that way," "this is me"), and **resonance** (opens, replies, what won — sharpens future angle and subject choices). All three get logged here and carried into the profile.
+Newest entries first. The learning signal comes from three places: the **edit diff** (`.baseline.md` vs what the author edited/published), **explicit corrections** in chat ("I'd never say it that way," "this is me"), and **resonance** (opens, replies, what won — sharpens future angle and subject choices). All three get logged here and carried into the profile.
 
 Entry template (copy and fill):
 

@@ -13,7 +13,7 @@ The author edited with their own hands. Make the text cleaner — not yours — 
 
 ## Workflow
 
-**1. Identify the author's hand.** Read the issue's `draft.md` (ask which issue only if ambiguous) and diff against `draft.v1.md` in the same folder: what differs is the author's hand — maximum protection. No `draft.v1.md` (author wrote everything raw) → the ENTIRE text is their hand; if it arrived outside an issue folder, create `issues/NNN-slug/` (edition number, 3-digit zero-padded — highest in `issues/`+`published/` plus 1) and move it in as `draft.md`.
+**1. Identify the author's hand.** Read the issue's `draft.md` (ask which issue only if ambiguous) and diff against `.baseline.md` in the same folder: what differs is the author's hand — maximum protection. No `.baseline.md` (author wrote everything raw) → the ENTIRE text is their hand; if it arrived outside an issue folder, create `issues/NNN-slug/` (edition number, 3-digit zero-padded — highest in `issues/`+`published/` plus 1) and move it in as `draft.md`. **Never create variant draft files** (`draft.<topic>.md`, `draft.v2.md`): the working file is always `draft.md`, the snapshot always the single `.baseline.md`.
 
 **2. Load the standard.** `cervantes/profile.md` (language, voice, taboos, **polish intensity** — caps how far you go on machine text; the author's hand always gets light), `engine/ANTI-SLOP.md`, and `engine/WRITING-CRAFT.md` § rhythm.
 
@@ -28,7 +28,7 @@ The author edited with their own hands. Make the text cleaner — not yours — 
 **5. LEARN (never skip).** The diff from step 1 is the highest-value voice signal that exists:
 - Log a journal entry per `engine/MEMORY-SCHEMA.md` (what Cervantes drafted vs what they changed; the difference that matters).
 - Carry patterns into `cervantes/profile.md` (new turns of phrase to the voice bank; repeated edits → "Things I NEVER do"), bump `Voice version`, confirm in one line: "Noted in your profile: …".
-- Refresh `draft.v1.md` (copy the polished file over it) so the next round diffs against this state.
+- Refresh `.baseline.md` (copy the polished `draft.md` over it, same name) so the next round diffs against this state. One snapshot, overwritten — never a new file.
 
 **6. Report** briefly, in the author's language: what was fixed (grouped, not line-by-line); **suggestions NOT applied** because they touch the author's hand (quote original → propose alternative → they decide); anything unresolved.
 

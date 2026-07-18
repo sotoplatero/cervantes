@@ -16,10 +16,10 @@ Manual for now: run each scenario in a fresh Claude Code session, observe agains
 
 ## 4. Draft with notes
 **Setup:** installed workspace with seeded profile. **Prompt:** "write a draft about X" + pasted notes with an opinion and one link.
-**Expected:** reads profile+journal+WRITING-CRAFT → offers 2–3 angles → 3 hook options (concrete, labeled, strongest marked) → complete draft in `issues/NNN-slug/draft.md` (NNN = edition number, e.g. `012`) + `draft.v1.md`: title+dek, subheads every 2–4 paragraphs, inline links, `[[enrich:]]` notes, ONE idea, zero anti-slop patterns, nothing invented beyond the notes, reader-as-hero framing (author's story reads as the reader's mirror, no mechanical hero's-journey mold) → self-validated against QUALITY-CHECKLIST before hand-off.
+**Expected:** reads profile+journal+WRITING-CRAFT → offers 2–3 angles → 3 hook options (concrete, labeled, strongest marked) → complete draft in `issues/NNN-slug/draft.md` (NNN = edition number, e.g. `012`) + a single `.baseline.md` snapshot (exact names, no `draft.<topic>.md` variants): title+dek, subheads every 2–4 paragraphs, inline links, `[[enrich:]]` notes, ONE idea, zero anti-slop patterns, nothing invented beyond the notes, reader-as-hero framing (author's story reads as the reader's mirror, no mechanical hero's-journey mold) → self-validated against QUALITY-CHECKLIST before hand-off.
 
 ## 5. Polish author-written text
-**Setup:** author drops their own raw text (no draft.v1.md). **Prompt:** "polish what I wrote".
+**Setup:** author drops their own raw text (no .baseline.md). **Prompt:** "polish what I wrote".
 **Expected:** treats 100% as author's hand → fixes only objective errors → suggestions-not-applied section quotes original + proposes alternative → logs a journal entry + bumps profile voice version with one-line confirmation.
 
 ## 6. Repair
@@ -31,3 +31,4 @@ Manual for now: run each scenario in a fresh Claude Code session, observe agains
 - Never ask the author to evaluate content they haven't seen on screen.
 - Never stall after the voice analysis — drive to the end.
 - Never assume found content belongs to the author without confirming.
+- Never create variant draft files: the working file is always `draft.md`, the snapshot always the single `.baseline.md` (overwritten, never numbered or topic-named).
