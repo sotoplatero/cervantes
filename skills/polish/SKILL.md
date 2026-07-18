@@ -13,7 +13,7 @@ The author edited with their own hands. Make the text cleaner — not yours — 
 
 ## Workflow
 
-**1. Identify the author's hand.** Read the issue's `draft.md` (ask which issue only if ambiguous) and diff against `draft.v1.md` in the same folder: what differs is the author's hand — maximum protection. No `draft.v1.md` (author wrote everything raw) → the ENTIRE text is their hand; if it arrived outside an issue folder, create `issues/YYYY-MM-DD-slug/` and move it in as `draft.md`.
+**1. Identify the author's hand.** Read the issue's `draft.md` (ask which issue only if ambiguous) and diff against `draft.v1.md` in the same folder: what differs is the author's hand — maximum protection. No `draft.v1.md` (author wrote everything raw) → the ENTIRE text is their hand; if it arrived outside an issue folder, create `issues/NNN-slug/` (edition number, 3-digit zero-padded — highest in `issues/`+`published/` plus 1) and move it in as `draft.md`.
 
 **2. Load the standard.** `cervantes/profile.md` (language, voice, taboos, **polish intensity** — caps how far you go on machine text; the author's hand always gets light), `engine/ANTI-SLOP.md`, and `engine/WRITING-CRAFT.md` § rhythm.
 

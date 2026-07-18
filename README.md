@@ -49,7 +49,7 @@ A typical issue:
 
 ```
 "draft this from my notes"   →  angles offered → hooks offered → complete draft
-                                in issues/2026-07-17-your-topic/draft.md
+                                in issues/012-your-topic/draft.md
         ↓
 you edit the draft by hand, in any editor, on your own time
         ↓
@@ -72,7 +72,7 @@ your-newsletter/
 │   ├── journal.md             ← what it learns from your edits, issue by issue
 │   ├── cover-style.md         ← your fixed visual identity
 │   └── archive/               ← your imported published issues
-├── issues/2026-07-17-slug/    ← one folder per issue: material, draft, snapshot, cover
+├── issues/012-slug/           ← one folder per issue (NNN = edition number): material, draft, snapshot, cover
 └── published/
 ```
 

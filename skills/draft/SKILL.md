@@ -26,7 +26,8 @@ The author's facts, quotes, anecdotes, and emotions come **only** from their mat
 **3. Find the angle.** Offer 2–3 angles the material supports; the author picks. For the hook: name the tension → generate 8–10 options from `HOOK-FORMULAS.md` (profile shortlist first) → filter through voice + `ANTI-SLOP.md` → present the 3 most concrete with one line each on why they work.
 
 **4. Write the complete draft** into an issue folder:
-- Create `issues/YYYY-MM-DD-slug/` (today's date + short topic slug); move any loose material the author gave into it.
+- Create `issues/NNN-slug/` where **NNN is the edition number, zero-padded to 3 digits** (e.g. `012`) and `slug` is a short topic slug — e.g. `issues/012-reader-as-hero/`. Move any loose material the author gave into it.
+- **Determine NNN** from the filesystem (the source of truth): the highest edition number already prefixing a folder in `issues/` and `published/`, plus 1. If none exist yet (first issue in this workspace), ask the author which edition number this is, suggesting `(count of posts in cervantes/archive/) + 1` as the default — then use it.
 - Write `draft.md`: a small header (`subject:`, `preheader:`, `cta:` — provisional; finals come from `cervantes:headlines`), then the body per `WRITING-CRAFT.md`: title + dek, internal subheads every 2–4 paragraphs, hook, story (before → change → after), open loops opened AND closed, callback, varied rhythm, inline links, ONE idea, ONE CTA.
 - Seed deletable `[[enrich: ...]]` / `[[note: ...]]` / `[[fact?: ...]]` notes where the author's own detail would land harder. The text must work if they delete every note.
 - Save an exact copy as `draft.v1.md` in the same folder — the learning diff baseline for `cervantes:polish`.
