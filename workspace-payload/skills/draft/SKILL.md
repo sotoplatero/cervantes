@@ -19,9 +19,11 @@ The author's facts, quotes, anecdotes, and emotions come **only** from their mat
 
 ## Workflow
 
-**1. Gather the material.** Needed: the topic AND the author's take — notes, opinions, anecdotes, data, links. If all you got is a topic, ask (2–3 questions max): what's YOUR opinion? any personal story? what should the reader do or feel at the end? A draft without the author's viewpoint is generic filler — don't write one. Fetch and read any links they provided.
+**1. Gather the material.** Needed: the topic AND the author's take — notes, opinions, anecdotes, data, links. If all you got is a topic, ask (2–3 questions max): what's YOUR opinion? any personal story? what should the reader do or feel at the end? A draft without the author's viewpoint is generic filler — don't write one.
 
-**2. Research & verify.** Situate their story: what the thing is really called, prior art, the debate if any, real links (checked). Never invent what a source says.
+**2. Research & verify — delegate to the `researcher` agent.** Situating the story means fetching pages, and raw pages crowd out the profile and the craft you need loaded to write well. So spawn the `researcher` agent (Agent tool, `subagent_type: "researcher"`) with the topic, the author's notes, and their links; it returns a compact evidence brief — verified claims with real URLs, the accepted terms, the debate, contradictions with the author's notes, and what it could NOT verify.
+
+Work from the brief: every outside link in the draft comes from its **Verified** section, everything under **Could not verify** becomes `[[fact?: ...]]`, and a **Contradicts the author's notes** entry gets raised with the author rather than silently written around — it's their call. Never invent what a source says. Skip the delegation only when the issue is purely personal (no outside claims, no links) — then say so and move on.
 
 **3. Find the angle.** Offer 2–3 angles the material supports; the author picks. For the hook: name the tension → generate 8–10 options from `HOOK-FORMULAS.md` (profile shortlist first) → filter through voice + `ANTI-SLOP.md` → present the 3 most concrete with one line each on why they work.
 
@@ -34,9 +36,9 @@ The author's facts, quotes, anecdotes, and emotions come **only** from their mat
 - `.baseline.md` — the single snapshot (leading dot; hidden).
 
 Never invent variant names: no `draft.<topic>.md`, no `draft.v1/v2/v3.md`, no date or slug in a file name. The topic slug lives ONLY in the folder name (`NNN-slug/`). There is exactly ONE snapshot and it is always overwritten in place — never a second snapshot file.
-- Write `draft.md`: a small header (`subject:`, `preheader:`, `cta:` — provisional; finals come from `cervantes:headlines`), then the body per `WRITING-CRAFT.md`: title + dek, internal subheads every 2–4 paragraphs, hook, story (before → change → after), open loops opened AND closed, callback, varied rhythm, inline links, ONE idea, ONE CTA.
+- Write `draft.md`: a small header (`subject:`, `preheader:`, `cta:` — provisional; finals come from the `headlines` skill), then the body per `WRITING-CRAFT.md`: title + dek, internal subheads every 2–4 paragraphs, hook, story (before → change → after), open loops opened AND closed, callback, varied rhythm, inline links, ONE idea, ONE CTA.
 - Seed deletable `[[enrich: ...]]` / `[[note: ...]]` / `[[fact?: ...]]` notes where the author's own detail would land harder. The text must work if they delete every note.
-- Save an exact copy as `.baseline.md` in the same folder — the learning-diff baseline for `cervantes:polish`. This is the ONLY snapshot; polish overwrites it in place, it never multiplies.
+- Save an exact copy as `.baseline.md` in the same folder — the learning-diff baseline for the `polish` skill. This is the ONLY snapshot; polish overwrites it in place, it never multiplies.
 
 **5. Self-validate** against `engine/QUALITY-CHECKLIST.md` (substance, truth, craft, voice, form). Fix what fails BEFORE handing off — this is a loop, not a report.
 

@@ -9,7 +9,17 @@ Turns this folder into a self-contained newsletter workspace. After a successful
 
 ## Rule 0 — self-check the payload
 
-This plugin must contain, next to its root: `VERSION`, `engine/` (6 files: WRITING-CRAFT, HOOK-FORMULAS, ANTI-SLOP, TEMPLATES, QUALITY-CHECKLIST, MEMORY-SCHEMA), and `templates/` (workspace-CLAUDE.md, profile.md, journal.md, cover-style.md). If anything is missing, STOP and tell the user to reinstall the plugin — **never improvise engine files or templates from recall**: an install from an incomplete payload produces a corrupt workspace.
+This plugin must contain, next to its root:
+
+- `VERSION`
+- `engine/` — 6 files: WRITING-CRAFT, HOOK-FORMULAS, ANTI-SLOP, TEMPLATES, QUALITY-CHECKLIST, MEMORY-SCHEMA
+- `templates/` — workspace-CLAUDE.md, profile.md, journal.md, cover-style.md
+- `workspace-payload/skills/` — draft, polish, headlines, cover (each a folder with `SKILL.md`)
+- `workspace-payload/agents/` — researcher.md
+
+If anything is missing, STOP and tell the user to reinstall the plugin — **never improvise engine files, templates, skills, or agents from recall**: an install from an incomplete payload produces a corrupt workspace.
+
+**Why the payload exists.** This plugin ships exactly one skill — this one — plus a theme and a SessionStart health hook. Everything else is *copied into the workspace* so the newsletter folder is genuinely self-contained and nothing Cervantes-specific loads in the author's other projects. `workspace-payload/skills/` and `workspace-payload/agents/` are inert here; they only become live skills and agents once installed under the workspace's `.claude/`.
 
 ## Rule 1 — preferences are gathered with the wizard, NOT chat
 
@@ -62,22 +72,30 @@ Setup progress:
 
 **6. Scaffold** (write everything yourself; the author never hand-edits during setup):
 1. Copy `${CLAUDE_PLUGIN_ROOT}/engine/*` → `cervantes/engine/` verbatim.
-2. Instantiate `cervantes/profile.md`, `cervantes/journal.md`, `cervantes/cover-style.md` from `${CLAUDE_PLUGIN_ROOT}/templates/`, filling placeholders with everything gathered. Set profile `Voice version: v0.1`.
-3. Instantiate `./CLAUDE.md` from `templates/workspace-CLAUDE.md`, replacing `{{ENGINE_VERSION}}` with the plugin's `VERSION` string and the language/name placeholders. If a foreign CLAUDE.md exists, show what you'd merge — never silently overwrite.
-4. Create `issues/` and `published/`.
-5. **Workspace statusline** (branding touch): merge a `statusLine` into the workspace `./.claude/settings.json` (create the file if absent, preserve any existing keys). Keep the command **static and shell-portable** — no `jq`/`node`, just `echo` of a fixed string with the newsletter name baked in, so it works on any OS/shell:
+2. **Install the workspace skills and agent** — copy verbatim, never retype:
+   - `${CLAUDE_PLUGIN_ROOT}/workspace-payload/skills/*` → `./.claude/skills/` (so `draft/SKILL.md`, `polish/SKILL.md`, `headlines/SKILL.md`, `cover/SKILL.md` each land in their own folder)
+   - `${CLAUDE_PLUGIN_ROOT}/workspace-payload/agents/*` → `./.claude/agents/`
+
+   These are what make the folder work. Preserve any of the author's own skills/agents already in `.claude/` — add, never wipe the directory.
+3. Instantiate `cervantes/profile.md`, `cervantes/journal.md`, `cervantes/cover-style.md` from `${CLAUDE_PLUGIN_ROOT}/templates/`, filling placeholders with everything gathered. Set profile `Voice version: v0.1`.
+4. Instantiate `./CLAUDE.md` from `templates/workspace-CLAUDE.md`, replacing `{{ENGINE_VERSION}}` with the plugin's `VERSION` string and the language/name placeholders. If a foreign CLAUDE.md exists, show what you'd merge — never silently overwrite.
+5. Create `issues/` and `published/`.
+6. **Workspace statusline** (branding touch): merge a `statusLine` into the workspace `./.claude/settings.json` (create the file if absent, preserve any existing keys). Keep the command **static and shell-portable** — no `jq`/`node`, just `echo` of a fixed string with the newsletter name baked in, so it works on any OS/shell:
    ```json
    { "statusLine": { "type": "command", "command": "echo \"✎ Cervantes · {NEWSLETTER_NAME}\"", "padding": 1 } }
    ```
    Don't put the voice version in it (it changes; a static echo would go stale). Mention the author can suggest to Cervantes a richer statusline later.
-6. **Suggest the theme** once, in the recap: "For the full look, run `/theme` and pick **Cervantes** (gold-on-ink)." Never switch their theme automatically — it's a global preference.
+7. **Suggest the theme** once, in the recap: "For the full look, run `/theme` and pick **Cervantes** (gold-on-ink)." Never switch their theme automatically — it's a global preference.
+8. **Mention the restart** in the recap, as a nicety and not a blocker — one line: "Restart Claude Code when convenient so the new skills register; everything works either way." Skills and agents in `.claude/` are discovered at startup, so this session won't have them registered yet. That is not a problem: per the workspace CLAUDE.md, an unregistered skill is read straight from `.claude/skills/<name>/SKILL.md` and followed as written. Never make the author restart before their first issue.
 
 **7. Hand over.** Recap in 4–5 lines: what was created, where their voice lives ("edit it whenever"), and how to work from now on — **just talk naturally**, with example phrases in THEIR language ("write a draft about X, here are my notes", "polish what I wrote", "titles?", "make the cover"). This onboarding was the only command they'll ever need. Invite them to start their first issue.
 
 ## Verify (marker = VERSION)
 
-Repair without ceremony:
+The SessionStart hook already computed what's missing and put it in your context — repair exactly that list, without re-checking the filesystem first. If no hook report arrived (bash unavailable on the machine), do the checks yourself. Repair without ceremony:
+
 - `cervantes/engine/` has all 6 files → restore any missing/corrupt one from `${CLAUDE_PLUGIN_ROOT}/engine/`.
+- `.claude/skills/` has draft, polish, headlines, cover and `.claude/agents/` has researcher.md → restore any missing one from `${CLAUDE_PLUGIN_ROOT}/workspace-payload/`. Never delete skills or agents the author added themselves.
 - Memory files (`profile.md`, `journal.md`, `cover-style.md`) exist → recreate ONLY a missing file from its template skeleton (empty, v0.0 for profile — tell the author it needs re-seeding). **Never overwrite or blank an existing memory file.**
 - `issues/`, `published/`, `cervantes/archive/` exist → create if missing.
 - If anything was repaired, report it in one line. If everything is healthy, **stand down**: say nothing about setup and proceed to whatever the author actually came for.
@@ -85,12 +103,13 @@ Repair without ceremony:
 ## Update (marker < VERSION)
 
 1. Re-copy `${CLAUDE_PLUGIN_ROOT}/engine/*` → `cervantes/engine/`, overwriting.
-2. Regenerate `./CLAUDE.md` from the template, stamping the new version — re-fill placeholders from the existing profile.
-3. **Never touch memory files, `issues/`, or `published/`.**
-4. If the new engine changed a memory file's STRUCTURE (template gained/renamed a section), don't migrate silently: tell the author what's new and offer to add the missing section headers, preserving every existing line.
-5. Report in one line ("Updated engine v1.0 → v1.1: …"), then proceed to their actual request.
+2. Re-copy `${CLAUDE_PLUGIN_ROOT}/workspace-payload/skills/*` → `./.claude/skills/` and `${CLAUDE_PLUGIN_ROOT}/workspace-payload/agents/*` → `./.claude/agents/`, overwriting **only Cervantes' own four skills and researcher.md**. Anything else the author put in `.claude/` is theirs — leave it.
+3. Regenerate `./CLAUDE.md` from the template, stamping the new version — re-fill placeholders from the existing profile.
+4. **Never touch memory files, `issues/`, or `published/`.**
+5. If the new engine changed a memory file's STRUCTURE (template gained/renamed a section), don't migrate silently: tell the author what's new and offer to add the missing section headers, preserving every existing line.
+6. Report in one line ("Updated engine v1.0 → v1.1: …"), then proceed to their actual request. The refreshed skills register on the next restart; until then read them from `.claude/skills/` as files — say nothing about it unless asked.
 
-**Golden rule:** `engine/` and `CLAUDE.md` are regenerable; memory and issues are sacred.
+**Golden rule:** `engine/`, `.claude/skills/`, `.claude/agents/` and `CLAUDE.md` are regenerable; memory and issues are sacred.
 
 ## Anti-goals
 

@@ -1,0 +1,5 @@
+# The hook launcher and its scripts must stay LF-only on every platform.
+# A CRLF checkout breaks them under bash ("bad interpreter: \r"), and this
+# repo is cloned onto Windows machines where core.autocrlf=true is the norm.
+hooks/session-start text eol=lf
+hooks/run-hook.cmd  text eol=lf

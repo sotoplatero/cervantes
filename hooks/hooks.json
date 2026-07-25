@@ -1,0 +1,19 @@
+{
+  "description": "Cervantes — deterministic workspace health check at session start. Silent no-op outside a Cervantes newsletter folder.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/run-hook.cmd\" session-start",
+            "shell": "bash",
+            "async": false,
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

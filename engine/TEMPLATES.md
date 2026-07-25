@@ -65,6 +65,8 @@ If the author wants to add their reaction, they add it when editing — but they
 - Hook rhetorical question: "What if I told you…?"
 - Colon subhead: "Title: the story of how…"
 - Tricolon: "Faster, simpler, more powerful."
+- Reframed question: "La pregunta no es si X, es cómo" / "The question isn't whether X — it's how."
+- Announced effect: "Esto me hizo reflexionar…", "Te voy a ser sincero…", "Let me be honest with you."
 
 ### What to do instead
 - **Build the subject from a concrete detail in the material**: a real noun, a real number, a real action. Plain-and-specific beats clever-and-abstract, and it sounds more like the author.

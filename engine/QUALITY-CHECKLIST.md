@@ -28,6 +28,8 @@ Run before handing any draft (or polished issue) back to the author. If an item 
 ## Voice
 - [ ] **It sounds like the author**, not neutral machine prose. Their own turns of phrase appear where they fit, without forcing.
 - [ ] **Zero AI noise** — full sweep against `ANTI-SLOP.md` (profile-documented signatures excepted).
+- [ ] **No tic ran twice.** Count them across the whole issue, not per paragraph: one-word pauses, trailing ellipses, rules of three, aphorisms, mid-sentence dashes, "no es X, es Y". Each is fine once and a tell twice (`ANTI-SLOP.md` § frequency rule) — if a device appears in two sections, cut the weaker one.
+- [ ] **Nothing is announced that isn't then shown.** No "let me be honest", "this made me reflect deeply", "and that changed everything" standing in for the honesty, the reflection, or the change.
 - [ ] **Deliberate colloquialisms respected**; only slips fixed.
 
 ## Form

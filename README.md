@@ -13,7 +13,8 @@ Cervantes turns any folder into a personal editorial workspace. It learns your v
 - **It learns your voice first — from evidence.** Give it your newsletter URL and it downloads your published archive, extracts a voice fingerprint (rhythm, signature phrases, humor, openings — each with quoted proof), and shows it to you for corrections before writing a word in your name.
 - **It knows the craft.** Every workspace ships with a writing engine: hook formulas, open-loop and rhythm techniques, issue skeletons, subject-line archetypes, and a hard **anti-slop** rule set that bans the patterns that make text smell like AI ("It's not X, it's Y", "What if I told you…", inflated adjectives, unearned morals). A quality checklist runs before anything is handed back.
 - **Your edits are sacred — and it learns from them.** Cervantes distinguishes its text from yours. Polishing fixes typos in your passages, never your opinions. Then it diffs what you changed, logs the lesson to a journal, and updates your voice profile — so the next draft needs less fixing.
-- **Nothing invented, ever.** Your facts, quotes, and anecdotes come only from your material. Outside context arrives researched, with real inline links. Where only YOUR detail would land harder, it leaves a deletable `[[enrich:]]` note instead of making something up.
+- **Nothing invented, ever.** Your facts, quotes, and anecdotes come only from your material. Outside context is gathered by a separate research agent that only reports what it actually read — verified claims with links it actually opened, plus an explicit list of what it *couldn't* confirm, including anything in your own notes it found contradicted. Where only YOUR detail would land harder, it leaves a deletable `[[enrich:]]` note instead of making something up.
+- **It lives in your folder, not in your way.** Installing sets your newsletter folder up as a self-contained workspace — the writing workflows and the research agent are installed *there*. Nothing Cervantes-specific loads when you open your other projects.
 - **You write anywhere.** Issues are plain Markdown in your folder. Edit in VS Code, Obsidian, Notepad — Cervantes works on the same files when you call it.
 - **Consistent covers.** One fixed visual style, defined once; every issue's cover looks like the same publication.
 - **Any language.** The engine is English; Cervantes detects your newsletter's language and writes everything in it.
@@ -47,7 +48,9 @@ When a new version ships, update in two steps, then restart Claude Code:
 /plugin update cervantes@cervantes
 ```
 
-Your work is safe: an update refreshes the writing engine and regenerates your workspace `CLAUDE.md`, but **never touches your `profile.md`, `journal.md`, `cover-style.md`, `archive/`, or `issues/`** — your voice, your learning log, and your drafts are yours. If nothing updates, you're already on the latest release.
+Then open your newsletter folder — Cervantes notices the new version and refreshes itself.
+
+Your work is safe: an update refreshes the writing engine, the four workflows in `.claude/skills/`, the research agent, and your workspace `CLAUDE.md`, but **never touches your `profile.md`, `journal.md`, `cover-style.md`, `archive/`, or `issues/`** — your voice, your learning log, and your drafts are yours. Anything you added to `.claude/` yourself is left alone too. If nothing updates, you're already on the latest release.
 
 ## The workflow — you just talk
 
@@ -77,6 +80,9 @@ Or start from your own raw text: drop it in and say "polish what I wrote" — wh
 ```
 your-newsletter/
 ├── CLAUDE.md                  ← Cervantes' brain here (versioned)
+├── .claude/
+│   ├── skills/                ← draft · polish · headlines · cover
+│   └── agents/researcher.md   ← reads and verifies sources, so drafting stays focused
 ├── cervantes/
 │   ├── engine/                ← the writing craft (hooks, anti-slop, checklists)
 │   ├── profile.md             ← your voice fingerprint — YOURS, never auto-overwritten
@@ -87,7 +93,7 @@ your-newsletter/
 └── published/
 ```
 
-Updates refresh the engine and never touch your memory: profile, journal, archive, and issues are sacred.
+Updates refresh the engine and the four workflows, and never touch your memory: profile, journal, archive, and issues are sacred.
 
 ## Make it yours
 
@@ -108,4 +114,4 @@ Type `cervantes` anyway — a short interview and a writing sample replace the a
 
 ---
 
-Craft libraries adapted from [newsletter-ghostwriter](https://github.com/sotoplatero) (MIT, same author). Hook formula library based on "75 fórmulas de ganchos" by Oscar Feito, used as internal reference.
+Craft libraries adapted from [newsletter-ghostwriter](https://github.com/sotoplatero) (MIT, same author). Hook formula library based on "75 fórmulas de ganchos" by Oscar Feito, used as internal reference. Anti-slop catalogue expanded from ["Las 20 notas que querrías haber leído antes"](https://nataliapapiol.substack.com/p/las-20-notas-que-no-querrias-haber) by Natalia Papiol, used as internal reference.
