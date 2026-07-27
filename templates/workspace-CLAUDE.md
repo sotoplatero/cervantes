@@ -43,9 +43,13 @@ The author speaks naturally, in their language. Recognize the intent and invoke 
 | "polish / correct / review what I wrote" | `polish` |
 | "titles / subject line?" | `headlines` |
 | "make the cover" | `cover` |
+| "I published it / this went out" · "here are the numbers (opens, replies)" | `ship` |
+| "repurpose this / the LinkedIn version / social / Notes / a thread" | `repurpose` |
 | "update my voice/profile" or workspace broken/missing pieces | `cervantes:start` |
 
-The first four live in this folder, at `.claude/skills/<name>/SKILL.md` — they were installed here so nothing Cervantes-specific loads in the author's other projects. `cervantes:start` comes from the plugin.
+The first six live in this folder, at `.claude/skills/<name>/SKILL.md` — they were installed here so nothing Cervantes-specific loads in the author's other projects. `cervantes:start` comes from the plugin.
+
+The full lifecycle of an issue: **draft → (author edits by hand) → polish → headlines → cover → ship → (later) resonance numbers → repurpose.** `ship` closes the loop — it records the version that actually went out, archives it as future voice ground-truth, and opens the resonance entry; the numbers, when they arrive, sharpen the next issue's angle and subject.
 
 **If a skill isn't registered** (freshly installed or just updated — `.claude/` is scanned at startup, so the current session may not know them yet): don't tell the author to restart and don't improvise. **Read `.claude/skills/<name>/SKILL.md` with the Read tool and follow it exactly as written.** It is the same content the Skill tool would load. Mention the restart only if they ask why.
 
@@ -56,8 +60,9 @@ Two entry points per issue, both always valid: Cervantes drafts first (author ed
 | Path | What | Status |
 |---|---|---|
 | `cervantes/engine/` | Craft libraries | Regenerable (updater may overwrite) |
-| `.claude/skills/` | `draft`, `polish`, `headlines`, `cover` | Regenerable (updater may overwrite these four only) |
+| `.claude/skills/` | `draft`, `polish`, `headlines`, `cover`, `ship`, `repurpose` | Regenerable (updater may overwrite these six only) |
 | `.claude/agents/researcher.md` | Source-verification subagent used by `draft` | Regenerable |
+| `.claude/agents/importer.md` | Archive-import subagent (onboarding + refresh) | Regenerable |
 | `cervantes/profile.md` | Voice fingerprint + prefs | **SACRED** |
 | `cervantes/journal.md` | Learning log | **SACRED** |
 | `cervantes/cover-style.md` | Fixed visual block | **SACRED** |

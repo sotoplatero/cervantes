@@ -40,10 +40,12 @@ done
 for f in profile journal cover-style; do
   [ -f "./cervantes/$f.md" ] || note_missing "cervantes/$f.md"
 done
-for s in draft polish headlines cover; do
+for s in draft polish headlines cover ship repurpose; do
   [ -f "./.claude/skills/$s/SKILL.md" ] || note_missing ".claude/skills/$s/"
 done
-[ -f "./.claude/agents/researcher.md" ] || note_missing ".claude/agents/researcher.md"
+for a in researcher importer; do
+  [ -f "./.claude/agents/$a.md" ] || note_missing ".claude/agents/$a.md"
+done
 [ -d "./issues" ]    || note_missing "issues/"
 [ -d "./published" ] || note_missing "published/"
 

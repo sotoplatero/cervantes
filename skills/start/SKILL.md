@@ -14,8 +14,8 @@ This plugin must contain, next to its root:
 - `VERSION`
 - `engine/` — 6 files: WRITING-CRAFT, HOOK-FORMULAS, ANTI-SLOP, TEMPLATES, QUALITY-CHECKLIST, MEMORY-SCHEMA
 - `templates/` — workspace-CLAUDE.md, profile.md, journal.md, cover-style.md
-- `workspace-payload/skills/` — draft, polish, headlines, cover (each a folder with `SKILL.md`)
-- `workspace-payload/agents/` — researcher.md
+- `workspace-payload/skills/` — draft, polish, headlines, cover, ship, repurpose (each a folder with `SKILL.md`)
+- `workspace-payload/agents/` — researcher.md, importer.md
 
 If anything is missing, STOP and tell the user to reinstall the plugin — **never improvise engine files, templates, skills, or agents from recall**: an install from an incomplete payload produces a corrupt workspace.
 
@@ -62,7 +62,7 @@ Setup progress:
 
 **1. The sample.** Ask for the newsletter URL (archive/homepage) — the preferred sample. No newsletter yet → ask for a paste of 3–6 raw paragraphs of their writing or a link to any post. In the same message, ask for an optional **cover reference image** (file path, paste, or URL). Never write in their name from a blank profile.
 
-**2. Import the archive** (if a URL was given). Create `cervantes/archive/`. Discover posts via RSS first (`<url>/feed` — Substack, Ghost, WordPress all serve it), then `/archive` or `/sitemap.xml`; if all fail, ask for 3–5 links. Fetch up to 15 recent posts; save each as `cervantes/archive/YYYY-MM-DD-slug.md` with frontmatter (`title`, `date`, `url`), body as clean Markdown (drop nav/footers/subscribe buttons). Announce before fetching; report count + titles after; skip failures without stalling. **Detect the newsletter's language from this content** (it can differ from the chat) and confirm it explicitly.
+**2. Import the archive** (if a URL was given) — **delegate it, don't scrape inline.** Fetching a dozen posts in this session would bury the fingerprint work under page markup, so hand it to the importer: the workspace doesn't exist yet, so spawn a `general-purpose` agent (Agent tool) and instruct it to **first `Read ${CLAUDE_PLUGIN_ROOT}/workspace-payload/agents/importer.md` and follow it exactly**, passing the newsletter URL, target dir `cervantes/archive/`, and a limit of 15. Announce before spawning. It discovers posts (RSS → `/archive` → sitemap; if all fail it returns a `Needs` note — then ask the author for 3–5 links), writes clean `YYYY-MM-DD-slug.md` files with frontmatter, and returns a compact report. Relay its count + titles to the author, and take the **language it detected** as the workspace language — confirm it explicitly (it can differ from the chat). If the Agent tool is genuinely unavailable, fall back to doing the import yourself per the importer spec.
 
 **3. Voice fingerprint.** Read the archive/sample and fill the fingerprint dimensions listed in `${CLAUDE_PLUGIN_ROOT}/templates/profile.md` — only from what's observed, each dimension with a short quoted example. Also derive the hook-formula shortlist (per `engine/HOOK-FORMULAS.md` § Narrowing) and any anti-slop exceptions genuinely present in their published text. **Print the full analysis as visible message text** — never inside a question dialog or a file they haven't seen — then ask in plain conversation what to correct. Their corrections beat the analysis.
 
@@ -73,8 +73,8 @@ Setup progress:
 **6. Scaffold** (write everything yourself; the author never hand-edits during setup):
 1. Copy `${CLAUDE_PLUGIN_ROOT}/engine/*` → `cervantes/engine/` verbatim.
 2. **Install the workspace skills and agent** — copy verbatim, never retype:
-   - `${CLAUDE_PLUGIN_ROOT}/workspace-payload/skills/*` → `./.claude/skills/` (so `draft/SKILL.md`, `polish/SKILL.md`, `headlines/SKILL.md`, `cover/SKILL.md` each land in their own folder)
-   - `${CLAUDE_PLUGIN_ROOT}/workspace-payload/agents/*` → `./.claude/agents/`
+   - `${CLAUDE_PLUGIN_ROOT}/workspace-payload/skills/*` → `./.claude/skills/` (so `draft/`, `polish/`, `headlines/`, `cover/`, `ship/`, `repurpose/` each land as their own folder with a `SKILL.md`)
+   - `${CLAUDE_PLUGIN_ROOT}/workspace-payload/agents/*` → `./.claude/agents/` (`researcher.md` and `importer.md`)
 
    These are what make the folder work. Preserve any of the author's own skills/agents already in `.claude/` — add, never wipe the directory.
 3. Instantiate `cervantes/profile.md`, `cervantes/journal.md`, `cervantes/cover-style.md` from `${CLAUDE_PLUGIN_ROOT}/templates/`, filling placeholders with everything gathered. Set profile `Voice version: v0.1`.
@@ -95,7 +95,7 @@ Setup progress:
 The SessionStart hook already computed what's missing and put it in your context — repair exactly that list, without re-checking the filesystem first. If no hook report arrived (bash unavailable on the machine), do the checks yourself. Repair without ceremony:
 
 - `cervantes/engine/` has all 6 files → restore any missing/corrupt one from `${CLAUDE_PLUGIN_ROOT}/engine/`.
-- `.claude/skills/` has draft, polish, headlines, cover and `.claude/agents/` has researcher.md → restore any missing one from `${CLAUDE_PLUGIN_ROOT}/workspace-payload/`. Never delete skills or agents the author added themselves.
+- `.claude/skills/` has draft, polish, headlines, cover, ship, repurpose and `.claude/agents/` has researcher.md and importer.md → restore any missing one from `${CLAUDE_PLUGIN_ROOT}/workspace-payload/`. Never delete skills or agents the author added themselves.
 - Memory files (`profile.md`, `journal.md`, `cover-style.md`) exist → recreate ONLY a missing file from its template skeleton (empty, v0.0 for profile — tell the author it needs re-seeding). **Never overwrite or blank an existing memory file.**
 - `issues/`, `published/`, `cervantes/archive/` exist → create if missing.
 - If anything was repaired, report it in one line. If everything is healthy, **stand down**: say nothing about setup and proceed to whatever the author actually came for.
@@ -103,7 +103,7 @@ The SessionStart hook already computed what's missing and put it in your context
 ## Update (marker < VERSION)
 
 1. Re-copy `${CLAUDE_PLUGIN_ROOT}/engine/*` → `cervantes/engine/`, overwriting.
-2. Re-copy `${CLAUDE_PLUGIN_ROOT}/workspace-payload/skills/*` → `./.claude/skills/` and `${CLAUDE_PLUGIN_ROOT}/workspace-payload/agents/*` → `./.claude/agents/`, overwriting **only Cervantes' own four skills and researcher.md**. Anything else the author put in `.claude/` is theirs — leave it.
+2. Re-copy `${CLAUDE_PLUGIN_ROOT}/workspace-payload/skills/*` → `./.claude/skills/` and `${CLAUDE_PLUGIN_ROOT}/workspace-payload/agents/*` → `./.claude/agents/`, overwriting **only Cervantes' own skills (draft, polish, headlines, cover, ship, repurpose) and agents (researcher.md, importer.md)**. Anything else the author put in `.claude/` is theirs — leave it. An update from an older version that predates `ship`/`repurpose`/`importer` simply adds them here.
 3. Regenerate `./CLAUDE.md` from the template, stamping the new version — re-fill placeholders from the existing profile.
 4. **Never touch memory files, `issues/`, or `published/`.**
 5. If the new engine changed a memory file's STRUCTURE (template gained/renamed a section), don't migrate silently: tell the author what's new and offer to add the missing section headers, preserving every existing line.

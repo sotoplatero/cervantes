@@ -22,7 +22,7 @@ Sections:
 
 ## `cervantes/journal.md` — the learning log
 
-Newest entries first. The learning signal comes from three places: the **edit diff** (`.baseline.md` vs what the author edited/published), **explicit corrections** in chat ("I'd never say it that way," "this is me"), and **resonance** (opens, replies, what won — sharpens future angle and subject choices). All three get logged here and carried into the profile.
+Newest entries first. The learning signal comes from four places: the **edit diff** (`.baseline.md` vs the draft after the author edited it by hand — logged by `polish`), the **published diff** (`draft.md` vs the version that actually went out — logged by `ship`, and often the most honest sample there is), **explicit corrections** in chat ("I'd never say it that way," "this is me"), and **resonance** (opens, replies, what won — logged by `ship` when the numbers arrive, and it sharpens future angle and subject choices). All four get logged here and carried into the profile.
 
 Entry template (copy and fill):
 
@@ -77,4 +77,8 @@ Per-issue prompt formula (in English, whatever the newsletter's language — ima
 
 ## `cervantes/archive/` — the published record
 
-Imported issues as `YYYY-MM-DD-slug.md` with frontmatter (`title`, `date`, `url`). It's the ground truth for the voice fingerprint. Maintenance: when the author ships a new issue, offer to add it to the archive; the profile's URL allows re-scraping to refresh. Never delete or rewrite archive files.
+Imported issues as `YYYY-MM-DD-slug.md` with frontmatter (`title`, `date`, `url`). It's the ground truth for the voice fingerprint. Seeded at onboarding by the `importer` agent (RSS → `/archive` → sitemap), and grown one issue at a time by the `ship` skill, which writes the **version that actually published** here — so the corpus tracks what the author truly ships, not drafts. The profile's URL allows re-running the `importer` to refresh with newly published issues. Never delete or rewrite archive files (one file per issue; skip on collision).
+
+## `published/` — the shipped-issue record
+
+Each shipped issue's full folder (`published/NNN-slug/`: its `draft.md`, snapshot, cover, material), moved here from `issues/` by `ship`. Keeps the `NNN-` edition prefix so `draft`'s next-number lookup spans `issues/` + `published/`. Sacred; never rewritten. The *clean text* for voice lives in `archive/`; `published/` is the full expedient.
