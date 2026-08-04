@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+# Cervantes — SessionStart hook.
+#
+# Computes the workspace health check deterministically, so the model doesn't
+# have to. Outside a Cervantes newsletter folder it exits silently and injects
+# nothing: the hook ships inside the workspace folder, and a folder that is not
+# a Cervantes workspace must show no trace of it.
+#
+# Extensionless on purpose — Claude Code's Windows launcher prepends "bash" to
+# any command containing ".sh", which would double-invoke through run-hook.cmd.
+
+# NOT -e: every probe below is allowed to fail on a half-built workspace.
+set -uo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+KIT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+# ---------------------------------------------------------------- guard ----
+# Fire only in a folder that is a Cervantes workspace, or is trying to be one.
+marker=""
+if [ -f "./CLAUDE.md" ]; then
+  marker="$(head -n 1 "./CLAUDE.md" 2>/dev/null | sed -n 's/.*<!-- cervantes: *\(.*[^ ]\) *-->.*/\1/p')"
+fi
+if [ -z "$marker" ] && [ ! -d "./cervantes" ]; then
+  exit 0
+fi
+
+available="$(tr -d '\r\n' < "${KIT_ROOT}/VERSION" 2>/dev/null)"
+[ -n "$available" ] || available="unknown"
+
+# ---------------------------------------------------------------- probe ----
+voice="$(sed -n 's/^Voice version: *\(v[0-9][0-9.]*\).*/\1/p' ./cervantes/profile.md 2>/dev/null | head -n 1)"
+
+missing=""
+note_missing() { missing="${missing:+$missing, }$1"; }
+
+for f in STRUCTURE WRITING-CRAFT HOOK-FORMULAS ANTI-SLOP TEMPLATES QUALITY-CHECKLIST MEMORY-SCHEMA; do
+  [ -f "./cervantes/engine/$f.md" ] || note_missing "cervantes/engine/$f.md"
+done
+for f in profile journal cover-style; do
+  [ -f "./cervantes/$f.md" ] || note_missing "cervantes/$f.md"
+done
+for s in draft polish headlines cover ship repurpose; do
+  [ -f "./.claude/skills/$s/SKILL.md" ] || note_missing ".claude/skills/$s/"
+done
+for a in researcher importer interviewer editor; do
+  [ -f "./.claude/agents/$a.md" ] || note_missing ".claude/agents/$a.md"
+done
+[ -d "./issues" ]    || note_missing "issues/"
+[ -d "./published" ] || note_missing "published/"
+
+count_in() { find "$1" -mindepth 1 -maxdepth 1 "${@:2}" 2>/dev/null | wc -l | tr -d ' '; }
+n_issues="$(count_in ./issues -type d)"
+n_published="$(count_in ./published)"
+n_archive="$(count_in ./cervantes/archive -name '*.md')"
+
+# ---------------------------------------------------------------- state ----
+header="Cervantes workspace — health checked at session start by the folder's session-start hook. This check is authoritative and complete: do NOT stat these paths again, do NOT re-run the self-check, and do NOT mention setup to the author unless an action is required below."
+counts="${n_issues} issue folder(s), ${n_published} published, ${n_archive} archived post(s)"
+
+if [ -z "$marker" ]; then
+  state="STATE: unadopted. This folder holds Cervantes content (cervantes/) but CLAUDE.md carries no workspace marker.
+ACTION: run the cervantes skill (Adopt path). Report the inventory and get the author to confirm the content is theirs BEFORE reading or analyzing any of it."
+
+elif [ "$marker" != "$available" ]; then
+  state="STATE: out of date — installed '${marker}', the folder's kit ships '${available}'.
+ACTION: run the cervantes skill (Update path) before the author's first editorial request. It refreshes cervantes/engine/, .claude/skills/ and .claude/agents/, and regenerates CLAUDE.md. Memory files, issues/ and published/ are never touched. Report it in one line, then do what the author actually asked."
+
+elif [ -n "$missing" ] || [ -z "$voice" ] || [ "$voice" = "v0.0" ]; then
+  state="STATE: incomplete — ${marker} (current), voice profile ${voice:-absent}, ${counts}.
+MISSING: ${missing:-nothing on disk, but the voice profile is unseeded}
+ACTION: run the cervantes skill (Verify path) to restore what's missing. Never write in the author's name while the profile is missing or reads v0.0."
+
+else
+  state="STATE: healthy — ${marker}, voice profile ${voice}, ${counts}.
+ACTION: none. The workspace CLAUDE.md governs this folder; go straight to what the author asks for."
+fi
+
+# --------------------------------------------------------------- output ----
+escape_for_json() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  s="${s//$'\n'/\\n}"
+  s="${s//$'\r'/\\r}"
+  s="${s//$'\t'/\\t}"
+  printf '%s' "$s"
+}
+
+context="$(escape_for_json "<cervantes-workspace>
+${header}
+
+${state}
+</cervantes-workspace>")"
+
+# printf, not a heredoc: bash 5.3+ can hang on heredocs inside hook scripts.
+printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$context"
+
+exit 0
