@@ -30,15 +30,17 @@ Cervantes turns any folder into a personal editorial workspace. It learns your v
 
 ## Install
 
-**Copy this folder.** Rename the copy to whatever you want (`my-newsletter/`, `boletin/`, …) and put it wherever you keep your work:
+Cervantes is a folder. Get it, rename it to your newsletter, open it in Claude Code.
+
+**1. Get the folder.** Clone it, or download it as a ZIP from the green *Code* button above and unzip it:
 
 ```
-cp -r cervantes ~/my-newsletter      # macOS / Linux
+git clone https://github.com/sotoplatero/cervantes.git my-newsletter
 ```
 
-On Windows, copy-paste the folder in Explorer. If you got it as a `.zip`, just unzip it.
+Cloning under your own name is the whole install — no `cd` into someone else's folder, no copy step. Prefer a plain folder with no git history? Add `--depth 1` and delete the `.git` directory afterwards.
 
-Then open that folder in Claude Code and type:
+**2. Open that folder in Claude Code** and type:
 
 ```
 cervantes
@@ -46,19 +48,27 @@ cervantes
 
 That's it — and it's the only "command" you'll ever need. Cervantes onboards you (reads your archive, shows you what it learned, asks only what it couldn't infer) and sets up your workspace inside that same folder. The first session asks you once to approve the workspace health-check hook; say yes.
 
-One folder per newsletter: to run a second one, copy the folder again.
+One folder per newsletter: to run a second one, clone or copy it again. Two newsletters never share a voice profile.
 
-> Sharing it: zip the folder and send it. Everything needed is inside — the writing engine, the workflows, the health check. Whoever unzips it types `cervantes` and gets their own workspace, learned from *their* archive, not yours.
+> Sharing it: send the repo link, or zip your fresh copy and hand it over. Everything needed is inside — the writing engine, the workflows, the four subagents, the health check. Whoever opens it types `cervantes` and gets their own workspace, learned from *their* archive, not yours.
 
 ## Updating
 
-Get the newer Cervantes folder and copy these five paths over your newsletter folder, overwriting:
+**If you cloned it,** pull and let Cervantes do the rest:
+
+```
+git pull
+```
+
+Your own files never conflict: the workspace Cervantes builds (`cervantes/`, `issues/`, `published/`, `CLAUDE.md`) isn't tracked by this repo, so a pull only moves the kit.
+
+**If you copied or unzipped it,** get the newer folder and copy these five paths over yours, overwriting:
 
 ```
 VERSION   engine/   templates/   workspace-payload/   .claude/skills/cervantes/
 ```
 
-Then open your folder and type `cervantes`. It notices the new version and refreshes itself.
+Either way, then open your folder and type `cervantes`. It notices the new version and refreshes itself.
 
 Your work is safe: an update refreshes the writing engine, the six workflows in `.claude/skills/`, the research and import agents, and your workspace `CLAUDE.md`, but **never touches your `profile.md`, `journal.md`, `cover-style.md`, `archive/`, `issues/`, or `published/`** — your voice, your learning log, and your drafts are yours. Anything you added to `.claude/` yourself is left alone too. If nothing updates, you're already on the latest release.
 
@@ -106,7 +116,7 @@ Or start from your own raw text: drop it in and say "polish what I wrote" — wh
 your-newsletter/
 ├── CLAUDE.md                  ← Cervantes' brain here (versioned)
 ├── .claude/
-│   ├── settings.json          ← workspace health check + statusline
+│   ├── settings.json          ← workspace health check (settings.local.json holds your statusline)
 │   ├── skills/                ← cervantes (setup) · draft · polish · headlines · cover · ship · repurpose
 │   └── agents/                ← researcher (verifies sources) · importer (scrapes your archive)
 │                                interviewer (finds the questions) · editor (judges the draft)

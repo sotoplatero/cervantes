@@ -94,7 +94,7 @@ Setup progress:
 3. Instantiate `cervantes/profile.md`, `cervantes/journal.md`, `cervantes/cover-style.md` from `templates/`, filling placeholders with everything gathered. Set profile `Voice version: v0.1`.
 4. Instantiate `./CLAUDE.md` from `templates/workspace-CLAUDE.md`, replacing `{{ENGINE_VERSION}}` with the `VERSION` string and the language/name placeholders. If a foreign CLAUDE.md exists, show what you'd merge — never silently overwrite. (The folder ships a `README.md` describing Cervantes itself — that's not the author's file and needs no merging; leave it alone.)
 5. Create `issues/` and `published/`.
-6. **Workspace statusline** (branding touch): merge a `statusLine` into `./.claude/settings.json`, **preserving the `hooks` block already there and any other existing keys**. Keep the command **static and shell-portable** — no `jq`/`node`, just `echo` of a fixed string with the newsletter name baked in, so it works on any OS/shell:
+6. **Workspace statusline** (branding touch): merge a `statusLine` into **`./.claude/settings.local.json`** (create it if absent, preserve any existing keys). It goes in the `.local` file on purpose: `settings.json` is the kit's tracked file that registers the health-check hook, and writing the author's branding into it would leave it permanently modified — which collides on the next `git pull` for anyone who installed by cloning. Keep the command **static and shell-portable** — no `jq`/`node`, just `echo` of a fixed string with the newsletter name baked in, so it works on any OS/shell:
    ```json
    { "statusLine": { "type": "command", "command": "echo \"✎ Cervantes · {NEWSLETTER_NAME}\"", "padding": 1 } }
    ```
