@@ -80,8 +80,14 @@ Manual for now: run each scenario in a fresh Claude Code session, observe agains
 **Setup:** a `deep` issue with an approved `brief.md` and `draft.md` containing the first 3 of 6 outline sections. Start a **fresh** session. **Prompt:** "sigue con el 012".
 **Expected:** reads the brief and the draft, states where it left off (section 4 of 6), and continues in outline order — same angle, same promise, same tier, seams intact. It does NOT re-ask the angle, re-offer hooks, or restart the piece. This is what the brief exists for; if it can't resume from disk, the artifact isn't doing its job.
 
+## 16. The setup checklist keeps its shape
+**Setup:** fresh install, run onboarding all the way to the hand-off. **Watch:** every reprint of the progress block.
+**Expected:** identical shape from the first print to the last — seven lines inside a fenced block, each with its full translated label, only `- [x]` and `- [ ]` as markers, at most a trailing ` ←` on the current line, and the same label strings every time.
+**Fails if** it degrades into a compressed line such as `Progreso: [x] 1 [x] 2 [x] 3 [x] 4. Preferencias ✓ [→] 5. Portada [ ] 6 [ ] 7` — bare numbers, mixed markers, dropped labels. (Field-reported: the pull to compress gets stronger the longer onboarding runs, which is exactly when the author needs to read it.)
+
 ## Regression guards (from v0.1.x field testing)
 - Never work silently: announce before reading/fetching/analyzing.
+- The setup checklist never changes shape mid-onboarding: seven lines, full labels, `[x]`/`[ ]` only, same translated strings, no invented markers.
 - Never ask the author to evaluate content they haven't seen on screen.
 - Never stall after the voice analysis — drive to the end.
 - Never assume found content belongs to the author without confirming.

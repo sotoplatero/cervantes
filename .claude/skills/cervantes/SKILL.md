@@ -61,7 +61,7 @@ Never analyze or reuse found content without the author confirming it's theirs a
 
 ## Install
 
-Print this checklist first (translated to the author's language) and keep it updated as you go — never end a turn without either a question for the author or the final hand-off:
+Print this checklist first (labels translated to the author's language) and reprint it as you go — never end a turn without either a question for the author or the final hand-off:
 
 ```
 Setup progress:
@@ -73,6 +73,14 @@ Setup progress:
 - [ ] 6. Scaffold the workspace
 - [ ] 7. Recap and first issue
 ```
+
+**The format is fixed. Do not improve it as onboarding advances** — the natural pull is to compress it to save space, and a checklist that changes shape every turn stops being readable exactly when the author most needs to see where they are:
+
+- **Reprint all seven lines, every time**, inside the fenced block, each with its full label. Never collapse it to one line, never replace the labels with bare numbers, never drop the lines that are already done.
+- **Two states only:** `- [x]` done, `- [ ]` not done. Never introduce other markers — no `✓`, no `→`, no `[→]`, no `[~]`, no strikethrough, no mixing several conventions in one block.
+- To show where you are, append ` ←` to the current line and nothing else. That's the only decoration allowed.
+- **Translate the labels once**, at the first print, then reuse those exact strings verbatim for the rest of onboarding. Re-translating each turn makes the same step read differently every time it appears.
+- Reprint it when you complete a step or ask the author something — not inside every message. Twice in one turn is noise.
 
 **1. The sample.** Ask for the newsletter URL (archive/homepage) — the preferred sample. No newsletter yet → ask for a paste of 3–6 raw paragraphs of their writing or a link to any post. In the same message, ask for an optional **cover reference image** (file path, paste, or URL). Never write in their name from a blank profile.
 
