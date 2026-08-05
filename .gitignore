@@ -1,22 +1,24 @@
 .playwright-mcp/
 *.png
-!assets/*.png
+!src/.cervantes/assets/*.png
+.DS_Store
+
+# Built ZIPs, and the unzipped copies the eval suite runs against.
+/dist/
+/.testing/
 
 # ---------------------------------------------------------------------------
-# The workspace Cervantes builds inside this folder belongs to the AUTHOR, not
-# to the kit. Ignoring it keeps a cloned install clean (`git pull` just moves
-# the kit) and makes it impossible to push private drafts to a public fork by
-# accident. Nothing here is tracked, so nothing here can conflict on a pull.
+# Safety net, not a workspace. This repo is the workshop: an author's newsletter
+# has no business here, and src/ must never hold one — the packager aborts if it
+# finds one. These stay ignored so an onboarding run by accident in the source
+# tree can't be committed.
 # ---------------------------------------------------------------------------
-/CLAUDE.md
-/cervantes/
+/voice/
 /issues/
 /published/
+/src/voice/
+/src/issues/
+/src/published/
 
-# Installed workspace skills and agents — the masters live in workspace-payload/
-/.claude/skills/*
-!/.claude/skills/cervantes/
-/.claude/agents/
-
-# Per-machine overrides, including the statusline written at setup
+# This repo's own per-machine settings.
 /.claude/settings.local.json

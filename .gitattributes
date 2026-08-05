@@ -1,5 +1,7 @@
-# The hook launcher and its scripts must stay LF-only on every platform.
-# A CRLF checkout breaks them under bash ("bad interpreter: \r"), and this
-# repo is cloned onto Windows machines where core.autocrlf=true is the norm.
-hooks/session-start text eol=lf
-hooks/run-hook.cmd  text eol=lf
+# The hook launcher and its script must stay LF-only on every platform.
+# A CRLF checkout breaks them under bash ("bad interpreter: \r"), and the folder
+# they ship in gets unzipped on Windows machines where core.autocrlf=true is the
+# norm. dev/build-zip.sh refuses to package them if CRLF ever creeps in.
+src/.cervantes/hooks/session-start text eol=lf
+src/.cervantes/hooks/run-hook.cmd  text eol=lf
+dev/build-zip.sh                   text eol=lf

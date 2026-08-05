@@ -1,156 +1,73 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="Cervantes" width="140">
+  <img src="src/.cervantes/assets/logo.svg" alt="Cervantes" width="120">
 </p>
 
-<h1 align="center">Cervantes</h1>
+<h1 align="center">Cervantes — source repo</h1>
 
-<p align="center"><strong>Your newsletter writing system, inside Claude Code.</strong></p>
+<p align="center"><strong>The workshop that builds the folder authors get.</strong></p>
 
-Cervantes turns any folder into a personal editorial workspace. It learns your voice from what you've already published, drafts complete issues from your ideas and data, polishes your edits without erasing you, keeps your covers visually consistent — and gets better at being you with every issue, in your language, whatever it is.
+Cervantes is a newsletter writing system that runs inside Claude Code: it learns one author's voice from what they've published, then drafts, polishes, illustrates and ships their issues in it. It ships as a **folder** — a subscriber unzips it, opens it in Claude Code, and it onboards them on its own.
 
-## What makes it different
+**This repo is not that folder. It builds it.** The folder is `src/`.
 
-- **It learns your voice first — from evidence.** Give it your newsletter URL and it downloads your published archive, extracts a voice fingerprint (rhythm, signature phrases, humor, openings — each with quoted proof), and shows it to you for corrections before writing a word in your name.
-- **It knows the craft.** Every workspace ships with a writing engine: hook formulas, open-loop and rhythm techniques, issue skeletons, subject-line archetypes, and a hard **anti-slop** rule set that bans the patterns that make text smell like AI ("It's not X, it's Y", "What if I told you…", inflated adjectives, unearned morals). A quality checklist runs before anything is handed back.
-- **It plans before it writes.** For anything longer than a short note, Cervantes writes the brief first — angle, promise, the outline with a word budget per section, and *what material feeds each section* — and you approve it before a single paragraph exists. Correcting an outline costs you one line; correcting 2.000 written words costs the whole draft. Then it writes section by section against that plan, so the middle doesn't sag and the piece comes out the length you asked for. The brief is also why a long issue survives a closed laptop: it resumes exactly where it stopped.
-- **A second pair of eyes that didn't write it.** Nothing reaches you until an independent editor pass grades the finished text cold. It *counts* every AI tic across the whole issue (a device that appears once per section is a tic, even when no single section overused it), checks that the hook's promise actually gets paid off, and flags the passages where the prose drifted into competent-but-neutral — the one thing no writer catches in their own work. On a polish pass it never touches your sentences: what it finds in your hand comes to you as a suggestion.
-- **Your edits are sacred — and it learns from them.** Cervantes distinguishes its text from yours. Polishing fixes typos in your passages, never your opinions. Then it diffs what you changed, logs the lesson to a journal, and updates your voice profile — so the next draft needs less fixing.
-- **It closes the loop after you hit send.** When you publish, Cervantes records the version that actually went out (often not the polished one), archives it as fresh voice ground-truth, and learns from that final diff too. Bring the numbers later — opens, replies, the winning subject — and it promotes what worked into your profile, so the next issue's angle and subject start from what your list has already rewarded.
-- **One issue becomes a week of social.** Ask it to repurpose and it atomizes the issue into native posts for LinkedIn, X, or Substack Notes — in your voice, with the same anti-slop bar, nothing invented beyond what the issue earned.
-- **Nothing invented, ever.** Your facts, quotes, and anecdotes come only from your material. Outside context is gathered by a separate research agent that only reports what it actually read — verified claims with links it actually opened, plus an explicit list of what it *couldn't* confirm, including anything in your own notes it found contradicted. Where only YOUR detail would land harder, it asks you one short, specific question — drawn from the actual gaps in the outline, never a generic questionnaire — or leaves a deletable `[[enrich:]]` note. It never writes the answer for you, not even as a suggestion.
-- **It lives in your folder, not in your way.** Installing sets your newsletter folder up as a self-contained workspace — the writing workflows and its agents are installed *there*. Nothing Cervantes-specific loads when you open your other projects.
-- **You write anywhere.** Issues are plain Markdown in your folder. Edit in VS Code, Obsidian, Notepad — Cervantes works on the same files when you call it.
-- **Consistent covers.** One fixed visual style, defined once; every issue's cover looks like the same publication.
-- **Any language.** The engine is English; Cervantes detects your newsletter's language and writes everything in it.
+For what Cervantes actually does for an author, read [`src/README.md`](src/README.md) — that's the one that travels in the ZIP.
 
-## Requirements
-
-- [Claude Code](https://claude.com/claude-code) (CLI or desktop app)
-- Nothing else — no install, no plugin, no marketplace
-
-## Install
-
-Cervantes is a folder. Get it, rename it to your newsletter, open it in Claude Code.
-
-**1. Get the folder.** Clone it, or download it as a ZIP from the green *Code* button above and unzip it:
+## Layout
 
 ```
-git clone https://github.com/sotoplatero/cervantes.git my-newsletter
+.
+├── src/                    ← THE PRODUCT. Zipped verbatim; what a subscriber receives.
+│   ├── CLAUDE.md               the product's brain (static, same for every author)
+│   ├── README.md               author-facing docs
+│   ├── .cervantes/
+│   │   ├── engine/             the writing craft — 7 libraries, read on demand
+│   │   ├── templates/          the 3 memory skeletons seeded into voice/
+│   │   ├── hooks/              session-start check + its Windows launcher
+│   │   └── assets/             logo
+│   └── .claude/
+│       ├── skills/             cervantes · draft · polish · headlines · cover · ship · repurpose
+│       ├── agents/             researcher · importer · interviewer · editor
+│       └── settings.json       registers the session-start hook
+├── dev/                    ← maintainer-only. Never shipped.
+│   ├── SCENARIOS.md            the eval suite: 16 scenarios + regression guards
+│   └── build-zip.sh            the packager
+├── dist/                   ← built ZIPs (untracked)
+└── .testing/               ← unzipped builds for eval runs (untracked)
 ```
 
-Cloning under your own name is the whole install — no `cd` into someone else's folder, no copy step. Prefer a plain folder with no git history? Add `--depth 1` and delete the `.git` directory afterwards.
+Inside `src/`, every path is written from the **author's** point of view — `.cervantes/engine/ANTI-SLOP.md`, `voice/profile.md` — because that's where those files sit once the folder is unzipped. A `src/` prefix inside `src/` is always a bug.
 
-**2. Open that folder in Claude Code** and type:
-
-```
-cervantes
-```
-
-That's it — and it's the only "command" you'll ever need. Cervantes onboards you (reads your archive, shows you what it learned, asks only what it couldn't infer) and sets up your workspace inside that same folder. The first session asks you once to approve the workspace health-check hook; say yes.
-
-One folder per newsletter: to run a second one, clone or copy it again. Two newsletters never share a voice profile.
-
-> Sharing it: send the repo link, or zip your fresh copy and hand it over. Everything needed is inside — the writing engine, the workflows, the four subagents, the health check. Whoever opens it types `cervantes` and gets their own workspace, learned from *their* archive, not yours.
-
-## Updating
-
-**If you cloned it,** pull and let Cervantes do the rest:
+## Build
 
 ```
-git pull
+bash dev/build-zip.sh 4.0          # → dist/cervantes-4.0.zip
+bash dev/build-zip.sh 4.0 --test   # also unzips into .testing/4.0/
 ```
 
-Your own files never conflict: the workspace Cervantes builds (`cervantes/`, `issues/`, `published/`, `CLAUDE.md`) isn't tracked by this repo, so a pull only moves the kit.
+The packager stages `src/` as a folder named `cervantes`, then zips it. It aborts if a newsletter (`voice/`, `issues/`, `published/`) or a `.git` directory ends up in the package, if a hook is missing, or if a hook carries CRLF line endings — a CRLF checkout breaks the scripts under bash on Windows.
 
-**If you copied or unzipped it,** get the newer folder and copy these five paths over yours, overwriting:
+## Test
 
-```
-VERSION   engine/   templates/   workspace-payload/   .claude/skills/cervantes/
-```
-
-Either way, then open your folder and type `cervantes`. It notices the new version and refreshes itself.
-
-Your work is safe: an update refreshes the writing engine, the six workflows in `.claude/skills/`, the research and import agents, and your workspace `CLAUDE.md`, but **never touches your `profile.md`, `journal.md`, `cover-style.md`, `archive/`, `issues/`, or `published/`** — your voice, your learning log, and your drafts are yours. Anything you added to `.claude/` yourself is left alone too. If nothing updates, you're already on the latest release.
-
-## The workflow — you just talk
-
-> "Write a draft about X — here are my notes and a couple of links."
-> "Polish what I wrote."
-> "Titles?"
-> "Make the cover."
-> "I published it — here's what went out."
-> "Repurpose it for LinkedIn and Notes."
-
-A typical issue:
+Evals run against an **unzipped build in `.testing/`**, never against `src/`. The ZIP is the artifact a subscriber gets; testing the source tree in place would pass on things the package doesn't contain.
 
 ```
-"draft this from my notes"   →  angles offered → hooks offered → brief with the
-                                outline, for you to approve (a line, not a form)
-                                → any question only you can answer
-                                → written section by section, then checked by
-                                an editor that didn't write it
-                                → complete draft in issues/012-your-topic/draft.md
-        ↓
-you edit the draft by hand, in any editor, on your own time
-        ↓
-"polish it"                  →  cleans WITHOUT touching your voice,
-                                learns from your edits, logs the lesson
-"titles?"                    →  3 concrete subjects + preheaders, strongest marked
-"cover"                      →  cover in your fixed style (or a ready-to-paste prompt)
-        ↓
-you publish on your platform, then tell Cervantes
-        ↓
-"I shipped it"               →  records what actually went out, archives it as new
-                                voice ground-truth, moves it to published/, learns
-                                from the final diff, opens the resonance entry
-"repurpose it"               →  native posts for LinkedIn · X · Notes, in your voice
-(later) "42% opens, B won"   →  logs resonance, promotes the winning subject
-                                archetype — next issue starts from what worked
+bash dev/build-zip.sh 4.0 --test
+cd .testing/4.0/cervantes      # open this in Claude Code and work through dev/SCENARIOS.md
 ```
 
-Or start from your own raw text: drop it in and say "polish what I wrote" — when every word is yours, Cervantes protects all of it.
+A release ships only when all 16 scenarios pass. Scenario 1 is the one to check first: open a freshly unzipped folder and Cervantes should greet and start onboarding without the author typing anything.
 
-## Your workspace
+## Distribution
 
-```
-your-newsletter/
-├── CLAUDE.md                  ← Cervantes' brain here (versioned)
-├── .claude/
-│   ├── settings.json          ← workspace health check (settings.local.json holds your statusline)
-│   ├── skills/                ← cervantes (setup) · draft · polish · headlines · cover · ship · repurpose
-│   └── agents/                ← researcher (verifies sources) · importer (scrapes your archive)
-│                                interviewer (finds the questions) · editor (judges the draft)
-├── cervantes/
-│   ├── engine/                ← the writing craft (structure, hooks, anti-slop, checklists)
-│   ├── profile.md             ← your voice fingerprint — YOURS, never auto-overwritten
-│   ├── journal.md             ← what it learns from your edits, issue by issue
-│   ├── cover-style.md         ← your fixed visual identity
-│   └── archive/               ← your imported published issues
-├── issues/012-slug/           ← work in progress (NNN = edition number): brief.md (the approved plan), material, draft.md, .baseline.md snapshot, cover, social.md
-├── published/012-slug/        ← shipped issues, moved here by "ship" (edition prefix kept)
-│
-└── (the kit that came in the folder — engine/, templates/, workspace-payload/,
-     hooks/, VERSION: the masters Cervantes installs and updates from.
-     You never edit these; they're what makes the folder shareable.)
-```
+A ZIP, sent to the newsletter's subscribers. No git, no marketplace, no plugin — **the recipient is assumed not to be a developer**, and that constraint shapes the product:
 
-Updates refresh the engine, the six workflows, and the four subagents, and never touch your memory: profile, journal, archive, issues, and published are sacred.
+- **No version file, no version marker.** A newer Cervantes is a new folder; the author's work moves into it. Memory-schema drift is reconciled against `MEMORY-SCHEMA.md` rather than a version number.
+- **The product never hands the author a command** — no `git`, no terminal, no "copy this path over that one" — and never asks them to find a dot-folder their file manager hides. If a file has to move, Cervantes moves it.
+- **Nothing is copied at setup.** The engine, workflows and agents are read in place; setup only seeds the author's own `voice/`.
 
-## Make it yours
+## Working on it
 
-- **Statusline.** On setup, your workspace shows `✎ Cervantes · <your newsletter>` in the status bar, so you always know which newsletter you're in.
-- **Quiet self-check.** Open your newsletter folder and Cervantes silently confirms the workspace is healthy — and offers to repair or finish setup if anything's missing.
-
-## FAQ
-
-**Do I have to write inside Claude Code?**
-No. Drafts are Markdown files. Write wherever; call Cervantes for research, a first draft, a polish pass, or headlines.
-
-**Will it sound like AI?**
-The anti-slop rules exist precisely for that, and the voice profile is built from your published text with quoted evidence. Your hand-written passages are never rewritten — and every edit you make teaches it your voice a little better.
-
-**What if I don't have a newsletter yet?**
-Type `cervantes` anyway — a short interview and a writing sample replace the archive.
+`CLAUDE.md` at this root governs sessions in this repo and spells out the workshop/product boundary. The short version: `src/` is a payload you edit, not a program you run — its skills and its `CLAUDE.md` are addressed to a session running inside an author's folder, not to yours.
 
 ---
 

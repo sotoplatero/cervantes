@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# Cervantes — SessionStart hook.
+#
+# Answers one question deterministically, before the author's first message:
+# is this newsletter's memory seeded? A freshly cloned folder is NOT a folder to
+# stay quiet in — the author cloned it to start a newsletter, so the hook starts
+# onboarding for them. There is no command to learn.
+#
+# It does not check the engine, the skills or the agents: those ship tracked in
+# git at .cervantes/ and .claude/, so `git pull` updates them and `git checkout`
+# restores them. Only the author's own memory can be missing or half-built.
+#
+# Extensionless on purpose — Claude Code's Windows launcher prepends "bash" to
+# any command containing ".sh", which would double-invoke through run-hook.cmd.
+
+# NOT -e: every probe below is allowed to fail on a half-built workspace.
+set -uo pipefail
+
+# ---------------------------------------------------------------- probe ----
+voice="$(sed -n 's/^Voice version: *\(v[0-9][0-9.]*\).*/\1/p' ./voice/profile.md 2>/dev/null | head -n 1)"
+
+missing=""
+note_missing() { missing="${missing:+$missing, }$1"; }
+for f in profile journal cover-style; do
+  [ -f "./voice/$f.md" ] || note_missing "voice/$f.md"
+done
+
+count_in() { find "$1" -mindepth 1 -maxdepth 1 "${@:2}" 2>/dev/null | wc -l | tr -d ' '; }
+n_issues="$(count_in ./issues -type d)"
+n_published="$(count_in ./published)"
+n_archive="$(count_in ./voice/archive -name '*.md')"
+
+# Engine v3.x and earlier kept memory in cervantes/ — one-time migration.
+legacy=""
+if [ ! -f "./voice/profile.md" ] && [ -d "./cervantes" ]; then
+  legacy="yes"
+fi
+
+# ---------------------------------------------------------------- state ----
+header="Cervantes — this folder's session-start hook checked the newsletter's state before you saw a message. This check is authoritative: do NOT stat these paths again and do NOT re-run it."
+
+if [ -n "$legacy" ]; then
+  state="STATE: legacy layout — the memory sits in cervantes/ (engine v3.x); this kit reads it from voice/.
+ACTION: run the cervantes skill (Migrate). Move the memory files and the archive into voice/, drop the duplicated cervantes/engine/, report it in one line, then continue with whatever the author asks."
+
+elif [ -z "$voice" ] || [ "$voice" = "v0.0" ] || [ -n "$missing" ]; then
+  state="STATE: not seeded — voice profile ${voice:-absent}${missing:+; missing: $missing}.
+ACTION: run the cervantes skill NOW, without waiting to be asked. Greet the author and onboard them: newsletter URL or writing sample, archive import, voice fingerprint, preferences wizard, cover style. This is why they opened this folder. Never write in their name from an unseeded profile."
+
+else
+  state="STATE: ready — voice profile ${voice}, ${n_issues} issue folder(s), ${n_published} published, ${n_archive} archived post(s).
+ACTION: none. CLAUDE.md governs this folder; go straight to what the author asks for."
+fi
+
+# --------------------------------------------------------------- output ----
+escape_for_json() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  s="${s//$'\n'/\\n}"
+  s="${s//$'\r'/\\r}"
+  s="${s//$'\t'/\\t}"
+  printf '%s' "$s"
+}
+
+context="$(escape_for_json "<cervantes>
+${header}
+
+${state}
+</cervantes>")"
+
+# printf, not a heredoc: bash 5.3+ can hang on heredocs inside hook scripts.
+printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$context"
+
+exit 0
