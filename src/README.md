@@ -111,10 +111,11 @@ your-newsletter/
     ├── skills/                ← cervantes (setup) · draft · polish · headlines · cover · ship · repurpose
     ├── agents/                ← researcher (verifies sources) · importer (imports your archive)
     │                            interviewer (finds the questions) · editor (judges the draft)
-    └── settings.local.json    ← your statusline (per-machine, never shared)
+    ├── settings.json          ← registers the session-start check (the one you approve on day one)
+    └── settings.local.json    ← created at setup: your statusline (per-machine)
 ```
 
-The three at the top are yours and only exist here — those are the ones that move when you update. Everything below the gap came in the ZIP and is identical for every author, so losing it costs you nothing.
+The three at the top are yours and only exist here — those move when you update, and so does `settings.local.json`, which setup created for you. Everything else below the gap came in the ZIP and is identical for every author, so losing it costs you nothing.
 
 The last two start with a dot, which means your computer hides them: on a Mac, Finder won't show them; on Windows, the Explorer won't either. That's on purpose — there is nothing in there for you to open. You never have to find them, and Cervantes never asks you to.
 

@@ -19,7 +19,7 @@ Detect which from the author's message. If ambiguous, ask one line: "Closing it 
 **1. Identify the issue.** The `issues/NNN-slug/` folder in question (ask only if ambiguous — usually it's the most recent, or the one they name).
 
 **2. Capture the version that actually shipped.** In priority order:
-- **A URL** → delegate to the `researcher` agent (Agent tool, `subagent_type: "researcher"`) to fetch the live post and return its clean text — never fetch the page inline, it floods the session with markup. Save the returned markdown.
+- **A URL** → delegate to the `importer` agent (Agent tool, `subagent_type: "importer"`) in its single-post mode: give it the post URL and `voice/archive/` as the target, and it fetches the live post, cleans it to Markdown, and writes `voice/archive/YYYY-MM-DD-slug.md` with frontmatter — step 4 done. Never fetch the page inline (it floods the session with markup), and don't send `researcher` — it returns an evidence brief, never full post text. Read the file the importer wrote; that's the shipped version for the diffs below.
 - **Pasted final text** → use it verbatim.
 - **Neither** ("I shipped it as-is") → the shipped version *is* `draft.md`. Confirm that in one line before proceeding.
 
@@ -30,7 +30,7 @@ Detect which from the author's message. If ambiguous, ask one line: "Closing it 
 - Carry repeated patterns into `voice/profile.md` (voice bank, or "Things I NEVER do" when an edit recurs), bump `Voice version`, confirm in one line: "Noted in your profile: …".
 - If the shipped version equals `draft.md` (no changes), say so and skip the profile edit — nothing new to learn from the text this time.
 
-**4. Archive the clean text — this is what feeds the voice fingerprint.** Write the shipped version to `voice/archive/YYYY-MM-DD-slug.md` with frontmatter (`title`, `date` = publish date, `url` if known), body as clean Markdown (no nav/footers). From now on the archive holds **real published issues**, so every future fingerprint read and every `headlines`/`repurpose` pass works from what the author truly ships, not from drafts. Never overwrite or rewrite an existing archive file — one file per issue.
+**4. Archive the clean text — this is what feeds the voice fingerprint.** If the `importer` already wrote it in step 2, verify the file and its frontmatter and move on. Otherwise write the shipped version to `voice/archive/YYYY-MM-DD-slug.md` with frontmatter (`title`, `date` = publish date, `url` if known), body as clean Markdown (no nav/footers). From now on the archive holds **real published issues**, so every future fingerprint read and every `headlines`/`repurpose` pass works from what the author truly ships, not from drafts. Never overwrite or rewrite an existing archive file — one file per issue.
 
 **5. Move the issue to `published/`.** Move the whole `issues/NNN-slug/` folder to `published/NNN-slug/` (keep the `NNN-slug` name — the edition number must stay so `draft`'s next-number lookup keeps working across `issues/` + `published/`). The folder keeps its `brief.md`, `draft.md`, snapshot, cover, and material as the full record. If a move isn't clean, copy then remove the source; never leave the issue in both places.
 

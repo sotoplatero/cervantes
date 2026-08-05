@@ -30,15 +30,16 @@ Everything comes from the issue and the author's material — **no new facts, nu
 
 **4. Vary the hooks across posts.** If you're making five posts from one issue, five different formulas/tensions — don't open all of them the same way. Reuse the issue's strongest line at most once.
 
-**4b. Verdict on the set (recommended).** Short copy is where tics are fatal, and you just wrote every
-one of these lines. Spawn the `editor` agent (Agent tool, `subagent_type: "editor"`) with the drafted set
-and `voice/profile.md`, no brief, asking for the **tic census and voice-fidelity checks only** —
-structure and length don't apply here. Fix its Must-fix items before saving. Skip only for a single short
-post.
-
 **5. Save.** Write the set to `issues/NNN-slug/social.md` (or `published/NNN-slug/social.md` if that's where the issue lives), grouped by platform, each post in its own block ready to copy-paste, with a one-line note of which atom it draws from. Never touch `draft.md`, the snapshot, or memory files.
 
-**6. Hand off.** Tell the author where the set is, which atoms became which posts, and that they can ask for more variations of any one. Note the strongest post to lead the week with.
+**6. Verdict on the set (recommended).** Short copy is where tics are fatal, and you just wrote every
+one of these lines. Spawn the `editor` agent (Agent tool, `subagent_type: "editor"`) with the **paths** to
+the saved `social.md` and `voice/profile.md`, no brief, asking for the **tic census and voice-fidelity
+checks only** — structure and length don't apply here. (The editor only reads from disk, which is why the
+set is saved first.) Fix its Must-fix items in `social.md` before handing off. Skip only for a single
+short post.
+
+**7. Hand off.** Tell the author where the set is, which atoms became which posts, and that they can ask for more variations of any one. Note the strongest post to lead the week with.
 
 ## Learn (light)
 

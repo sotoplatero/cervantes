@@ -29,7 +29,7 @@ For what Cervantes actually does for an author, read [`src/README.md`](src/READM
 │       ├── agents/             researcher · importer · interviewer · editor
 │       └── settings.json       registers the session-start hook
 ├── dev/                    ← maintainer-only. Never shipped.
-│   ├── SCENARIOS.md            the eval suite: 16 scenarios + regression guards
+│   ├── SCENARIOS.md            the eval suite: scenarios + regression guards
 │   └── build-zip.sh            the packager
 ├── dist/                   ← built ZIPs (untracked)
 └── .testing/               ← unzipped builds for eval runs (untracked)
@@ -44,7 +44,7 @@ bash dev/build-zip.sh 4.0          # → dist/cervantes-4.0.zip
 bash dev/build-zip.sh 4.0 --test   # also unzips into .testing/4.0/
 ```
 
-The packager stages `src/` as a folder named `cervantes`, then zips it. It aborts if a newsletter (`voice/`, `issues/`, `published/`) or a `.git` directory ends up in the package, if a hook is missing, or if a hook carries CRLF line endings — a CRLF checkout breaks the scripts under bash on Windows.
+The packager stages `src/` as a folder named `cervantes`, then zips it. It aborts if `src/` holds untracked or git-ignored files (the copy is of the working tree, so they would ship); if a newsletter (`voice/`, `issues/`, `published/`, a stray `settings.local.json`) or a `.git`/`.gitignore` ends up in the package; if any skill, agent, engine library, memory template, the author's `README.md`, `CLAUDE.md`, or the hook-registering `.claude/settings.json` is missing; if a hook carries CRLF line endings (a CRLF checkout breaks the scripts under bash on Windows); or if a `src/`-prefixed path leaked into the product.
 
 ## Test
 
@@ -55,7 +55,7 @@ bash dev/build-zip.sh 4.0 --test
 cd .testing/4.0/cervantes      # open this in Claude Code and work through dev/SCENARIOS.md
 ```
 
-A release ships only when all 16 scenarios pass. Scenario 1 is the one to check first: open a freshly unzipped folder and Cervantes should greet and start onboarding without the author typing anything.
+A release ships only when every scenario and regression guard in `dev/SCENARIOS.md` passes. Scenario 1 is the one to check first: open a freshly unzipped folder and Cervantes should greet and start onboarding without the author typing anything.
 
 ## Distribution
 

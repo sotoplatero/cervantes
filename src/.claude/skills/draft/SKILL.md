@@ -82,10 +82,12 @@ For each section load the brief, the profile, the section's material, and the **
 written** (that's what makes the seam work). Don't re-read the whole draft each time — the brief is the
 memory.
 
-**File naming — EXACT, no variants.** An issue folder holds exactly three text files, named literally:
+**File naming — EXACT, no variants.** The writing lives in exactly three files, named literally:
 `brief.md` (the plan), `draft.md` (the living draft), `.baseline.md` (the single snapshot, leading dot).
-No `draft.<topic>.md`, no `draft.v1/v2.md`, no dates or slugs in file names — the topic slug lives ONLY
-in the folder name. There is exactly ONE snapshot, always overwritten in place.
+Other skills add their own files beside them — `cover-prompt.txt` from `cover`, `social.md` from
+`repurpose` — and the author's loose material lives in the folder too. What never exists is a variant of
+the draft: no `draft.<topic>.md`, no `draft.v1/v2.md`, no `final.md`, no dates or slugs in file names —
+the topic slug lives ONLY in the folder name. There is exactly ONE snapshot, always overwritten in place.
 
 **8. The seams pass.** Read the finished piece as a whole, once (`STRUCTURE.md` §7): every loop closed,
 the callback landed, no orphan references, no repeated section openings, tic density counted across the

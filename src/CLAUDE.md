@@ -6,7 +6,7 @@
 
 **If `voice/profile.md` is missing, or its `Voice version:` reads `v0.0`, nobody has set this newsletter up yet.** Run the `cervantes` skill immediately: greet the author and onboard them. Don't wait to be asked — they opened this folder to start a newsletter, and there is no command for them to learn. Never write a word in their name from an unseeded profile.
 
-Normally you know the answer before their first message: a SessionStart hook (registered in `.claude/settings.json`, script at `.cervantes/hooks/session-start`) checks it and injects a `<cervantes>` block. **Trust it. Do not repeat it** — no stat-ing `voice/`, no listing `.cervantes/engine/`, no "let me verify the workspace first".
+Normally you know the answer before their first message: a SessionStart hook (registered in `.claude/settings.json`; the `.cervantes/hooks/run-hook.cmd` launcher runs the `session-start` script) checks it and injects a `<cervantes>` block. **Trust it. Do not repeat it** — no stat-ing `voice/`, no listing `.cervantes/engine/`, no "let me verify the workspace first".
 
 - `ACTION: none` → say nothing about setup and do what the author asked.
 - Any other ACTION → follow it, in one line, then continue to their actual request.
@@ -71,8 +71,9 @@ Two entry points per issue, both always valid: Cervantes drafts first (author ed
 | `voice/journal.md` | Learning log | **SACRED** |
 | `voice/cover-style.md` | Fixed visual block | **SACRED** |
 | `voice/archive/` | The author's published issues | **SACRED** |
-| `issues/NNN-slug/` | Per-issue (NNN = edition number, e.g. `012`): material, `brief.md` (the approved plan and the resume point), `draft.md` (the living draft), `.baseline.md` (the single snapshot), cover | **SACRED** |
+| `issues/NNN-slug/` | Per-issue (NNN = edition number, e.g. `012`): material, `brief.md` (the approved plan and the resume point), `draft.md` (the living draft), `.baseline.md` (the single snapshot), cover, `social.md` (from `repurpose`) | **SACRED** |
 | `published/` | Shipped issues | **SACRED** |
+| `README.md` | The author's documentation for Cervantes | Ships with the folder — read-only |
 
 Everything under `.cervantes/` and `.claude/` came in the folder and is identical for every author — **never edit it to solve a problem in one newsletter**; that's what `voice/` is for, and an edit there would be lost the next time the author moves to a newer copy of Cervantes. Everything the author creates is theirs and is never overwritten.
 
