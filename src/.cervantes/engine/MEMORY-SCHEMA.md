@@ -12,7 +12,7 @@ The memory files (`voice/profile.md`, `voice/journal.md`, `voice/cover-style.md`
 
 Sections:
 
-- **Basic config** — newsletter name, URL (kept so the voice can be re-scraped later), platform, **language** (all content is written in it; detected from the published newsletter, not the chat), niche/topics, audience & what they come for, reader address (tú/usted/you/formal), **length tier** (`short` / `standard` / `deep` — sets the word target and section budget per `STRUCTURE.md` §1), emojis & caps, loanwords raw or glossed, cadence, polish intensity (light/standard/deep).
+- **Basic config** — newsletter name, author, URL (kept so the voice can be re-scraped later), platform, **language** (all content is written in it; detected from the published newsletter, not the chat), niche/topics, audience & what they come for, reader address (tú/usted/you/formal), **typical length** (the length tier: `short` / `standard` / `deep` — sets the word target and section budget per `STRUCTURE.md` §1), emojis & caps, loanwords raw or glossed, cadence, polish intensity (light/standard/deep), off-limits topics.
 - **Voice fingerprint** — one row per dimension, filled ONLY from what is observed in real text (no invented traits): person & stance, sentence rhythm, paragraph size, lexicon, signature phrases, punctuation habits, humor & tone, typical openings, recurring moves/sections, closing style. Each with a short quoted example from the archive.
 - **Hook-formula shortlist** — derived from the fingerprint per `HOOK-FORMULAS.md` § Narrowing: number + name + one line on why it fits; updated as resonance shows what wins.
 - **Documented signatures (anti-slop exceptions)** — patterns from `ANTI-SLOP.md` that ARE this author's real voice, each with a quoted example from published text.
@@ -87,4 +87,4 @@ Imported issues as `YYYY-MM-DD-slug.md` with frontmatter (`title`, `date`, `url`
 
 ## `published/` — the shipped-issue record
 
-Each shipped issue's full folder (`published/NNN-slug/`: its `brief.md`, `draft.md`, snapshot, cover, material), moved here from `issues/` by `ship`. Keeps the `NNN-` edition prefix so `draft`'s next-number lookup spans `issues/` + `published/`. Sacred; never rewritten. The *clean text* for voice lives in `archive/`; `published/` is the full expedient.
+Each shipped issue's full folder (`published/NNN-slug/`: its `brief.md`, `draft.md`, snapshot, cover, material), moved here from `issues/` by `ship`. Keeps the `NNN-` edition prefix so `draft`'s next-number lookup spans `issues/` + `published/`. Sacred; never rewritten. The *clean text* for voice lives in `archive/`; `published/` is the full record.

@@ -10,7 +10,7 @@ You fetch a newsletter's published posts and write them to disk as clean Markdow
 
 ## What you receive
 
-- A **newsletter URL** (archive, homepage, or a feed).
+- A **newsletter URL** (archive, homepage, or a feed) — or, in **single-post mode**, one or more **direct post URLs** (e.g. `ship` capturing the version of an issue that actually went out): skip discovery, fetch exactly those, same cleaning, writing, and report rules.
 - A **target directory** to write into (e.g. `voice/archive/`).
 - A **limit** (how many recent posts, default 15) and, optionally, a list of URLs already imported (skip those — this is a refresh).
 

@@ -19,6 +19,9 @@ if [ $# -lt 1 ]; then
   exit 1
 fi
 VERSION="$1"; shift
+case "$VERSION" in
+  ''|-*) echo "usage: bash dev/build-zip.sh <version> [--test]" >&2; exit 1 ;;
+esac
 TEST_UNZIP=""
 for arg in "$@"; do
   case "$arg" in
@@ -34,14 +37,23 @@ DEST="${STAGE}/cervantes"
 
 [ -d "${ROOT}/src" ] || { echo "ABORT: no src/ — is this the Cervantes repo?" >&2; exit 1; }
 
-mkdir -p "${ROOT}/dist"
+# The packager copies the working tree, so anything untracked or git-ignored
+# inside src/ would ship to every subscriber. Abort until src/ is clean in
+# git's eyes (.DS_Store excepted — it's deleted from the stage below).
+strays="$(git -C "$ROOT" status --porcelain --ignored -- src/ 2>/dev/null | grep -E '^(\?\?|!!)' | grep -v '\.DS_Store' || true)"
+if [ -n "$strays" ]; then
+  echo "ABORT: untracked or ignored files inside src/ would ship in the ZIP:" >&2
+  echo "$strays" >&2
+  exit 1
+fi
+
 cp -R "${ROOT}/src" "$DEST"
 find "$DEST" -name '.DS_Store' -delete
 
 # --- invariants --------------------------------------------------------------
 # An author's newsletter must never be in the package. src/ has no business
 # holding one, so finding one means somebody ran onboarding in the source tree.
-for leak in voice issues published .git .gitignore; do
+for leak in voice issues published .git .gitignore .claude/settings.local.json; do
   if [ -e "${DEST}/${leak}" ]; then
     echo "ABORT: ${leak} ended up in the package — src/ is polluted" >&2
     exit 1
@@ -69,7 +81,19 @@ done
 for e in STRUCTURE WRITING-CRAFT HOOK-FORMULAS ANTI-SLOP TEMPLATES QUALITY-CHECKLIST MEMORY-SCHEMA; do
   [ -f "${DEST}/.cervantes/engine/${e}.md" ] || { echo "ABORT: missing engine ${e}.md" >&2; exit 1; }
 done
+for t in profile journal cover-style; do
+  [ -f "${DEST}/.cervantes/templates/${t}.md" ] || { echo "ABORT: missing template ${t}.md" >&2; exit 1; }
+done
 [ -f "${DEST}/CLAUDE.md" ] || { echo "ABORT: missing CLAUDE.md" >&2; exit 1; }
+[ -f "${DEST}/README.md" ] || { echo "ABORT: missing README.md (the author's docs)" >&2; exit 1; }
+
+# settings.json is the only thing that registers the SessionStart hook — without
+# it the unzipped folder does nothing on open, and every eval that starts from
+# the hook dies. Existence isn't enough: it must point at the launcher.
+[ -f "${DEST}/.claude/settings.json" ] || { echo "ABORT: missing .claude/settings.json" >&2; exit 1; }
+grep -q 'run-hook\.cmd' "${DEST}/.claude/settings.json" || {
+  echo "ABORT: .claude/settings.json no longer registers run-hook.cmd" >&2; exit 1
+}
 
 # Paths inside the product are relative to the author's folder. A "src/" in
 # there is a path that got broken while moving files around.
@@ -80,6 +104,7 @@ if grep -rlq 'src/\.cervantes\|src/\.claude\|src/voice' "$DEST" 2>/dev/null; the
 fi
 
 # --- package -----------------------------------------------------------------
+mkdir -p "${ROOT}/dist"
 rm -f "$OUT"
 ( cd "$STAGE" && zip -q -r -X "$OUT" cervantes )
 

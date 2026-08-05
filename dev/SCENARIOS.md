@@ -11,7 +11,7 @@ cd .testing/<version>/cervantes      # ← open THIS in Claude Code
 
 `src/` is the source tree; the ZIP is what a subscriber actually receives, and only the unzipped folder exercises the real thing — its `.claude/settings.json` at the project root, its skills registered, its hook firing before the first message. A scenario that passes in `src/` can still be broken in the package. "A freshly unzipped folder" below always means a fresh `--test` build.
 
-Scenarios 2 and 3 need a second folder (an older or seeded workspace) to migrate or move from: build it under `.testing/` too, by hand, and never point them at `src/`.
+Scenarios 2 and 3 need a second folder (an older or seeded workspace) to migrate or move from: build it by hand under `.testing/fixtures/` — a `--test` build wipes only `.testing/<version>/`, so fixtures there survive rebuilds — and never point them at `src/`.
 
 ## 1. A fresh copy starts itself
 **Setup:** a freshly unzipped folder — no `voice/`, no `issues/`, no `published/`. **Prompt:** none. Just open it.
@@ -79,7 +79,7 @@ Scenarios 2 and 3 need a second folder (an older or seeded workspace) to migrate
 
 ## 11. Ship close-out (close the loop)
 **Setup:** seeded workspace with a drafted+polished issue in `issues/012-slug/`. **Prompt:** "ya lo publiqué, salió esto:" + pasted final text that differs from `draft.md` in a few spots (or a URL to the live post).
-**Expected:** captures the shipped version (URL → via the `researcher` agent, never inline; pasted → verbatim) → **diffs `draft.md` vs shipped** and logs the difference to `voice/journal.md`, carrying repeated patterns into `voice/profile.md` with a voice-version bump and a one-line confirm → writes the clean text to `voice/archive/YYYY-MM-DD-slug.md` with frontmatter → **moves** `issues/012-slug/` → `published/012-slug/` (not left in both; `012-` prefix kept) → opens the resonance block (fields empty, "fill when known") and offers a check-in → does NOT publish/post anything itself. Offers the repurpose next step.
+**Expected:** captures the shipped version (URL → via the `importer` agent in single-post mode, which writes the clean archive file directly; never fetched inline; pasted → verbatim) → **diffs `draft.md` vs shipped** and logs the difference to `voice/journal.md`, carrying repeated patterns into `voice/profile.md` with a voice-version bump and a one-line confirm → writes the clean text to `voice/archive/YYYY-MM-DD-slug.md` with frontmatter → **moves** `issues/012-slug/` → `published/012-slug/` (not left in both; `012-` prefix kept) → opens the resonance block (fields empty, "fill when known") and offers a check-in → does NOT publish/post anything itself. Offers the repurpose next step.
 
 ## 12. Resonance-only (numbers for a past issue)
 **Setup:** an issue already shipped (in `published/`, journal entry with empty resonance fields). **Prompt:** "el 012 hizo 41% de aperturas y ganó el asunto B".
@@ -101,6 +101,16 @@ Scenarios 2 and 3 need a second folder (an older or seeded workspace) to migrate
 **Setup:** fresh copy, run onboarding all the way to the hand-off. **Watch:** every reprint of the progress block.
 **Expected:** identical shape from the first print to the last — seven lines inside a fenced block, each with its full translated label, only `- [x]` and `- [ ]` as markers, at most a trailing ` ←` on the current line, and the same label strings every time.
 **Fails if** it degrades into a compressed line such as `Progreso: [x] 1 [x] 2 [x] 3 [x] 4. Preferencias ✓ [→] 5. Portada [ ] 6 [ ] 7` — bare numbers, mixed markers, dropped labels. (Field-reported: the pull to compress gets stronger the longer onboarding runs, which is exactly when the author needs to read it.)
+
+## 17. Headlines follow the draft — and spare the snapshot
+**Setup:** seeded workspace with a finished issue whose `draft.md` drifted from the brief's promise AND carries hand edits made by the author after `.baseline.md` was last saved. **Prompt:** "¿títulos?".
+**Expected:** reads profile + `draft.md` + `brief.md` → names the tension the draft actually delivers, saying in one line that it follows the draft, not the brief → presents 3 subject variants in the author's language (archetype labeled, most concrete marked, <~50 chars), title + dek, and one preheader per variant (~40–90 chars, extends the subject, never repeats it) → zero anti-slop patterns unless profile-documented → on pick: updates `draft.md`'s header and title, and mirrors **only those lines** into `.baseline.md` → logs subject + archetype to `voice/journal.md` with resonance fields open.
+**Fails if:** a subject promises what the draft doesn't deliver; `.baseline.md`'s body gets regenerated (the author's hand edits vanish from the snapshot and the next `polish` diff protects nothing); the options come in English when the newsletter isn't.
+
+## 18. Covers look like the same publication
+**Setup:** seeded workspace, a fixed style block in `voice/cover-style.md` with a recorded style anchor, and a finished issue on a clearly different topic. **Prompt:** "haz la portada".
+**Expected:** loads `voice/cover-style.md` + `draft.md` → offers one concrete visual concept (+1 alternative, author picks) tied to this issue's subject → builds the prompt per `MEMORY-SCHEMA.md`'s formula: the subject changes, the fixed style block is pasted **word for word**, format and exclusions appended, prompt in English whatever the newsletter's language → generates via an image tool if one is available, else saves `cover-prompt.txt` in the issue folder → checks the result against the anchor for consistency.
+**Fails if:** the style block is paraphrased, trimmed, or "improved"; the cover doesn't read as the same publication as the anchor; `voice/cover-style.md` gets edited without the author asking; the prompt comes out in the newsletter's language.
 
 ## Regression guards (from v0.1.x field testing)
 - The kit is read-only: nothing ever writes inside `.cervantes/` or `.claude/` except `settings.local.json`. No engine copies, no skill copies, no generated `CLAUDE.md`.

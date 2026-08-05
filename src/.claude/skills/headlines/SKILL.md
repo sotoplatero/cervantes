@@ -28,10 +28,10 @@ from past resonance.
 
 ## Apply
 
-When the author picks: update `draft.md`'s header (`subject:`, `preheader:`, `cta:`) and the title/dek in the body; refresh the single `.baseline.md`. Log the shipped subject + archetype in `voice/journal.md` (resonance fields open, to be filled when numbers arrive).
+When the author picks: update `draft.md`'s header (`subject:`, `preheader:`, `cta:`) and the title/dek in the body, and mirror **those same lines** into `.baseline.md`. Never regenerate the snapshot's body: the author may have hand-edited the draft since it was taken, and a full refresh would erase the diff `polish` uses to protect their sentences. Log the shipped subject + archetype in `voice/journal.md` (resonance fields open, to be filled when numbers arrive).
 
 ## Anti-goals
 
 - Never promise what the draft doesn't deliver — the curiosity gap must be paid off in the body.
 - No anti-slop patterns in titles (antithesis, "What if I told you", colon formats, tricolons) unless the profile documents them as the author's signature.
-- Six good options beat twenty; don't flood.
+- A handful of strong options beats twenty; don't flood.

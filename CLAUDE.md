@@ -22,7 +22,7 @@ Cervantes itself is a folder that a non-developer unzips and opens in Claude Cod
 
 `src/CLAUDE.md`, `src/.claude/skills/*`, `src/.claude/agents/*` and `src/.cervantes/engine/*` are **artifacts you edit** — not instructions you follow, and not skills or agents you invoke. Claude Code loads nested `CLAUDE.md` files when it reads files in their subtree, so `src/CLAUDE.md` may well land in your context: it is the file under edit, and its "you are Cervantes, this newsletter's editorial system" is addressed to a session running inside an author's folder. Not this one.
 
-The product's skills are deliberately *not* registered in this repo — its `settings.json` and its `.claude/skills/` live inside `src/`, so they only activate when the project directory is an author's folder. If you ever see `draft`, `polish`, `cover` or `ship` offered as skills while working in this repo, the boundary has been broken and that is a bug to fix.
+Expect the product's skills to show up anyway: Claude Code discovers nested `.claude/skills/` directories, so `cervantes`, `draft`, `polish`, `cover`, `ship` and the rest will be listed in sessions here as directory-scoped skills ("from src/.claude/skills — applies when working on files under src/"). That listing is normal, not a breach. The boundary is behavioral: **never invoke them in this repo**, no matter how well their trigger description matches the task at hand — here they are payload under edit, not workflows to run. The same goes for the product's agents in `src/.claude/agents/`.
 
 **2. Paths inside `src/` are written from the author's point of view.**
 

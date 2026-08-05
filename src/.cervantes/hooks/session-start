@@ -2,13 +2,14 @@
 # Cervantes — SessionStart hook.
 #
 # Answers one question deterministically, before the author's first message:
-# is this newsletter's memory seeded? A freshly cloned folder is NOT a folder to
-# stay quiet in — the author cloned it to start a newsletter, so the hook starts
-# onboarding for them. There is no command to learn.
+# is this newsletter's memory seeded? A freshly unzipped folder is NOT a folder
+# to stay quiet in — the author opened it to start a newsletter, so the hook
+# starts onboarding for them. There is no command to learn.
 #
-# It does not check the engine, the skills or the agents: those ship tracked in
-# git at .cervantes/ and .claude/, so `git pull` updates them and `git checkout`
-# restores them. Only the author's own memory can be missing or half-built.
+# It does not check the engine, the skills or the agents: those arrive in the
+# folder identical for every author, and when they are damaged the fix is the
+# cervantes skill's Move house path (a fresh copy), never rebuilding them here.
+# Only the author's own memory can be missing or half-built.
 #
 # Extensionless on purpose — Claude Code's Windows launcher prepends "bash" to
 # any command containing ".sh", which would double-invoke through run-hook.cmd.
@@ -16,8 +17,16 @@
 # NOT -e: every probe below is allowed to fail on a half-built workspace.
 set -uo pipefail
 
+# All probes are relative to the newsletter's root. Claude Code exports it as
+# CLAUDE_PROJECT_DIR; the fallback derives it from this script's own location.
+# If neither works, exit silently — CLAUDE.md's manual check takes over.
+cd "${CLAUDE_PROJECT_DIR:-$(dirname "$0")/../..}" 2>/dev/null || exit 0
+
 # ---------------------------------------------------------------- probe ----
-voice="$(sed -n 's/^Voice version: *\(v[0-9][0-9.]*\).*/\1/p' ./voice/profile.md 2>/dev/null | head -n 1)"
+# Tolerant on purpose: the profile is the author's file and they edit it by
+# hand — indentation, **bold**, case drift or a dropped "v" must not read as
+# "not seeded" (that would trigger onboarding over a live newsletter).
+voice="$(sed -n 's/^[[:space:]]*[*_]*[Vv]oice [Vv]ersion[*_]*:[*_[:space:]]*v\{0,1\}\([0-9][0-9.]*\).*/v\1/p' ./voice/profile.md 2>/dev/null | head -n 1)"
 
 missing=""
 note_missing() { missing="${missing:+$missing, }$1"; }
@@ -27,7 +36,7 @@ done
 
 count_in() { find "$1" -mindepth 1 -maxdepth 1 "${@:2}" 2>/dev/null | wc -l | tr -d ' '; }
 n_issues="$(count_in ./issues -type d)"
-n_published="$(count_in ./published)"
+n_published="$(count_in ./published -type d)"
 n_archive="$(count_in ./voice/archive -name '*.md')"
 
 # Engine v3.x and earlier kept memory in cervantes/ — one-time migration.
@@ -42,6 +51,12 @@ header="Cervantes — this folder's session-start hook checked the newsletter's 
 if [ -n "$legacy" ]; then
   state="STATE: legacy layout — the memory sits in cervantes/ (engine v3.x); this kit reads it from voice/.
 ACTION: run the cervantes skill (Migrate). Move the memory files and the archive into voice/, drop the duplicated cervantes/engine/, report it in one line, then continue with whatever the author asks."
+
+elif [ -f "./voice/profile.md" ] && [ "$voice" != "v0.0" ] && { [ -z "$voice" ] || [ -n "$missing" ]; }; then
+  # The profile exists and isn't the unseeded template: this newsletter is set
+  # up but damaged (hand-edited header, missing file). Repair — never onboard.
+  state="STATE: half-built — voice profile ${voice:-present but its Voice version line is unreadable}${missing:+; missing: $missing}.
+ACTION: run the cervantes skill (Repair). Heal the structure per the memory schema without touching the author's content — do NOT onboard, this newsletter is already set up. Then continue with whatever the author asks."
 
 elif [ -z "$voice" ] || [ "$voice" = "v0.0" ] || [ -n "$missing" ]; then
   state="STATE: not seeded — voice profile ${voice:-absent}${missing:+; missing: $missing}.

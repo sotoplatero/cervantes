@@ -95,7 +95,7 @@ Fix exactly what the hook reported, without re-checking the filesystem, and with
 
 - A missing memory file → recreate it from its `.cervantes/templates/` skeleton, empty, and tell the author it needs re-seeding (profile: `v0.0`). **Never overwrite or blank an existing memory file.**
 - Profile present but its section headers drifted from `.cervantes/engine/MEMORY-SCHEMA.md` (a newer engine added or renamed a section) → don't migrate silently: name what's new and offer to add the missing headers, **preserving every existing line**. This is how a memory schema catches up — no version numbers involved.
-- One case needs the author's word: if the profile has no **length tier** (`short` / `standard` / `deep`) and its length line is ambiguous ("medium-ish", "depends"), ask once with `AskUserQuestion` and write the answer. A wrong tier silently changes the length of every future issue.
+- One case needs the author's word: if the profile's **Typical length** field holds no tier (`short` / `standard` / `deep`) — it reads ambiguous, like "medium-ish" or "depends" — ask once with `AskUserQuestion` and write the answer. A wrong tier silently changes the length of every future issue.
 - `issues/`, `published/`, `voice/archive/` missing → create them.
 - Anything under `.cervantes/` or `.claude/` missing or corrupt → **never improvise engine files, skills, or agents from recall**; an invented engine file produces a corrupt newsletter that looks like it works. Say plainly that this copy of Cervantes is damaged and run **Move house** below: they download a fresh Cervantes, unzip it, and you carry their work across. Their work is not at risk — it's all in `voice/`, `issues/` and `published/`, none of which is damaged.
 - If you repaired something, report it in one line. If everything is healthy, **stand down**: say nothing about setup and proceed to whatever the author came for.
@@ -118,6 +118,8 @@ There is no updater and no repo to pull from: **a newer Cervantes is a new folde
 Tell them exactly this, in their language, and nothing more technical:
 
 > Download the new Cervantes and unzip it wherever you like. Then open **the new folder** in Claude Code and say "bring my work from the old folder" — I'll ask you where it is and move everything across.
+
+**Which folder is the newer one?** There is no version marker to compare — decide by context, never by file dates. The new copy is the one the author just downloaded and unzipped, and a fresh copy has no `voice/`; the old one holds their work. If both folders hold work, or the author seems to be sitting in the old folder asking to update, confirm in one line ("this folder is the one you just downloaded, right?") before moving anything — and never move in both directions.
 
 From the new folder, given the path to the old one:
 

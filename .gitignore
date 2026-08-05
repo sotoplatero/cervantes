@@ -1,6 +1,5 @@
 .playwright-mcp/
 *.png
-!src/.cervantes/assets/*.png
 .DS_Store
 
 # Built ZIPs, and the unzipped copies the eval suite runs against.
