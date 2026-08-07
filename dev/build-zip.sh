@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # Packages src/ as the Cervantes ZIP that goes out to subscribers.
 #
-#   bash dev/build-zip.sh <version> [--test]
+#   bash dev/build-zip.sh [version] [--test]
+#
+# The version only names the file. Omit it and dev/VERSION is used, which is
+# what CI does — one number in one place. Note where that file lives: the
+# workshop tracks a version, the product does not carry one. Nothing writes it
+# into src/, and nothing in the ZIP mentions it.
 #
 # There is no exclusion list, on purpose: src/ contains the product and nothing
 # else, so packaging is "copy src/, name it cervantes, zip it". The checks below
@@ -14,14 +19,22 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
 
-if [ $# -lt 1 ]; then
-  echo "usage: bash dev/build-zip.sh <version> [--test]" >&2
-  exit 1
+usage() { echo "usage: bash dev/build-zip.sh [version] [--test]" >&2; exit 1; }
+
+VERSION=""
+if [ $# -ge 1 ]; then
+  case "$1" in
+    --*) ;;                       # an option — the version is coming from the file
+    ''|-*) usage ;;
+    *) VERSION="$1"; shift ;;
+  esac
 fi
-VERSION="$1"; shift
-case "$VERSION" in
-  ''|-*) echo "usage: bash dev/build-zip.sh <version> [--test]" >&2; exit 1 ;;
-esac
+if [ -z "$VERSION" ]; then
+  [ -f "${ROOT}/dev/VERSION" ] || { echo "ABORT: no version given and no dev/VERSION" >&2; exit 1; }
+  VERSION="$(tr -d '[:space:]' < "${ROOT}/dev/VERSION")"
+  [ -n "$VERSION" ] || { echo "ABORT: dev/VERSION is empty" >&2; exit 1; }
+fi
+
 TEST_UNZIP=""
 for arg in "$@"; do
   case "$arg" in
@@ -106,7 +119,63 @@ fi
 # --- package -----------------------------------------------------------------
 mkdir -p "${ROOT}/dist"
 rm -f "$OUT"
-( cd "$STAGE" && zip -q -r -X "$OUT" cervantes )
+
+# Info-ZIP is the reference packager. Where it's missing — a stock Git for
+# Windows shell ships unzip but no zip — Python writes the same archive, setting
+# the Unix mode bits by hand. That is not cosmetic: settings.json runs the
+# launcher as a command, so run-hook.cmd has to arrive executable or the
+# SessionStart hook cannot start on macOS or Linux. A native Windows archiver
+# would flatten every entry to 0644, because NTFS has no executable bit to read.
+if command -v zip >/dev/null 2>&1; then
+  ( cd "$STAGE" && zip -q -r -X "$OUT" cervantes )
+else
+  PY=""
+  for c in python3 python py; do
+    if command -v "$c" >/dev/null 2>&1 && "$c" -c '' >/dev/null 2>&1; then PY="$c"; break; fi
+  done
+  [ -n "$PY" ] || { echo "ABORT: neither zip nor python is available to package" >&2; exit 1; }
+  # Native Python cannot resolve the shell's /tmp- and /c-style paths.
+  if command -v cygpath >/dev/null 2>&1; then
+    PY_STAGE="$(cygpath -w "$STAGE")"; PY_OUT="$(cygpath -w "$OUT")"
+  else
+    PY_STAGE="$STAGE"; PY_OUT="$OUT"
+  fi
+  "$PY" - "$PY_STAGE" "$PY_OUT" <<'PYZIP'
+import os, stat, sys, time, zipfile
+
+stage, out = sys.argv[1], sys.argv[2]
+on_windows = os.name == "nt"
+
+def walk(root):
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames.sort()
+        filenames.sort()
+        yield dirpath, True
+        for f in filenames:
+            yield os.path.join(dirpath, f), False
+
+with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+    for path, is_dir in walk(stage):
+        rel = os.path.relpath(path, stage).replace(os.sep, "/")
+        if rel == ".":
+            continue
+        st = os.stat(path)
+        info = zipfile.ZipInfo(rel + "/" if is_dir else rel,
+                               date_time=time.localtime(st.st_mtime)[:6])
+        info.create_system = 3  # Unix, so unzip honours the mode below
+        if is_dir:
+            info.external_attr = (0o40755 << 16) | 0x10
+            z.writestr(info, b"")
+            continue
+        # Everything under .cervantes/hooks/ is a script that gets executed.
+        executable = "/.cervantes/hooks/" in "/" + rel or (
+            not on_windows and bool(st.st_mode & stat.S_IXUSR))
+        info.external_attr = (0o100755 if executable else 0o100644) << 16
+        info.compress_type = zipfile.ZIP_DEFLATED
+        with open(path, "rb") as fh:
+            z.writestr(info, fh.read())
+PYZIP
+fi
 
 echo "→ dist/cervantes-${VERSION}.zip  ($(unzip -Z1 "$OUT" | grep -vc '/$') files)"
 

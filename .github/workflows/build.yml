@@ -1,0 +1,73 @@
+name: build
+
+# Two jobs in one, on purpose.
+#
+# On every push the packager runs, which is the only automated check this repo
+# has: the ~20 aborts in dev/build-zip.sh catch a leaked voice/, a CRLF hook, a
+# missing skill or a src/-prefixed path the moment the commit lands.
+#
+# On main it also refreshes a single release tagged "latest", so the newest ZIP
+# is always one click away in one place. That is the copy that goes behind the
+# email wall — the repo is private, so nothing here is publicly reachable.
+#
+# What this does NOT verify is behaviour. The eval suite in dev/SCENARIOS.md
+# needs a human driving Claude Code inside an unzipped folder; a green run here
+# means the package is well formed, not that Cervantes works.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write # to refresh the rolling release
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Linux keeps the hooks at LF and carries their 100755 mode out of git's
+      # index, so this build is the reference one. A local Windows build has to
+      # reconstruct those bits by hand.
+      - name: Read the version
+        id: v
+        run: echo "version=$(tr -d '[:space:]' < dev/VERSION)" >> "$GITHUB_OUTPUT"
+
+      - name: Package
+        run: bash dev/build-zip.sh
+
+      # Kept for pull requests and for history. GitHub wraps every artifact in a
+      # second ZIP on download, which is why the release below — not this — is
+      # where you go to fetch a file that's ready to upload.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cervantes-${{ steps.v.outputs.version }}
+          path: dist/cervantes-${{ steps.v.outputs.version }}.zip
+          if-no-files-found: error
+
+      # Deleted and recreated rather than edited, so bumping dev/VERSION can't
+      # leave the previous version's ZIP sitting next to the new one.
+      - name: Refresh the latest release
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.v.outputs.version }}
+        run: |
+          gh release delete latest --yes --cleanup-tag 2>/dev/null || true
+          git push --delete origin latest 2>/dev/null || true
+          {
+            printf 'Built from `%s` — %s\n\n' "${GITHUB_SHA:0:7}" "$(git log -1 --pretty=%s)"
+            printf '%s\n\n' "$(date -u '+%Y-%m-%d %H:%M UTC')"
+            printf 'One version gets rebuilt on every push, so the commit above is what tells two %s builds apart. Bump `dev/VERSION` when the change is one an author should receive as a new folder.\n' "$VERSION"
+          } > /tmp/notes.md
+          gh release create latest "dist/cervantes-${VERSION}.zip" \
+            --target "$GITHUB_SHA" \
+            --title "Cervantes ${VERSION} — latest build" \
+            --notes-file /tmp/notes.md
