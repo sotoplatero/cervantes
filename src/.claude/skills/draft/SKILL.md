@@ -84,8 +84,8 @@ memory.
 
 **File naming — EXACT, no variants.** The writing lives in exactly three files, named literally:
 `brief.md` (the plan), `draft.md` (the living draft), `.baseline.md` (the single snapshot, leading dot).
-Other skills add their own files beside them — `cover-prompt.txt` from `cover`, `social.md` from
-`repurpose` — and the author's loose material lives in the folder too. What never exists is a variant of
+Beside them sit `cover-prompt.txt` (seeded at step 10, refined by `cover`), `social.md` from
+`repurpose`, and the author's loose material. What never exists is a variant of
 the draft: no `draft.<topic>.md`, no `draft.v1/v2.md`, no `final.md`, no dates or slugs in file names —
 the topic slug lives ONLY in the folder name. There is exactly ONE snapshot, always overwritten in place.
 
@@ -103,14 +103,26 @@ save the exact copy as `.baseline.md` — the learning-diff baseline for `polish
 You cannot grade your own draft honestly: you just made every one of those choices. That's why the
 verdict comes from a context that didn't write it.
 
-**10. Hand off.** Tell the author: where the draft is, what the verdict said in one line (including
-anything you deliberately left), the 1–3 spots where their voice or judgment would help most, and that
-the next step is editing the file by hand in any editor — then "polish it".
+**10. The cover prompt.** The visual concept only exists once the piece does, so it gets built here
+instead of waiting to be asked for. Derive ONE concrete visual concept from the finished draft — a
+specific scene or metaphor, never an abstraction — check it against the Hard exclusions, build the
+prompt per `voice/cover-style.md` (subject first, then the fixed style block **verbatim**, format line,
+exclusions as negatives; formula in `.cervantes/engine/MEMORY-SCHEMA.md` § cover-style) and save it as
+`cover-prompt.txt` in the issue folder. Prompt in English regardless of the newsletter's language.
+
+**Don't generate the image, and don't stop to get the concept approved** — this is a starting point the
+author takes as-is or changes when they run `cover`, which owns the alternatives, the approval and the
+consistency check. If `voice/cover-style.md` is missing, skip this step and say so in one line.
+
+**11. Hand off.** Tell the author: where the draft is, what the verdict said in one line (including
+anything you deliberately left), the 1–3 spots where their voice or judgment would help most, that the
+cover prompt is already sitting in `cover-prompt.txt` if they want it, and that the next step is editing
+the file by hand in any editor — then "polish it".
 
 ## Light mode (short pieces)
 
 For a `short`-tier note or a one-scene personal issue, don't add ceremony (`STRUCTURE.md` §8): the brief
-collapses to angle + promise + hook + two or three beats, it gets written in one pass, and steps 8–9
+collapses to angle + promise + hook + two or three beats, it gets written in one pass, and steps 8–10
 still run. Say in one line that you're going light, and move.
 
 ## Anti-goals

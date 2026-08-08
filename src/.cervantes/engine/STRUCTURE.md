@@ -26,6 +26,11 @@ These are budgets, not quotas. Two rules govern them, in this order:
    naming what's missing. A tight `standard` beats a padded `deep`. The author decides — and if they
    want the longer piece, that's what the interview questions are for (§4): get the material, then
    write long. Don't quietly deliver 900 words when they asked for 2000, and don't quietly inflate.
+3. **An idea that finishes early is finished.** If the piece says everything it has to say and lands
+   under target, that is a complete issue, not a deficient one: report the count in one line and hand it
+   over. Length is never a completion criterion, and "still under budget" is never a reason to keep
+   writing. The only question that settles it is whether a beat in the outline is unfinished or a
+   promise the hook made went unpaid — if neither, the issue is done at whatever length that took.
 
 ## 2. The brief locks the decisions
 
@@ -95,6 +100,15 @@ Per section: hit its beat, respect its budget (±20%), open and close its micro-
 shape — **the openings across sections must differ from each other.** Five sections that all start
 with a short declarative sentence read as machine cadence even when each one is fine alone.
 
+**A subhead is not a reset.** Each section continues the argument the previous one left standing: its
+first sentence picks up that thread and moves it, so a reader going straight through the heading never
+stumbles. This is the opposite of announcing structure — the continuity is carried by the *thought*
+(the consequence, the objection, the next step in the same reasoning), never by a signpost. It is why
+the last paragraph already written gets loaded before each section, and it is why openings that differ
+in **shape** still have to connect in **substance**. Varied openings that each restart the piece read as
+a stack of notes stapled together instead of one letter, and that is exactly how a draft comes out
+jumpy while every individual section looks fine.
+
 Never announce structure in the prose ("In this section we'll see…", "First, let's look at…"). The
 subheads already do that work.
 
@@ -109,11 +123,18 @@ read in one go, and it's checking things that only exist between sections:
   or a term introduced twice because two sections each defined it.
 - **Rhythm across boundaries** — the last line of one section and the first of the next shouldn't have
   the same shape.
+- **Continuity across boundaries** — read each seam as a pair of sentences with the subhead covered up.
+  Does the second follow from the first, or does the piece start over? A section that could be moved
+  anywhere else in the outline without anyone noticing is not connected to its neighbours: give its
+  opening the thread the previous section left, or fix the order. This is the check that catches a draft
+  that reads as a series of jumps.
 - **Tic density over the whole piece.** This is where the `ANTI-SLOP.md` frequency rule actually
   applies: a device used once per section is a tic even though no single section overused it. Count
   across the issue, not within a section.
-- **Length reality check** — the real word count against the tier. Under budget: name what's thin
-  rather than inflating it. Over: cut the weakest section, don't trim every section evenly.
+- **Length reality check** — the real word count against the tier, reported rather than corrected.
+  Under budget with every beat delivered and every loop paid is a finished issue: state the number and
+  move on. Under budget *because* a beat is thin is a real finding — name the beat, and never inflate
+  the prose around it. Over budget: cut the weakest section, don't trim every section evenly.
 
 Then hand the draft to the `editor` agent for the independent verdict. The seams pass is what the
 writer owes; the verdict is what the writer cannot honestly give themselves.

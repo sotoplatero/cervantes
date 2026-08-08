@@ -54,6 +54,21 @@ a structural lesson, not a one-off.
 
 Patterns to watch over time: which **angle types** get replies (opinion vs tutorial vs story); which **subject archetypes** win opens; which **outline shapes** survive to publication; edits that repeat across issues → promote to the profile's "Things I NEVER do."
 
+### Editorial decisions — the second kind of entry
+
+Not every decision belongs to an issue. Which published post deserves a second part, a topic parked on purpose, a pattern that only shows up across several issues, an angle ruled out and why — these have no `brief.md` to live in and no issue to be filed under. Without a record the author has the same conversation again next session, and the reasoning that took a real reading of the archive gets thrown away. Same file, same newest-first order:
+
+```
+## YYYY-MM-DD — Decision: "<the question, in the author's words>"
+
+**Consulted:** (which archive files, which journal entries, which resonance numbers — or "titles only")
+**Decision:** ...
+**Why:** (the evidence it rests on, not the impression)
+**Follow-through:** (what it becomes: an issue to draft, an option discarded and why, a standing preference)
+```
+
+Two rules. The **Consulted** line is never optional: a decision with nothing under it is an opinion, and months later nobody can tell the two apart. And when a decision does turn into an issue, its `NNN` gets written back here, so the thread from question to published piece stays readable.
+
 **Not memory:** `issues/NNN-slug/brief.md` is per-issue working data, not part of the author's memory — it belongs to its issue, travels with it to `published/`, and its skeleton lives in `.cervantes/engine/STRUCTURE.md` §9. Nothing in setup or repair touches it either, because nothing touches `issues/` at all.
 
 **Continuous learning protocol:** every time the author writes anything — a chat message, an edit, a correction — scan it for voice and preference signals and write what's found to memory THAT SAME TURN, confirming in one short line ("Noted in your profile: …"). If a signal isn't written to a file, it didn't get learned — never rely on session recall.
