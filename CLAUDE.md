@@ -11,7 +11,8 @@ Cervantes itself is a folder that a non-developer unzips and opens in Claude Cod
 | Path | What it is |
 |---|---|
 | `src/` | **The product.** Shipped verbatim as a ZIP; what every subscriber receives. |
-| `dev/` | Maintainer-only: `SCENARIOS.md` (the eval suite) and `build-zip.sh` (the packager). Never shipped. |
+| `dev/` | Maintainer-only: `SCENARIOS.md` (the eval suite), `build-zip.sh` (the packager) and `VERSION` (the number the ZIP is named after). Never shipped. |
+| `.github/workflows/` | CI: repackages on every push and refreshes the `latest` release. Never shipped. |
 | `dist/` | Built ZIPs. Untracked. |
 | `.testing/` | Unzipped copies used to run the evals. Untracked. |
 | `.claude/settings.local.json` | This repo's own per-machine settings. Nothing product-related. |
@@ -40,22 +41,26 @@ Inside the product, `.cervantes/engine/ANTI-SLOP.md` and `voice/profile.md` are 
 | The memory skeletons seeded into `voice/` | `src/.cervantes/templates/` |
 | The product's own operating instructions | `src/CLAUDE.md` |
 | What the author reads about Cervantes | `src/README.md` |
+| The number the built ZIP is named after | `dev/VERSION` |
 
 Nothing enters `src/` that shouldn't reach every subscriber — notes, scratch files, eval fixtures and release checklists belong in `dev/`.
 
 ## Build and test
 
 ```
-bash dev/build-zip.sh 4.0          # → dist/cervantes-4.0.zip
-bash dev/build-zip.sh 4.0 --test   # also unzips into .testing/4.0/
+bash dev/build-zip.sh              # version from dev/VERSION → dist/cervantes-<v>.zip
+bash dev/build-zip.sh --test       # also unzips into .testing/<v>/
+bash dev/build-zip.sh 4.1          # override the version for a one-off build
 ```
+
+CI runs the same packager on every push to `main`, and on `main` it replaces the single release tagged `latest` with the ZIP it just built — that release is where the current download lives. Its aborts are this repo's only automated check; **CI proves the package is well formed, never that Cervantes behaves.**
 
 **Evals never run against `src/`.** They run against an unzipped build in `.testing/`, because that is the artifact the subscriber gets: `dev/SCENARIOS.md` holds the suite, and a release ships only when all of it passes. Testing `src/` in place would pass on things the ZIP doesn't actually contain.
 
 ## How Cervantes reaches its authors
 
-A ZIP, sent to the newsletter's subscribers. No git, no marketplace, no plugin — **assume the recipient is not a developer.** That constraint is load-bearing across the product:
+A ZIP the newsletter's subscribers download from an email-gated page. No git, no marketplace, no plugin — **assume the recipient is not a developer.** That constraint is load-bearing across the product:
 
-- No version file and no version marker: a newer Cervantes is a new folder, and the author's work moves into it (the **Move house** path in the `cervantes` skill). Memory-schema drift is reconciled against `MEMORY-SCHEMA.md`, not against a version number.
+- No version file and no version marker **inside the product**: a newer Cervantes is a new folder, and the author's work moves into it (the **Move house** path in the `cervantes` skill). Memory-schema drift is reconciled against `MEMORY-SCHEMA.md`, not against a version number. `dev/VERSION` is the workshop's own bookkeeping — it names the ZIP and never enters `src/`. Nothing the author receives says which version they have, and nothing should start.
 - The product never hands the author a command — no `git`, no terminal, no "copy this path over that one" — and never asks them to find or drag a dot-folder, which their file manager hides. If a file has to move, Cervantes moves it.
 - The engine, the workflows and the agents are read in place. Nothing is copied at setup; setup only seeds the author's own `voice/`.
