@@ -26,6 +26,8 @@ how often a device repeats across the whole piece (counting, not impression). Th
       `[[fact?: ...]]` or gone.
 - [ ] **Real context and reference links** — researched, existing, pointing where claimed.
 - [ ] **Links are INLINE on the relevant word** — NO references/"Sources"/footnotes section at the end.
+- [ ] **Links are rationed** — at most one per section, ~2–4 across the issue, every one load-bearing
+      (`WRITING-CRAFT.md` §11). Counted, not eyeballed.
 - [ ] **Names and technical terms are correct.** Numbers have a source.
 - [ ] **The `[[...]]` notes add something and are deletable** without breaking the text.
 
@@ -35,6 +37,10 @@ how often a device repeats across the whole piece (counting, not impression). Th
 - [ ] **Title + dek + internal subheads** (one every 2–4 paragraphs) — a skim of subheads alone gives
       the shape.
 - [ ] **Rhythm:** sentences of varied length, paragraphs of varied size.
+- [ ] **No colon glosses in the body** — no `concepto: explicación` label sentences anywhere in the
+      prose or the subheads (`ANTI-SLOP.md` § The colon gloss).
+- [ ] **The piece doesn't restart at every heading.** Each section picks up the thread the previous one
+      left; read the seams with the subheads covered (`STRUCTURE.md` §6 and §7).
 - [ ] **`[[enrich: ...]]` notes seeded** where the author's own example would strengthen the text.
 - [ ] **Short paragraphs**, scannable on mobile. **Show, don't tell.**
 - [ ] **Deliberate colloquialisms respected**; only slips fixed.
@@ -43,7 +49,8 @@ how often a device repeats across the whole piece (counting, not impression). Th
 - [ ] **Every section in the brief's outline is present**, carrying the beat it was assigned.
 - [ ] **The seams pass ran:** loops closed, callback landed, no orphan references, no two sections
       opening the same way.
-- [ ] **Word count against the tier** — and if it's short, what's thin is *named*, not padded.
+- [ ] **Word count against the tier — reported, not chased.** Short with every beat delivered and every
+      loop paid is *finished*; short because a beat is thin gets that beat named, never padded around.
 
 ### Form
 - [ ] **Subject < ~50 characters, one focus.** 3 variants offered, most concrete marked.

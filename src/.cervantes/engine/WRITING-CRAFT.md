@@ -44,6 +44,7 @@ The music of prose — this kills rhythmless walls of text:
 - **Vary sentence openings.** Not all subject-verb-object; sometimes open with a subordinate clause or a concrete detail.
 - **Vary paragraph size.** A long developing paragraph, then a one-line paragraph to land the point.
 - **Read-aloud test.** If you run out of breath or it sounds choppy, something's off. The sentence that sounds natural spoken is the author's voice.
+- **Carry the thread across subheads.** Rhythm isn't only inside the paragraph. A heading is a visual pause, never a fresh start: the section under it continues the thought the previous one left standing. `STRUCTURE.md` §6 and the seams pass in §7 govern this.
 
 ## 7. Concrete > abstract (show, don't tell)
 
@@ -71,6 +72,8 @@ Concrete archetypes and 3-variant rule: see `TEMPLATES.md` § Subject line.
 The issue isn't only the author's story: it's their story **situated**. Research the topic and weave in: what the thing is really called, who thought of it before, the debate if there is one, and **real, checked links**.
 
 **Links go INLINE, on the word where the claim lives.** This is a newsletter, **not a thesis**: NO references list, bibliography, "Sources," or footnotes at the end. Never invent what a source says; cite in passing, without copying paragraphs.
+
+**And links are rationed.** At most one per section, and only where the claim genuinely rests on the source — a number, a name, prior art, something a reader might not take on trust. Two to four across a whole issue is normal. Linking a term the reader already knows, or stacking three in a paragraph, turns the page into a link farm and costs the reader the thread at every one of them. When a source is worth keeping but the sentence doesn't need it, leave it out: it stays in the `researcher` brief, and a `[[note: ...]]` can offer it to the author without spending the reader's attention.
 
 ## 12. Guiding notes (placeholders with meaning)
 

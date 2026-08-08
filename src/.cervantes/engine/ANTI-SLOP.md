@@ -78,6 +78,21 @@ anything is really there.
   state it small and concrete.
 - **Universal-lesson closing** the text didn't earn.
 
+### The colon gloss
+
+The compressed `concept: explanation` shape — a noun phrase, a colon, and the gloss that explains it —
+whether it lands in a subhead or in the middle of a paragraph. It reads as a caption pinned to the text
+rather than as somebody talking, and stacked two or three times it is one of the most reliable machine
+tells there is.
+- ES: *"La clave: la consistencia."*, *"El problema: nadie lo lee."*, *"Título: la guía definitiva"*
+  EN: "The key: consistency.", "The problem: nobody reads it.", "Title: the definitive guide"
+- **In the body this is a flat ban**, not a frequency call. Write the sentence out — *"la clave es la
+  consistencia"* — or better, replace the label with the concrete thing that makes it true. Subheads
+  follow the same rule (`WRITING-CRAFT.md` §8).
+- What stays legitimate is the colon doing real work: introducing a list, a quote, or an amplification
+  the sentence earned (*"Solo pedía una cosa: que le devolvieran el dinero"*). The tell is the **label
+  shape** — headline on the left, definition on the right — not the punctuation mark.
+
 ### Rhythm tics (frequency rule applies)
 - **Empty tricolon.** ES: *"rápido, simple y potente"* · EN: "fast, simple, and powerful." And the
   anaphoric trio — three short parallel sentences in a row.
@@ -98,7 +113,6 @@ anything is really there.
 - **Exhausted metaphors.** ES: above all *"navegar"* (la incertidumbre, el cambio, la complejidad) ·
   EN: "navigate" (uncertainty, change, complexity), "unlock", "unleash", "supercharge". Name the actual
   action: choosing, postponing, cutting, paying.
-- **Colon subheads.** ES: *"Título: la guía definitiva"* · EN: "Title: the definitive guide".
 
 ### Ritual engagement
 - **The reflex closing question.** ES: *"¿Tú cómo lo ves?"*, *"¿Y tú qué opinas?"* · EN: "What do you

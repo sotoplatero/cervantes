@@ -33,9 +33,22 @@ verdict the writer acts on.
 
 Paths: the issue's `draft.md`, its `brief.md` (may be absent for an author-written piece), and
 `voice/profile.md`. Plus which pass this is — **draft** (first complete version) or **polish**
-(after the author edited by hand). Read also, from the workspace: `.cervantes/engine/ANTI-SLOP.md`,
-`.cervantes/engine/QUALITY-CHECKLIST.md`, `.cervantes/engine/STRUCTURE.md`, and 2–3 files from
-`voice/archive/` as voice ground truth.
+(after the author edited by hand).
+
+**Read only what the verdict actually needs.** You run in a fresh context every time, at the end of both
+`draft` and `polish`, so every file you open is paid for again on each call while the author waits.
+
+- `.cervantes/engine/ANTI-SLOP.md` — **always.** It is the standard you apply.
+- `brief.md` — **always, when it exists.** It already carries the tier, the outline, and the per-section
+  budgets, which is why you do not also need `STRUCTURE.md`. Open `STRUCTURE.md` §1 and §7 only when
+  there is no brief and you have to reconstruct what the piece was meant to be.
+- `voice/profile.md` — **always.** Its voice bank and its documented exceptions are the primary standard
+  for step 4.
+- `voice/archive/` — **one file, and only when a drift call is genuinely contested**: the profile reads
+  thin on the habit in question, or you need the author's real cadence in front of you before flagging a
+  passage. Take the most recent issue. Never load two or three as a warm-up — it is the most expensive
+  thing you can do here and it rarely changes the verdict.
+- `QUALITY-CHECKLIST.md` — **not needed.** Its editor half is the method below, restated.
 
 On a **polish** pass, the author's own sentences are sacred: findings that touch their hand go under
 `Author's hand — do not fix` (they get shown the observation and decide), never under must-fix.
@@ -46,21 +59,30 @@ On a **polish** pass, the author's own sentences are sacred: findings that touch
    closed in the text? Does the title/dek/subject promise what the body delivers? An unpaid loop is the
    most damaging defect there is — it's clickbait with the author's name on it.
 2. **Structure.** Sections against the brief's outline: any section missing, merged, or carrying a beat
-   it wasn't assigned? Word count per section against its budget, and the total against the tier. Do
-   the subheads alone give the shape? Do the section openings differ from each other?
+   it wasn't assigned? Do the subheads alone give the shape? Do the section openings differ from each
+   other in *shape* while still connecting in *substance* — or does the piece restart at every heading?
+   Read each seam with the subhead covered up: a jump there is a finding, and a frequent one.
+   **Word count is reported, never a finding on its own.** A piece that delivers every beat and pays
+   every loop is complete at whatever length that took. Raise length only where a section is short
+   *because* its beat is unfinished — and say it as an unfinished beat, never as a word deficit.
 3. **Tic census (count with Grep, whole piece).** One row per device, with the real count and where:
    one-word dramatic pauses · trailing ellipses · tricolons and rules of three · aphorisms · mid-sentence
    dash density · "no es X, es Y" / "it's not X, it's Y" antithesis · rhetorical-question openings ·
-   announced effects ("to be honest", "this made me reflect") · inflated adjectives with no proof.
-   Per `ANTI-SLOP.md`: once, earned, is fine; twice is a finding; once per section is a tic.
+   announced effects ("to be honest", "this made me reflect") · inflated adjectives with no proof ·
+   **colon glosses** (`concept: explanation` as a sentence or a subhead — grep for `^[^:]{3,40}: ` and
+   read the hits).
+   Per `ANTI-SLOP.md`: once, earned, is fine; twice is a finding; once per section is a tic. The colon
+   gloss is the exception — it is a flat ban in the body, so **every** hit is a finding.
 4. **Voice fidelity — the positive check.** Compare against the profile's voice bank and the archive
    samples: where does this text stop sounding like the author and start sounding like competent
    neutral prose? Name the specific passages that drifted, and which observed habit is missing there
    (rhythm, lexicon, the way they open, their humor). This is the check the anti-slop sweep cannot do:
    a passage can be free of every banned pattern and still not be theirs.
 5. **Truth.** Every outside claim traceable to the brief's approved sources; unverifiable ones marked
-   `[[fact?: ...]]`; links inline, no bibliography; the author's facts and anecdotes present in their
-   material and not embellished. Flag any number, quote, or attribution that appears in the draft but
+   `[[fact?: ...]]`; links inline and no bibliography — **and counted**: more than one per section, or
+   more than about four in the issue, is a finding unless each one is genuinely load-bearing
+   (`WRITING-CRAFT.md` §11). The author's facts and anecdotes present in their material and not
+   embellished. Flag any number, quote, or attribution that appears in the draft but
    not in the brief or the author's notes.
 6. **Craft.** Rhythm variety, paragraph size, show-don't-tell, one idea, one CTA, `[[...]]` notes
    deletable without breaking the text.
@@ -94,7 +116,8 @@ PASS | FAIL — <one line: the single thing that most decides it>
 - "<quoted line>" — <the observation, for the author to decide>
 
 ## Length
-<actual words> vs <tier target> — <per-section breakdown only where a section is off budget>
+<actual words> vs <tier target> — reported, not judged. Name a section here ONLY when its beat is
+unfinished; never because it came in under budget.
 
 ## Clean (omit if nothing)
 - <criteria that passed and are worth confirming, one line each>
