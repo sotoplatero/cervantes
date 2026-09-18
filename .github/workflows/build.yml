@@ -70,11 +70,19 @@ jobs:
           {
             printf 'Built from `%s` — %s\n\n' "${GITHUB_SHA:0:7}" "$(git log -1 --pretty=%s)"
             printf '%s\n\n' "$(date -u '+%Y-%m-%d %H:%M UTC')"
-            printf 'One version gets rebuilt on every push, so the commit above is what tells two %s builds apart. Bump `dev/VERSION` when the change is one an author should receive as a new folder.\n' "$VERSION"
+            printf 'This release is rebuilt on every push, so the commit above is what tells two builds apart. Bump `dev/VERSION` when the change is one an author should receive as a new folder.\n'
           } > /tmp/notes.md
-          gh release create latest "dist/cervantes-${VERSION}.zip" \
+          # Attached under a versionless name on purpose. The repo is public, so
+          # this asset is a path an author can reach, and a file called
+          # cervantes-4.0.zip in their downloads folder is exactly the version
+          # marker the product is built never to carry. Renaming the copy also
+          # keeps the download URL stable across a dev/VERSION bump — gh's
+          # `file#label` syntax would not: it sets the display label while the
+          # URL keeps following the asset's own filename.
+          cp "dist/cervantes-${VERSION}.zip" dist/cervantes.zip
+          gh release create latest dist/cervantes.zip \
             --target "$GITHUB_SHA" \
-            --title "Cervantes ${VERSION} — latest build" \
+            --title "Cervantes — latest build" \
             --notes-file /tmp/notes.md
 
       # sotoplatero/damian serves the download at /cervantes.zip, from
