@@ -23,29 +23,26 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
 
-usage() { echo "usage: bash dev/build-zip.sh [version] [--test]" >&2; exit 1; }
+usage() { echo "usage: bash dev/build-zip.sh [version] [--test]  (any order)" >&2; exit 1; }
 
 VERSION=""
-if [ $# -ge 1 ]; then
-  case "$1" in
-    --*) ;;                       # an option — the version is coming from the file
-    ''|-*) usage ;;
-    *) VERSION="$1"; shift ;;
+TEST_UNZIP=""
+for arg in "$@"; do
+  case "$arg" in
+    --test) TEST_UNZIP="yes" ;;
+    -*|'') echo "unknown option: $arg" >&2; usage ;;
+    *) [ -z "$VERSION" ] || usage; VERSION="$arg" ;;
   esac
-fi
+done
 if [ -z "$VERSION" ]; then
   [ -f "${ROOT}/dev/VERSION" ] || { echo "ABORT: no version given and no dev/VERSION" >&2; exit 1; }
   VERSION="$(tr -d '[:space:]' < "${ROOT}/dev/VERSION")"
   [ -n "$VERSION" ] || { echo "ABORT: dev/VERSION is empty" >&2; exit 1; }
 fi
-
-TEST_UNZIP=""
-for arg in "$@"; do
-  case "$arg" in
-    --test) TEST_UNZIP="yes" ;;
-    *) echo "unknown option: $arg" >&2; exit 1 ;;
-  esac
-done
+# The version becomes a file name and, with --test, a folder that gets rm -rf'd.
+[[ "$VERSION" =~ ^[0-9]+(\.[0-9]+)*(-[A-Za-z0-9.]+)?$ ]] || {
+  echo "ABORT: '$VERSION' is not a version (expected e.g. 4.1 or 4.1-rc1)" >&2; exit 1
+}
 
 OUT="${ROOT}/dist/cervantes-${VERSION}.zip"
 STAGE="$(mktemp -d)"
@@ -53,11 +50,23 @@ trap 'rm -rf "$STAGE"' EXIT
 DEST="${STAGE}/cervantes"
 
 [ -d "${ROOT}/src" ] || { echo "ABORT: no src/ — is this the Cervantes repo?" >&2; exit 1; }
+git -C "$ROOT" rev-parse --git-dir >/dev/null 2>&1 || {
+  echo "ABORT: not a git checkout — the strays check below needs git" >&2; exit 1
+}
+# An in-repo test copy carries a CLAUDE.md and skills that leak into every
+# workshop session. --test puts copies outside the repo; this one is stale.
+[ ! -e "${ROOT}/.testing" ] || { echo "ABORT: ${ROOT}/.testing is a stale in-repo test copy — delete it" >&2; exit 1; }
+if [ -n "$(git -C "$ROOT" status --porcelain -- src/ 2>/dev/null)" ]; then
+  echo "WARN: src/ has uncommitted changes — this ZIP is not what's on main" >&2
+fi
+# Lint the product before packaging it (dev/test.sh: cross-file references,
+# frontmatter, JSON, line endings, secrets).
+bash "${ROOT}/dev/test.sh" --lint || { echo "ABORT: dev/test.sh --lint failed" >&2; exit 1; }
 
 # The packager copies the working tree, so anything untracked or git-ignored
 # inside src/ would ship to every subscriber. Abort until src/ is clean in
 # git's eyes (.DS_Store excepted — it's deleted from the stage below).
-strays="$(git -C "$ROOT" status --porcelain --ignored -- src/ 2>/dev/null | grep -E '^(\?\?|!!)' | grep -v '\.DS_Store' || true)"
+strays="$(git -C "$ROOT" status --porcelain --ignored -- src/ | grep -E '^(\?\?|!!)' | grep -v '\.DS_Store' || true)"
 if [ -n "$strays" ]; then
   echo "ABORT: untracked or ignored files inside src/ would ship in the ZIP:" >&2
   echo "$strays" >&2
@@ -114,15 +123,20 @@ grep -q 'run-hook\.cmd' "${DEST}/.claude/settings.json" || {
 
 # Paths inside the product are relative to the author's folder. A "src/" in
 # there is a path that got broken while moving files around.
-if grep -rlq 'src/\.cervantes\|src/\.claude\|src/voice' "$DEST" 2>/dev/null; then
-  echo "ABORT: a src/-prefixed path leaked into the product:" >&2
-  grep -rln 'src/\.cervantes\|src/\.claude\|src/voice' "$DEST" >&2
+if grep -rlqE 'src/' "$DEST"; then
+  echo "ABORT: a src/ path leaked into the product:" >&2
+  grep -rnE 'src/' "$DEST" >&2
   exit 1
 fi
 
 # --- package -----------------------------------------------------------------
 mkdir -p "${ROOT}/dist"
 rm -f "$OUT"
+
+# Reproducible: every entry gets the time of the last commit that touched src/,
+# and entries go in byte order, so the same src/ always gives the same bytes.
+EPOCH="$(git -C "$ROOT" log -1 --format=%ct -- src)"
+find "$STAGE" -exec touch -h -d "@${EPOCH}" {} + 2>/dev/null || find "$STAGE" -exec touch -d "@${EPOCH}" {} +
 
 # Info-ZIP is the reference packager. Where it's missing — a stock Git for
 # Windows shell ships unzip but no zip — Python writes the same archive, setting
@@ -131,7 +145,7 @@ rm -f "$OUT"
 # SessionStart hook cannot start on macOS or Linux. A native Windows archiver
 # would flatten every entry to 0644, because NTFS has no executable bit to read.
 if command -v zip >/dev/null 2>&1; then
-  ( cd "$STAGE" && zip -q -r -X "$OUT" cervantes )
+  ( cd "$STAGE" && find cervantes | LC_ALL=C sort | zip -q -X -D -@ "$OUT" )
 else
   PY=""
   for c in python3 python py; do
@@ -165,7 +179,7 @@ with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
             continue
         st = os.stat(path)
         info = zipfile.ZipInfo(rel + "/" if is_dir else rel,
-                               date_time=time.localtime(st.st_mtime)[:6])
+                               date_time=time.gmtime(st.st_mtime)[:6])
         info.create_system = 3  # Unix, so unzip honours the mode below
         if is_dir:
             info.external_attr = (0o40755 << 16) | 0x10
@@ -182,6 +196,7 @@ PYZIP
 fi
 
 echo "→ dist/cervantes-${VERSION}.zip  ($(unzip -Z1 "$OUT" | grep -vc '/$') files)"
+bash "${ROOT}/dev/test.sh" --zip "$OUT" || { rm -f "$OUT"; echo "ABORT: the ZIP failed dev/test.sh --zip" >&2; exit 1; }
 
 if [ -n "$TEST_UNZIP" ]; then
   TESTROOT="${CERVANTES_TESTING:-${HOME}/cervantes-testing}"
