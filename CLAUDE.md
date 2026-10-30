@@ -11,7 +11,7 @@ Cervantes itself is a folder that a non-developer unzips and opens in Claude Cod
 | Path | What it is |
 |---|---|
 | `src/` | **The product.** Shipped verbatim as a ZIP; what every subscriber receives. |
-| `dev/` | Maintainer-only: `SCENARIOS.md` (the eval suite), `build-zip.sh` (the packager) and `VERSION` (the number the ZIP is named after). Never shipped. |
+| `dev/` | Maintainer-only: `SCENARIOS.md` (the eval suite), `build-zip.sh` (the packager), `test.sh` (hook fixtures, a cross-file lint of `src/`, ZIP assertions), `MANIFEST` (every file the ZIP must hold) and `VERSION` (the number the ZIP is named after). Never shipped. |
 | `.github/workflows/` | CI: repackages on every push and refreshes the `latest` release. Never shipped. |
 | `dist/` | Built ZIPs. Untracked. |
 | `.claude/settings.local.json` | This repo's own per-machine settings. Nothing product-related. |
@@ -50,9 +50,12 @@ Nothing enters `src/` that shouldn't reach every subscriber — notes, scratch f
 bash dev/build-zip.sh              # version from dev/VERSION → dist/cervantes-<v>.zip
 bash dev/build-zip.sh --test       # also unzips into ~/cervantes-testing/<v>/
 bash dev/build-zip.sh 4.1          # override the version for a one-off build
+bash dev/test.sh                   # hook fixtures + lint of src/ (the packager also runs it)
 ```
 
-CI runs the same packager on every push to `main`, and on `main` it replaces the single release tagged `latest` with the ZIP it just built — that release is where the current download lives. Its aborts are this repo's only automated check; **CI proves the package is well formed, never that Cervantes behaves.**
+**Adding or removing a file in `src/` means updating `dev/MANIFEST`** (`git ls-files src | sed 's#^src/##' | LC_ALL=C sort > dev/MANIFEST`), or the packager aborts.
+
+CI runs `dev/test.sh` and the packager on every push; on `main`, once both are green, it refreshes the single release tagged `latest` and syncs the ZIP into the site. Those checks are this repo's only automated ones; **CI proves the package is well formed, never that Cervantes behaves.**
 
 **Evals never run against `src/`.** They run against an unzipped build in `~/cervantes-testing/<v>/` (override with `CERVANTES_TESTING=<dir>`), because that is the artifact the subscriber gets: `dev/SCENARIOS.md` holds the suite, and a release ships only when all of it passes. Testing `src/` in place would pass on things the ZIP doesn't actually contain. The copy lives **outside this repo** on purpose: Claude Code loads every `CLAUDE.md` above the folder it opens, so a copy inside the workshop would inherit this file and its git repo. `--test` aborts if it finds a `CLAUDE.md` or `.git` above the target.
 

@@ -26,11 +26,13 @@ For what Cervantes actually does for an author, read [`src/README.md`](src/READM
 │   │   └── assets/             logo
 │   └── .claude/
 │       ├── skills/             cervantes · draft · polish · headlines · cover · ship · repurpose
-│       ├── agents/             researcher · importer · interviewer · editor
+│       ├── agents/             researcher · importer · interviewer · reader · editor
 │       └── settings.json       registers the session-start hook
 ├── dev/                    ← maintainer-only. Never shipped.
 │   ├── SCENARIOS.md            the eval suite: scenarios + regression guards
 │   ├── build-zip.sh            the packager
+│   ├── test.sh                 hook fixtures, lint of src/, ZIP assertions
+│   ├── MANIFEST                every file the ZIP must hold
 │   └── VERSION                 the number the ZIP is named after
 ├── .github/workflows/      ← CI: repackages on push, refreshes the `latest` release
 └── dist/                   ← built ZIPs (untracked)
@@ -48,7 +50,7 @@ bash dev/build-zip.sh 4.1          # override the version for a one-off build
 
 The packager stages `src/` as a folder named `cervantes`, then zips it. It aborts if `src/` holds untracked or git-ignored files (the copy is of the working tree, so they would ship); if a newsletter (`voice/`, `issues/`, `published/`, a stray `settings.local.json`) or a `.git`/`.gitignore` ends up in the package; if any skill, agent, engine library, memory template, the author's `README.md`, `CLAUDE.md`, or the hook-registering `.claude/settings.json` is missing; if a hook carries CRLF line endings (a CRLF checkout breaks the scripts under bash on Windows); or if a `src/`-prefixed path leaked into the product.
 
-CI ([`.github/workflows/build.yml`](.github/workflows/build.yml)) runs that same packager on every push, which makes those aborts this repo's only automated check. On `main` it then replaces the single release tagged **`latest`** with the ZIP it just built, so the current download always sits in one place. The Linux build is the reference one: `zip` is present and the hooks keep the `100755` mode they carry in git's index, whereas a local Windows build has to reconstruct those bits by hand. A green run says the package is well formed — not that Cervantes works.
+CI ([`.github/workflows/build.yml`](.github/workflows/build.yml)) runs `dev/test.sh` and that same packager on every push — this repo's only automated checks. On `main`, once they pass, a separate job refreshes the single release tagged **`latest`** in place and syncs the ZIP into the site, so the current download always sits in one place. The Linux build is the reference one: `zip` is present and the hooks keep the `100755` mode they carry in git's index, whereas a local Windows build has to reconstruct those bits by hand. A green run says the package is well formed — not that Cervantes works.
 
 ## Test
 

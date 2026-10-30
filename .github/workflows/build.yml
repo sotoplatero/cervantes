@@ -1,14 +1,15 @@
 name: build
 
-# Two jobs in one, on purpose.
+# Two jobs.
 #
-# On every push the packager runs, which is the only automated check this repo
-# has: the ~20 aborts in dev/build-zip.sh catch a leaked voice/, a CRLF hook, a
-# missing skill or a src/-prefixed path the moment the commit lands.
+# `build` runs on every push and pull request: dev/test.sh (hook fixtures and a
+# cross-file lint of src/), then the packager, whose aborts and ZIP assertions
+# catch a leaked voice/, a CRLF hook, a missing skill or a src/-prefixed path the
+# moment the commit lands. It only reads the repo.
 #
-# On main it also refreshes a single release tagged "latest", so the newest ZIP
-# is always one click away in one place. That is the copy that goes behind the
-# email wall — the repo is private, so nothing here is publicly reachable.
+# `publish` runs only for pushes to main, and only after `build` is green. It
+# refreshes the single release tagged "latest" and syncs the ZIP into the site.
+# It is the only job with write access.
 #
 # What this does NOT verify is behaviour. The eval suite in dev/SCENARIOS.md
 # needs a human driving Claude Code inside an unzipped folder; a green run here
@@ -21,112 +22,144 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # to refresh the rolling release
+  contents: read
 
+# On main, never cancel a run halfway: a cancelled publish could leave the
+# release or the site in between two builds. Other refs just keep the newest.
 concurrency:
   group: build-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  zip:
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # Full history: the site-sync step below asks git whether src/ changed
-          # between the previous head and this one, and a shallow clone has no
-          # previous head to compare against.
+          # The packager stamps every entry with the last commit time of src/,
+          # which needs the history that touched it.
           fetch-depth: 0
 
-      # Linux keeps the hooks at LF and carries their 100755 mode out of git's
-      # index, so this build is the reference one. A local Windows build has to
-      # reconstruct those bits by hand.
       - name: Read the version
         id: v
         run: echo "version=$(tr -d '[:space:]' < dev/VERSION)" >> "$GITHUB_OUTPUT"
 
+      - name: Test the hook and lint the product
+        run: bash dev/test.sh --hooks --lint
+
+      # Linux keeps the hooks at LF and carries their 100755 mode out of git's
+      # index, so this build is the reference one. The packager runs the ZIP
+      # assertions itself.
       - name: Package
         run: bash dev/build-zip.sh
 
-      # Kept for pull requests and for history. GitHub wraps every artifact in a
-      # second ZIP on download, which is why the release below — not this — is
-      # where you go to fetch a file that's ready to upload.
-      - uses: actions/upload-artifact@v4
+      # Kept for pull requests and for history, and handed to `publish`. GitHub
+      # wraps every artifact in a second ZIP on download, which is why the
+      # release — not this — is where you fetch a file that's ready to upload.
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: cervantes-${{ steps.v.outputs.version }}
           path: dist/cervantes-${{ steps.v.outputs.version }}.zip
           if-no-files-found: error
 
-      # Deleted and recreated rather than edited, so bumping dev/VERSION can't
-      # leave the previous version's ZIP sitting next to the new one.
+  publish:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to move the latest tag and refresh its release
+    env:
+      VERSION: ${{ needs.build.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: cervantes-${{ needs.build.outputs.version }}
+          path: dist
+
+      # Updated in place, never deleted and recreated: the download URL must
+      # not 404 between two steps, and a failure here leaves the previous build
+      # downloadable instead of none at all.
+      #
+      # Attached under a versionless name on purpose. A file called
+      # cervantes-4.0.zip in an author's downloads folder is exactly the version
+      # marker the product is built never to carry, and the stable name keeps
+      # the download URL stable across a dev/VERSION bump.
       - name: Refresh the latest release
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.v.outputs.version }}
         run: |
-          gh release delete latest --yes --cleanup-tag 2>/dev/null || true
-          git push --delete origin latest 2>/dev/null || true
+          cp "dist/cervantes-${VERSION}.zip" dist/cervantes.zip
           {
             printf 'Built from `%s` — %s\n\n' "${GITHUB_SHA:0:7}" "$(git log -1 --pretty=%s)"
             printf '%s\n\n' "$(date -u '+%Y-%m-%d %H:%M UTC')"
             printf 'This release is rebuilt on every push, so the commit above is what tells two builds apart. Bump `dev/VERSION` when the change is one an author should receive as a new folder.\n'
-          } > /tmp/notes.md
-          # Attached under a versionless name on purpose. The repo is public, so
-          # this asset is a path an author can reach, and a file called
-          # cervantes-4.0.zip in their downloads folder is exactly the version
-          # marker the product is built never to carry. Renaming the copy also
-          # keeps the download URL stable across a dev/VERSION bump — gh's
-          # `file#label` syntax would not: it sets the display label while the
-          # URL keeps following the asset's own filename.
-          cp "dist/cervantes-${VERSION}.zip" dist/cervantes.zip
-          gh release create latest dist/cervantes.zip \
-            --target "$GITHUB_SHA" \
-            --title "Cervantes — latest build" \
-            --notes-file /tmp/notes.md
+          } > "$RUNNER_TEMP/notes.md"
+          git push -f origin "${GITHUB_SHA}:refs/tags/latest"
+          if gh release view latest >/dev/null 2>&1; then
+            gh release upload latest dist/cervantes.zip --clobber
+            gh release edit latest --notes-file "$RUNNER_TEMP/notes.md"
+          else
+            gh release create latest dist/cervantes.zip \
+              --verify-tag \
+              --title "Cervantes — latest build" \
+              --notes-file "$RUNNER_TEMP/notes.md"
+          fi
 
       # sotoplatero/damian serves the download at /cervantes.zip, from
       # static/cervantes.zip, and the delivery email points a versionless URL at
       # it on purpose — a link mailed months ago has to keep giving the latest
-      # build. So publishing is overwriting that one file, and doing it by hand
-      # means every day of drift is a subscriber downloading an old Cervantes.
+      # build. So publishing is overwriting that one file.
       #
-      # Only when src/ actually moved: a push that touches dev/, the workflow or
-      # the docs builds the identical product, and pushing it would redeploy the
-      # site for nothing.
+      # Whether the site needs it is decided by what the site holds, not by
+      # this push: static/cervantes.zip.sha records the tree of src/ the ZIP was
+      # built from. A sync that failed (say, an expired token) therefore retries
+      # on the next push, whatever that push touched.
       - name: Sync the ZIP into the site
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         env:
           SITE_TOKEN: ${{ secrets.SITE_REPO_TOKEN }}
-          VERSION: ${{ steps.v.outputs.version }}
-          BEFORE: ${{ github.event.before }}
         run: |
-          if [ -z "$SITE_TOKEN" ]; then
-            echo "::warning::SITE_REPO_TOKEN is not set — the site still has whatever ZIP was last committed there by hand."
+          fail_token() {
+            echo "::error::SITE_REPO_TOKEN $1. Rotate it: a fine-grained PAT with Contents: Read and write on sotoplatero/damian only, then 'gh secret set SITE_REPO_TOKEN --repo sotoplatero/cervantes'. The site still serves the previous ZIP."
+            exit 1
+          }
+          [ -n "$SITE_TOKEN" ] || fail_token "is not set"
+
+          # The token goes in a header, never in a URL that git would store in
+          # site/.git/config for the rest of the job.
+          AUTH="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$SITE_TOKEN" | base64 -w0)"
+          echo "::add-mask::$(printf 'x-access-token:%s' "$SITE_TOKEN" | base64 -w0)"
+          sitegit() { git -c http.extraheader="$AUTH" "$@"; }
+
+          # Check the token before doing anything with it. ls-remote on a
+          # public repo succeeds without auth, so test the push permission
+          # through the API instead.
+          perm="$(curl -fsS -H "Authorization: Bearer ${SITE_TOKEN}" \
+            https://api.github.com/repos/sotoplatero/damian \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin).get("permissions",{}).get("push", False))' 2>/dev/null || true)"
+          case "$perm" in
+            True) ;;
+            False) fail_token "can read sotoplatero/damian but cannot push to it" ;;
+            *) fail_token "was rejected by GitHub (expired or revoked)" ;;
+          esac
+
+          SRC_TREE="$(git rev-parse HEAD:src)"
+          sitegit clone --depth 1 --branch master https://github.com/sotoplatero/damian.git site
+          if [ "$(cat site/static/cervantes.zip.sha 2>/dev/null)" = "$SRC_TREE" ]; then
+            echo "::notice::the site already has the build of this src/ — nothing to push."
             exit 0
           fi
 
-          # workflow_dispatch carries no before-SHA, and a branch's first push
-          # carries all zeros: both mean "sync it, don't try to compare".
-          if [ -n "$BEFORE" ] && git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
-            if git diff --quiet "$BEFORE" "$GITHUB_SHA" -- src/; then
-              echo "::notice::src/ unchanged in this push — the site already has this build."
-              exit 0
-            fi
-          fi
-
-          git clone --depth 1 --branch master \
-            "https://x-access-token:${SITE_TOKEN}@github.com/sotoplatero/damian.git" site
           cp "dist/cervantes-${VERSION}.zip" site/static/cervantes.zip
-
+          echo "$SRC_TREE" > site/static/cervantes.zip.sha
           cd site
-          if git diff --quiet -- static/cervantes.zip; then
-            echo "::notice::byte-identical ZIP — nothing to push."
-            exit 0
-          fi
           git config user.name "cervantes-ci"
           git config user.email "cervantes-ci@users.noreply.github.com"
-          git add static/cervantes.zip
+          git add static/cervantes.zip static/cervantes.zip.sha
           git commit -m "chore(recursos): sync Cervantes ${VERSION} from ${GITHUB_SHA:0:7}"
-          git push
+          # The site gets its own pushes; one rebase covers a race with them.
+          sitegit push || { sitegit pull --rebase && sitegit push; }
           echo "::notice::static/cervantes.zip updated in sotoplatero/damian."
