@@ -6,26 +6,32 @@
 > generated from here still passes the golden rule (nothing invented), the
 > author's voice (`voice/profile.md`), and `ANTI-SLOP.md`.
 
+## Method (enough on its own when the profile holds a shortlist)
+
+When a hook, opening line, title or subject is needed: **name the tension** in one sentence — curiosity,
+pain, contradiction, desire, or identification (the one taxonomy, shared with `WRITING-CRAFT.md` §2 and
+the brief in `STRUCTURE.md` §9) → **generate 8–10 options** from the formulas in `voice/profile.md` §
+Hook-formula shortlist, built from the author's real material → **filter** through the voice and
+`ANTI-SLOP.md` → **keep the 3 most concrete**, mark the strongest, one line on why each works. A hook
+opens a door and never reveals the whole answer; the body pays it off. Read the full library below only
+when the shortlist is empty or is being refreshed, and obey any **Collides** note on a formula you pick.
+
 **Bilingual layout.** Each formula keeps the source's original Spanish pattern and example verbatim
 (quoted material), followed by an indented **English pattern line** — the shape of the formula, named and
-templated. Work from the pattern line, not from the example: the examples are illustrations from another
+templated. Work from the pattern, not from the example: the examples are illustrations from another
 author's niche, and translating them literally produces exactly the generic copy this engine exists to
-avoid. Writing in a third language: derive that language's natural phrasing of the pattern, the way
-`ANTI-SLOP.md` § Any other language requires.
+avoid. **Writing in Spanish:** work from the original Spanish pattern, not from the English line — the
+English is a gloss, and translating it back loses the idiom. Writing in a third language: derive that
+language's natural phrasing of the pattern, the way `ANTI-SLOP.md` § Any other language requires.
 
-## How to use this (method)
+**Collides** marks a formula whose literal shape trips an `ANTI-SLOP.md` ban. The note says which rule and
+how to use the formula without producing the banned shape (or where alone it is allowed).
 
-When a hook, opening line, title, or subject is needed:
-1. **Name the tension first** in one sentence: curiosity, pain, contradiction, desire, urgency,
-   identification, or surprise?
-2. **Generate ~8–10 options** across *different* formulas below, drawn from the author's real material.
-3. **Filter through voice + anti-slop**, then **pick the 3 most concrete / on-voice**, mark the strongest,
-   and say in one line why each works.
-4. **Don't reveal the whole answer** — a hook opens a door; the body pays it off.
+## Principles
 
-Principles: speak to the *right* reader ("this is about me"); promise only what the issue delivers; for
-inbox/Notes keep each line ≤ ~55 chars; hook → reward → hook → reward (first line stops, next justifies
-reading on).
+Speak to the *right* reader ("this is about me"); promise only what the issue delivers; for inbox and
+Notes each line fits the mobile preview (~45–55 characters); hook → reward → hook → reward (the first line
+stops, the next justifies reading on).
 
 ## Narrowing the 75 to this author's voice
 
@@ -34,21 +40,19 @@ that fit the author's stance and reach for those first; record that shortlist in
 across issues.
 
 > **Example shortlist** — for a *first-person, confessional, self-ironic voice that documents failures with
-> numbers*: **#13 Menos es más, #19 La verdad sobre, #25 Confesión directa, #28 Reescritura en directo,
-> #30 El error invisible, #33 Primer hito, #39 Reencuadre positivo, #45 Revelación del dolor, #52 Lo que
-> aprendí pagando caro, #53 Algo hizo clic, #54 Cómo empezaría hoy, #58 Revelación de ROI, #61 Me
-> equivoqué, #62 Despiece de éxito atípico, #63 Error costoso, #69 No hagas esto, #75 La verdad
-> inesperada.** A different voice (analytical, teacherly, opinion-led) favors a different set — derive it
-> from the fingerprint, don't reuse this one.
-
-> Watch for **antithesis** formulas (e.g. #13, #66): anti-slop normally flags antithesis. Allow it only
-> when the author's seeded profile marks it as a legitimate signature *and* it comes from a real tension —
-> never as empty filler.
+> numbers*: **#19 La verdad sobre, #25 Confesión directa, #28 Reescritura en directo, #30 El error
+> invisible, #33 Primer hito, #40 Pequeño paso, gran resultado, #52 Lo que aprendí pagando caro, #54 Cómo
+> empezaría hoy, #58 Revelación de ROI, #61 Me equivoqué, #63 Error costoso, #69 No hagas esto, #74 Valor
+> comprimido.** None of them collides with `ANTI-SLOP.md`. A different voice (analytical, teacherly,
+> opinion-led) favors a different set — derive it from the fingerprint, don't reuse this one, and leave
+> colliding formulas out unless the profile documents the shape as the author's signature.
 
 ## The 75 formulas
 
 1. **Culpa mal asignada** — [Lo que suelen culpar] no es el problema, [lo inesperado] sí. *Ej: Tus correos no son malos. Tus asuntos sí.*
    → *Misassigned blame:* [what they usually blame] isn't the problem — [the unexpected thing] is.
+   **Collides:** antithesis `[flat]`. Keep only the second half: name the real culprit as a plain claim
+   ("lo que hunde tus aperturas son los asuntos").
 2. **¿Merece la pena?** — ¿Es [hábito/estrategia popular] una pérdida de tiempo? *Ej: ¿Publicar en redes es una pérdida de tiempo?*
    → *Is it worth it:* is [popular habit or strategy] a waste of time?
 3. **La gran equivocación de un referente** — El error de [persona conocida] que costó [cifra] en [sector]. *Ej: El absurdo error de Vaynerchuk que costó 10M€.*
@@ -65,14 +69,19 @@ across issues.
    → *The big lie:* the biggest lies about [topic].
 9. **Método obsoleto** — Por qué [método tradicional] está muerto. *Ej: Por qué LinkedIn está muerto.*
    → *Obsolete method:* why [traditional method] is dead.
+   **Collides:** marketing-template hook (`WRITING-CRAFT.md` §2). Replace "is dead" with the concrete
+   thing that stopped working, in the author's numbers.
 10. **Mini rant** — Mini rant: malas formas de [conseguir resultado]. *Ej: Mini rant: las ideas más torpes para destacar en LinkedIn.*
     → *Mini rant:* bad ways to [get result].
+    **Collides:** colon gloss `[flat]`. Drop the label: "las ideas más torpes para destacar en LinkedIn".
 11. **Estrategia simple, gran resultado** — Esta [idea simple] puede conseguir [resultado tangible]. *Ej: Esta chorrada te ahorra 1200€ en la renta.*
     → *Simple move, big result:* this [simple idea] can get you [tangible result].
 12. **Olvida lo que sabes** — Olvídate de tener un [recurso común] "mejor". *Ej: Olvídate de tener una herramienta de email "mejor".*
     → *Forget what you know:* forget having a "better" [common resource].
 13. **Menos es más** — No necesitas [gran supuesto]. Solo necesitas [algo alcanzable]. *Ej: No necesitas 10.000 suscriptores. Solo 1.000.*
-    → *Less is more:* you don't need [big assumption] — just [something attainable]. **(antithesis: see the warning above)**
+    → *Less is more:* you don't need [big assumption] — just [something attainable].
+    **Collides:** antithesis `[flat]`. State only the attainable half with its number ("con 1.000
+    suscriptores basta"), or use it where the profile documents the shape.
 14. **Consejo contrarian** — La mayoría de consejos sobre [tema] son basura. *Ej: La mayoría de consejos sobre tu perfil de LinkedIn son basura.*
     → *Contrarian take:* most advice about [topic] is garbage.
 15. **Mirada por dentro** — Mira [sistema/recurso] por dentro. *Ej: Mira mis plantillas de emails que llevan 3 años vendiendo.*
@@ -89,8 +98,10 @@ across issues.
     → *Anatomy of a system:* the anatomy of [successful system].
 21. **Misterio de éxito inesperado** — [Resultado grande]... ¿sin [mecanismo esperado]? *Ej: 100.000 seguidores... ¿sin redes sociales?*
     → *Unexpected-success mystery:* [big result]… without [the expected mechanism]?
+    **Collides:** suspense ellipsis `[freq]`. Write it straight: "100.000 seguidores sin redes sociales".
 22. **Secretos que nadie te contó** — [Número] cosas que tu gurú de [tema] nunca te contó. *Ej: 8 cosas que tu gurú de LinkedIn nunca te contó.*
     → *Secrets nobody told you:* [number] things your [topic] guru never mentioned.
+    **Collides:** marketing-template hook. Drop the guru framing; name the things.
 23. **Comparación extraña** — ¿En qué se parece [cosa aleatoria] a [tema]? *Ej: ¿En qué se parece hacer la compra a tener una cita?*
     → *Odd comparison:* what does [random thing] have in common with [topic]?
 24. **Tendencia que funciona ahora** — [Número] [formatos] que funcionan en [plataforma] ahora. *Ej: 5 miniaturas que lo petan en YouTube ahora.*
@@ -125,6 +136,8 @@ across issues.
     → *From hating to owning:* how to stop hating [necessary task].
 39. **Reencuadre positivo** — ¿[Situación negativa]? Bien. *Ej: ¿Todavía nadie comenta tus posts? Bien.*
     → *Positive reframe:* [negative situation]? Good.
+    **Collides:** the "¿X? No. Y." shape `[flat]`. Say why it's good news as a statement: "Que nadie
+    comente todavía tus posts tiene una ventaja".
 40. **Pequeño paso, gran resultado** — [Pequeña acción] → [gran resultado]. *Ej: Quité 3 palabras de mi página → 2.000€ más en ventas.*
     → *Small step, big result:* [small action] → [big result].
 41. **Acceso entre bastidores** — ¿Quieres ver [activo interno]? *Ej: ¿Quieres ver las aperturas y ventas de cada email de mi lanzamiento?*
@@ -133,12 +146,16 @@ across issues.
     → *Unexpected method:* [person] got [result] using [unexpected method].
 43. **Dura verdad del sector** — [Producto popular] es una gran estafa. *Ej: Las bebidas con electrolitos son una gran estafa.*
     → *Hard industry truth:* [popular product] is a scam.
+    **Collides:** marketing-template hook. Usable only when the author's material proves the claim
+    literally; otherwise name what the product fails to do.
 44. **Cambio de estatus** — [Algo poco valorado] es el nuevo [algo muy valorado]. *Ej: Los negocios personales son los nuevos unicornios.*
     → *Status shift:* [something undervalued] is the new [something prized].
 45. **Revelación del dolor** — ¿Tu [elemento clave] no funciona? Este es el motivo. *Ej: ¿Tu página de registro no funciona? Este es el motivo.*
     → *Naming the pain:* your [key element] isn't working? Here's why.
 46. **Advertencia FOMO** — Ignora esto y [consecuencia negativa]. *Ej: Ignora esto y serás invisible.*
     → *FOMO warning:* ignore this and [negative consequence].
+    **Collides:** marketing-template hook. Name the consequence the author actually saw, without the
+    threat.
 47. **Activo basado en marco probado** — El [marco conocido] convertido en [activo concreto]. *Ej: El método de Isra Bravo convertido en una Skill de Claude.*
     → *Proven framework as an asset:* [known method], turned into [concrete asset].
 48. **Quiero ayudarte con** — ¿Quieres ayuda para [resultado deseado]? *Ej: ¿Quieres ayuda para convertir tu experiencia en un negocio?*
@@ -149,16 +166,22 @@ across issues.
     → *Questioning conventional wisdom:* does [common advice] really matter that much?
 51. **Resultado sin coste habitual** — No, [resultado] no tiene por qué implicar [dolor habitual]. *Ej: No, montar un negocio no exige levantarte a las 5:00.*
     → *Result without the usual cost:* no, [result] doesn't have to mean [usual pain].
+    **Collides:** antithesis `[flat]`. Show the result with its real conditions instead: "Monté el negocio
+    sin cambiar mi horario".
 52. **Lo que aprendí pagando caro** — Pagué [cantidad] por [recurso] pero esto aprendí, gratis. *Ej: Pagué 3.000$ por un mentor pero esto aprendí, gratis.*
     → *What I paid to learn:* I paid [amount] for [resource] — here's the lesson, free.
 53. **Algo hizo clic** — [Lucha]... hasta que algo hizo clic. *Ej: Discutíamos cada día... hasta que algo hizo clic.*
     → *Something clicked:* [struggle]… until something clicked.
+    **Collides:** suspense ellipsis `[freq]`. Drop the ellipsis and name what clicked as soon as the body
+    can: "Discutíamos cada día hasta que cambiamos una regla".
 54. **Cómo empezaría hoy** — Cómo empezaría hoy si [situación actual no existiera]. *Ej: Cómo empezaría hoy si no tuviera audiencia.*
     → *How I'd start today:* how I'd start over if [current advantage] didn't exist.
 55. **Mensaje frustrante** — "[Frustración]... [situación reconocible]". *Ej: "Madre mía... mi alcance en LinkedIn se hunde".*
     → *The frustrated message:* "[frustration]… [recognizable situation]".
 56. **Stop a un cliché** — Deja de intentar [consejo común], por favor. *Ej: Deja de ir de duro en tus emails, por favor.*
     → *Stop the cliché:* please stop trying to [common advice].
+    **Collides:** the "Stop X" antithesis family `[flat]`. Name what the cliché costs instead: "Lo que te
+    cuesta ir de duro en tus emails".
 57. **Autoridad + historia** — [Persona conocida] hizo [acción] y pasó esto. *Ej: Mago More me mandó un WhatsApp y pasó esto.*
     → *Authority + story:* [known person] did [action], and this happened.
 58. **Revelación de ROI** — Esto cambió mi [métrica] en [cifra] en [plazo]. *Ej: Esto subió mis aperturas un 18% de la noche a la mañana.*
@@ -178,11 +201,14 @@ across issues.
 65. **Sí, puedes** — Sí, puedes [algo inesperado]. *Ej: Sí, puedes enviar más de un correo al día.*
     → *Yes, you can:* yes, you can [something they assume is off-limits].
 66. **Deja de ser X y conviértete en Y** — Deja de ser [identidad actual] y conviértete en [identidad poderosa]. *Ej: Deja de ser "director de ventas" y dirige tu vida.*
-    → *Stop being X, become Y:* stop being [current identity] and become [powerful identity]. **(antithesis: see the warning above)**
+    → *Stop being X, become Y:* stop being [current identity] and become [powerful identity].
+    **Collides:** antithesis `[flat]`. Only where the profile documents the shape as a signature.
 67. **Método ensayo-error** — [Número] [acciones] después... [número] aprendizajes esenciales. *Ej: 10.000 emails después... 10 aprendizajes.*
     → *Trial and error:* [number] [actions] later… [number] lessons that mattered.
+    **Collides:** suspense ellipsis `[freq]`. Write it straight: "10 cosas que aprendí en 10.000 emails".
 68. **Recurso tangible** — [Tipo de recurso]: [número] pasos para [resultado]. *Ej: Vídeo: 4 pasos para 1.000 seguidores en Substack.*
     → *Tangible resource:* [resource type]: [number] steps to [result].
+    **Collides:** colon gloss `[flat]`. Drop the label: "4 pasos para llegar a 1.000 seguidores".
 69. **No hagas esto** — No "[consejo convencional]" en [año]. *Ej: No "sigas tu pasión" en 2026.*
     → *Don't do this:* don't "[conventional advice]" in [year].
 70. **Si eres X, prueba Y** — Si eres [arquetipo], prueba este [método]. *Ej: Si eres médico, prueba esta idea de marketing por carta.*
@@ -197,6 +223,8 @@ across issues.
     → *Compressed value:* my [complex system], explained in [short format].
 75. **La verdad inesperada** — ¿Y si [resultado deseado] no fuera el verdadero objetivo? *Ej: ¿Y si vender más no fuera el objetivo?*
     → *The unexpected truth:* what if [desired result] wasn't the real goal?
+    **Collides:** "¿Y si…?" rhetorical-question opener `[flat]`. State the real goal the author found:
+    "Lo que de verdad buscaba cuando quería vender más".
 
 ## Checklist before choosing a hook
 

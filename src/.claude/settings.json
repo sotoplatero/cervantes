@@ -1,16 +1,24 @@
 {
   "$comment": "Cervantes — registers the session-start hook that greets the author and routes the session (launcher: .cervantes/hooks/run-hook.cmd, script: .cervantes/hooks/session-start). On a freshly unzipped folder it starts onboarding; on a seeded one it reports health in a line and stands down.",
+  "permissions": {
+    "allow": [
+      "Edit(/voice/**)",
+      "Edit(/issues/**)",
+      "Edit(/published/**)",
+      "WebFetch"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume|clear|compact",
+        "matcher": "startup|resume|clear|compact|fork",
         "hooks": [
           {
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR/.cervantes/hooks/run-hook.cmd\" session-start",
             "shell": "bash",
             "async": false,
-            "timeout": 10
+            "timeout": 30
           }
         ]
       }

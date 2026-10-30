@@ -5,7 +5,9 @@ long each part gets, how it's written section by section, and how the seams are 
 because a long issue written in one pass sags — the middle drifts, the sections come out uneven, the
 loops opened at the top never close, and the piece lands shorter than the author asked for.
 
-The order is always: **material → angle → brief (outline approved) → sections → seams → verdict.**
+The order is always: **material → spine → angle → brief (outline approved) → sections → seams → cold read
+→ verdict.** The spine (`WRITING-CRAFT.md` §3) is the story in five or six sentences; the outline is cut
+from it, never the other way round.
 
 ## 1. Length tiers
 
@@ -18,7 +20,8 @@ from it, the section count:
 | `standard` | ~1000–1500 | 3–5 | ~300–350 |
 | `deep` | ~1800–2500+ | 5–8 | ~300–400 |
 
-These are budgets, not quotas. Two rules govern them, in this order:
+Word counts are English-calibrated: Spanish runs ~15% longer for the same content, and the tiers
+tolerate it. These are budgets, not quotas. Three rules govern them, in this order:
 
 1. **Never pad to reach a tier.** Filler to hit a number is the fastest way to produce the empty
    connective tissue `ANTI-SLOP.md` bans.
@@ -63,8 +66,13 @@ records four things — and a section missing any of them is not ready:
 
 Then check the whole outline as a sequence:
 
-- The sections **in order** tell the before → what happened → after arc (`WRITING-CRAFT.md` §3). If
-  reordering them changes nothing, there's no arc — it's a list wearing subheads.
+- The sections **in order** follow the spine beats for the brief's type of piece (`WRITING-CRAFT.md` §3)
+  — not necessarily one section each, but in that order. If reordering them changes nothing, there's no
+  arc — it's a list wearing subheads.
+- **Every seam is "but" or "so".** Between each pair of rows, write the one word that links them. An
+  "and" is a list item; find the real link or merge the rows.
+- **Research rows are suspicious.** A row whose beat is "what source X found" is a report, not a story
+  beat. Fold the finding into the beat it supports, written as the author's claim.
 - The **macro loop** the hook opens has a named section where it closes.
 - Every section **earns the next**. Read the subheads alone: they should read as the shape of the
   issue, and a reader who skims only those should get the argument.
@@ -81,8 +89,11 @@ instead of being papered over with generic prose at 1 a.m. of the writing pass.
 
 ## 5. Subhead hierarchy
 
-- **H2** for each section in the outline — every ~250–400 words. An issue with no internal subheads is
-  incomplete regardless of tier.
+- **H2** for each section in the outline — every ~250–400 words. This is the one subhead-density rule;
+  `WRITING-CRAFT.md` and the checklist point here. An issue with no internal subheads is incomplete
+  regardless of tier — **unless** the profile's *Recurring moves / sections* row records a letter-style
+  archive with no subheads. Then sections stay in the brief's outline as beats, and the prose carries
+  them without headings.
 - **H3** only in the `deep` tier, and only when a section genuinely carries two or three named beats.
   In `short` and `standard`, H3 is clutter.
 - No colon formats, no "The Definitive Guide" (`ANTI-SLOP.md`).
@@ -118,7 +129,7 @@ After the last section, read the piece **as a whole once** — this is the one t
 read in one go, and it's checking things that only exist between sections:
 
 - **Every loop opened is closed**, macro and micro. An unpaid loop is clickbait.
-- **The callback** from the opening is planted at the end.
+- **The callback**, when the brief planned one, is planted at the end.
 - **Orphan references** — "as I said above" pointing at something that ended up in a different section,
   or a term introduced twice because two sections each defined it.
 - **Rhythm across boundaries** — the last line of one section and the first of the next shouldn't have
@@ -128,7 +139,7 @@ read in one go, and it's checking things that only exist between sections:
   anywhere else in the outline without anyone noticing is not connected to its neighbours: give its
   opening the thread the previous section left, or fix the order. This is the check that catches a draft
   that reads as a series of jumps.
-- **Tic density over the whole piece.** This is where the `ANTI-SLOP.md` frequency rule actually
+- **Tic density over the whole piece.** This is where the `ANTI-SLOP.md` `[freq]` tag actually
   applies: a device used once per section is a tic even though no single section overused it. Count
   across the issue, not within a section.
 - **Length reality check** — the real word count against the tier, reported rather than corrected.
@@ -136,13 +147,20 @@ read in one go, and it's checking things that only exist between sections:
   move on. Under budget *because* a beat is thin is a real finding — name the beat, and never inflate
   the prose around it. Over budget: cut the weakest section, don't trim every section evenly.
 
-Then hand the draft to the `editor` agent for the independent verdict. The seams pass is what the
-writer owes; the verdict is what the writer cannot honestly give themselves.
+- **The spine survived.** Read the subheads and the first line of each section: do they still tell the
+  story from the brief's spine, in order? Is the central idea said near the top (and again at the end, if
+  the landing calls for it), or did it shrink into one sentence somewhere in the middle?
+
+Then two independent reads, in this order. The `reader` agent gets **only the draft** and reads it as a
+stranger: it reports what it thinks the piece is about, the story it followed, and where it got lost or
+stopped caring — the gaps that the writer and the editor both fill in without noticing, because they know
+what the piece meant to say. Then the `editor` gets the draft, the brief and the profile and returns the
+verdict. The seams pass is what the writer owes; the two reads are what the writer cannot honestly give
+themselves.
 
 ## 8. When to keep it light
 
-A `short` tier note, a one-scene personal issue, or a piece the author already drafted by hand doesn't
-need ceremony: the brief collapses to angle + promise + hook + the two or three beats, and it gets
+A `short` tier note or a one-scene personal issue doesn't need ceremony: the brief collapses to angle + promise + hook + the two or three beats, and it gets
 written in one pass with a seams pass after. Outlining exists to make long pieces hold, not to add
 process to a 700-word letter. Say which mode is being used in one line, and move.
 
@@ -155,25 +173,43 @@ them, and `headlines` validates the subject against the promise recorded here.
 # Brief — issue {NNN}: {WORKING_TITLE}
 
 ## The decision
+- **Type of piece:** {argument | story | how-to | announcement | reflective essay} — holds unless the
+  author changes it
 - **Angle:** {the one chosen, of the options offered}
 - **Promise (one sentence):** {…}
 - **The single idea:** {…}
 - **Reader & what they take away:** {…}
 - **Length tier:** {short | standard | deep} — target {N} words
 
+## The spine
+<!-- The story in 4–6 plain sentences, told as the author would tell it out loud. Use the beats of this
+     type's row in WRITING-CRAFT §3; the argument's are shown. Each line names where it comes from: the
+     author's notes, an interview answer, a Verified source. -->
+1. **Root** — {the concrete moment that started it}
+2. **Problem** — {who has it, what it costs, why the usual answers fail}
+3. **What nobody says** — {the uncomfortable truth — "missing: ask", or "none in the material" (beat dropped)}
+4. **Turn** — {what the author did / found / changed}
+5. **Takeaway** — {what the reader can do, starting today}
+6. **Landing** — {the last concrete thing; callback and restated idea only if the material offers them}
+
 ## The hook
 - **Chosen hook:** {…}
 - **Tension it opens:** {curiosity | pain | contradiction | desire | identification}
 - **Where the macro loop closes:** {the section that pays it off}
-- **Callback planted:** {the detail from the opening that returns at the end}
+- **Callback planted:** {the detail from the opening that returns at the end — or "none"}
 
 ## Outline
 | # | Subhead (concrete, in voice) | The beat it carries | Fed by | Words |
 |---|---|---|---|---|
 | 1 | {…} | {…} | {…} | {…} |
 
-**Sequence check:** {does the order carry before → what happened → after? does each section earn the
-next? do the subheads alone give the shape?}
+**Sequence check:** {does the order follow the spine? the word linking each pair of rows — but / so, never
+"and"? do the subheads alone give the shape?}
+
+## Ruled out
+<!-- Ideas, methods, examples or framings the author rejected — with their words. Read before every
+     rewrite: nothing listed here comes back under a new name. -->
+- {…}
 
 ## Approved sources
 <!-- ONLY the researcher brief's Verified section. Unverified claims stay out and become [[fact?: ]]. -->

@@ -17,11 +17,10 @@ skeleton is a shape, not a quota.
 The engine format for almost any personal or creator newsletter.
 
 - **Hook (1–2 sentences):** what you did or what grabbed you, and why.
-- **What it really is:** short explanation, at the author's level. The reader learns with them, not beneath them.
-- **The context / the research:** what already exists? who thought of it before? is there a debate? (with inline links).
+- **What it really is:** short explanation, at the author's level. The reader learns with them, not beneath them. Outside context goes here only where it moves the story (`WRITING-CRAFT.md` §11) — a sentence, never its own section.
 - **The tension / the twist:** what you didn't expect.
 - **What you did with it:** the concrete action or result.
-- **Close:** the lesson or the line you keep.
+- **Close:** the last concrete thing — where it stands now, the next step taken. Not a moral.
 
 ## 2. "The lesson / the mistake"
 
@@ -41,7 +40,7 @@ The engine format for almost any personal or creator newsletter.
 
 - The observation or pattern you see.
 - Why it happens (your theory, from experience).
-- The uncomfortable nuance (what almost no one says).
+- The uncomfortable nuance (what almost no one says) — only when the author's material holds one; never a reveal manufactured to fill the slot.
 - What you propose / what you keep.
 
 ## 5. "The reader's transformation" (reader-as-hero arc)
@@ -58,11 +57,11 @@ For tutorial/how-to issues where the reader is clearly the protagonist. Use when
 
 ## What a complete draft looks like
 
-The author receives the whole issue, written, no gaps — no `[FILL IN]`. Example of an already-written section (generic); note the rhythm (short sentence, long sentence) and the fact doing the work without declaring the emotion:
+The author receives the whole issue, written, no gaps — no `[FILL IN]`. Example of an already-written section (generic); note that the details carry it (the third row, the Monday coffee, the finger on the screen, the date) and no sentence names the emotion:
 
-> ### The mistake that sat in front of me for weeks
+> ### The number I scrolled past for six weeks
 >
-> It was in plain sight every day. I didn't see it. It took an outsider staring at the same dashboard for ten minutes to point, with a finger, at the thing I'd normalized without noticing. I fixed it in an afternoon. The hard part wasn't fixing it — it was admitting how long I'd been living with it.
+> The cancellation rate sat in the third row of the dashboard, under a chart I checked every Monday with my coffee. It had gone from eleven percent to fourteen. Marta, who was helping me with the accounts for one afternoon, put her finger on the screen and asked when that had started. I had to open the export to answer her. It had started in March, the week I moved the welcome email to the second day.
 
 If the author wants to add their reaction, they add it when editing — but they already have text that reads on its own.
 
@@ -71,6 +70,7 @@ If the author wants to add their reaction, they add it when editing — but they
 ## Subject line
 
 ### FORBIDDEN patterns (see ANTI-SLOP.md; profile-documented signatures excepted)
+Every `[flat]` device applies, and a subject has no room to earn a `[freq]` one. The usual offenders:
 - Antithesis: "From X to Y," "It's not X, it's Y," "X? No. Y.," "Stop X, start Y."
 - Hook rhetorical question: "What if I told you…?"
 - Colon subhead: "Title: the story of how…"
@@ -81,7 +81,7 @@ If the author wants to add their reaction, they add it when editing — but they
 ### What to do instead
 - **Build the subject from a concrete detail in the material**: a real noun, a real number, a real action. Plain-and-specific beats clever-and-abstract, and it sounds more like the author.
 - Useful archetypes: concrete noun/number · honest curiosity gap (name the thing, withhold the turn — only if the body pays it off) · first-person admission ("I was wrong about X," when true) · specific question the reader is already asking.
-- **< ~50 characters** when possible — reads in full on mobile, lifts opens. "you/your" beats third person.
+- **Fits the mobile preview (~45–55 characters)** — reads in full on a phone, lifts opens. Address the reader the way the profile records (tú / usted / you…), not in the third person.
 - Give **3 variants**, mark the MOST concrete one (usually the winner).
 - If a variant could top anyone's post, delete it: it isn't the author's.
 
@@ -96,5 +96,5 @@ If the author wants to add their reaction, they add it when editing — but they
 - To start and grow, the best is usually to **prompt a reply**, not to sell.
 
 ## Layout
-- Short, scannable paragraphs. The reader skims before reading.
+- Paragraph size follows the profile's Paragraph size row (`WRITING-CRAFT.md` §6). The reader skims before reading, so a long paragraph earns its length by developing one point.
 - One idea per paragraph. Bold sparingly, only for what genuinely anchors.

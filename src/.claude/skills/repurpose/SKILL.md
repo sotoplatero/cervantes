@@ -13,9 +13,7 @@ One issue is a week of social. Repurposing is **not** pasting the intro into a p
 - Read `voice/profile.md` (voice, shortlist, taboos, **language**, emoji/caps, loanwords), the issue text, `.cervantes/engine/HOOK-FORMULAS.md` (shortlist first — the same tension-first method makes the opening line), and `.cervantes/engine/ANTI-SLOP.md` (it bites hardest on short social copy).
 - All output in the profile's **Language**. Match the author's real social habits if the archive/profile show them (emoji use, hashtag use, sign-off).
 
-## The golden rule (unchanged)
-
-Everything comes from the issue and the author's material — **no new facts, numbers, quotes, or claims** invented to make a post punchier. A social post can only say what the issue earned. Inline links point where the issue already pointed. If a post needs a fact the issue doesn't have → drop the angle, don't fabricate.
+Per CLAUDE.md's golden rule, nothing is invented. What that means here: a social post can only say what the issue earned — no new facts, numbers or quotes to make it punchier, and links point only where the issue already pointed. If a post needs a fact the issue doesn't have → drop the angle.
 
 ## Method
 
@@ -33,17 +31,16 @@ Everything comes from the issue and the author's material — **no new facts, nu
 **5. Save.** Write the set to `issues/NNN-slug/social.md` (or `published/NNN-slug/social.md` if that's where the issue lives), grouped by platform, each post in its own block ready to copy-paste, with a one-line note of which atom it draws from. Never touch `draft.md`, the snapshot, or memory files.
 
 **6. Verdict on the set (recommended).** Short copy is where tics are fatal, and you just wrote every
-one of these lines. Spawn the `editor` agent (Agent tool, `subagent_type: "editor"`) with the **paths** to
-the saved `social.md` and `voice/profile.md`, no brief, asking for the **tic census and voice-fidelity
-checks only** — structure and length don't apply here. (The editor only reads from disk, which is why the
-set is saved first.) Fix its Must-fix items in `social.md` before handing off. Skip only for a single
+one of these lines. Spawn the `editor` agent (Agent tool, `subagent_type: "editor"`) with **`social`** as the
+pass and the **paths** to the saved `social.md` (the social copy, not the brief) and `voice/profile.md`.
+(The editor only reads from disk, which is why the set is saved first.) Fix its Must-fix items in `social.md` before handing off. Skip only for a single
 short post.
 
 **7. Hand off.** Tell the author where the set is, which atoms became which posts, and that they can ask for more variations of any one. Note the strongest post to lead the week with.
 
 ## Learn (light)
 
-Repurposing surfaces which ideas *feel* most postable — a useful signal. If the author reacts strongly to an atom ("this is the real point"), note it in `voice/journal.md` as a resonance/carry-forward hint. Don't bump the voice version for this; it's a soft signal, not an edit to their hand.
+Repurposing surfaces which ideas *feel* most postable — a useful signal. If the author reacts strongly to an atom ("this is the real point"), note it as a carry-forward hint in that issue's entry in `voice/journal.md` (found by `Issue NNN`). Don't bump the voice version for this; it's a soft signal, not an edit to their hand.
 
 ## Anti-goals
 

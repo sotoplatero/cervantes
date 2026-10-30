@@ -17,7 +17,7 @@ Every cover belongs to the SAME newsletter. **The style block is fixed; only the
 
 **4. Generate or hand off.** In order: an installed image-generation skill/CLI → an image-capable MCP tool → nothing available (normal): save the prompt as `cover-prompt.txt` in the issue folder with the aspect ratio and negatives noted, ready to paste into their tool — overwriting the seeded one in place, never a second variant. Generated images go in the issue folder as `cover.png` (or the tool's format). One round of variation if asked — vary the concept, never the fixed style.
 
-**5. Consistency check.** Compare against previous issues' covers/prompts: same medium, palette, mood? If drifted, fix before finishing. If this is the first shipped cover and no anchor exists, record it as the style anchor in `voice/cover-style.md`.
+**5. Consistency check.** Compare against previous issues' covers/prompts: same medium, palette, mood? If drifted, fix before finishing. If no style anchor exists yet, ask once — "Use this cover as the reference for every future one?" — and record it in `voice/cover-style.md` only on yes.
 
 ## Anti-goals
 

@@ -33,8 +33,7 @@ For what Cervantes actually does for an author, read [`src/README.md`](src/READM
 │   ├── build-zip.sh            the packager
 │   └── VERSION                 the number the ZIP is named after
 ├── .github/workflows/      ← CI: repackages on push, refreshes the `latest` release
-├── dist/                   ← built ZIPs (untracked)
-└── .testing/               ← unzipped builds for eval runs (untracked)
+└── dist/                   ← built ZIPs (untracked)
 ```
 
 Inside `src/`, every path is written from the **author's** point of view — `.cervantes/engine/ANTI-SLOP.md`, `voice/profile.md` — because that's where those files sit once the folder is unzipped. A `src/` prefix inside `src/` is always a bug.
@@ -43,7 +42,7 @@ Inside `src/`, every path is written from the **author's** point of view — `.c
 
 ```
 bash dev/build-zip.sh              # version from dev/VERSION → dist/cervantes-<v>.zip
-bash dev/build-zip.sh --test       # also unzips into .testing/<v>/
+bash dev/build-zip.sh --test       # also unzips into ~/cervantes-testing/<v>/
 bash dev/build-zip.sh 4.1          # override the version for a one-off build
 ```
 
@@ -53,11 +52,11 @@ CI ([`.github/workflows/build.yml`](.github/workflows/build.yml)) runs that same
 
 ## Test
 
-Evals run against an **unzipped build in `.testing/`**, never against `src/`. The ZIP is the artifact a subscriber gets; testing the source tree in place would pass on things the package doesn't contain.
+Evals run against an **unzipped build in `~/cervantes-testing/<v>/`**, never against `src/`. The ZIP is the artifact a subscriber gets; testing the source tree in place would pass on things the package doesn't contain. The copy sits outside this repo because Claude Code loads every `CLAUDE.md` above the folder it opens — inside the workshop, the evals would inherit the workshop's instructions. Set `CERVANTES_TESTING=<dir>` to put it elsewhere; `--test` aborts if a `CLAUDE.md` or `.git` sits above it.
 
 ```
 bash dev/build-zip.sh 4.0 --test
-cd .testing/4.0/cervantes      # open this in Claude Code and work through dev/SCENARIOS.md
+cd ~/cervantes-testing/4.0/cervantes      # open this in Claude Code and work through dev/SCENARIOS.md
 ```
 
 A release ships only when every scenario and regression guard in `dev/SCENARIOS.md` passes. Scenario 1 is the one to check first: open a freshly unzipped folder and Cervantes should greet and start onboarding without the author typing anything.

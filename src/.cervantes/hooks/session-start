@@ -22,11 +22,41 @@ set -uo pipefail
 # If neither works, exit silently — CLAUDE.md's manual check takes over.
 cd "${CLAUDE_PROJECT_DIR:-$(dirname "$0")/../..}" 2>/dev/null || exit 0
 
+# ---------------------------------------------------------------- input ----
+# Claude Code sends JSON on stdin; "source" says why the session (re)started:
+# startup | resume | clear | compact | fork. Read it without ever blocking:
+# line by line with a timeout, and not at all when stdin is a terminal (a
+# maintainer running the script by hand). No jq — a sed probe is enough.
+input=""
+if [ ! -t 0 ]; then
+  while :; do
+    line=""
+    IFS= read -r -t 2 line
+    rc=$?
+    input="${input}${line} "
+    [ "$rc" -eq 0 ] || break
+  done
+fi
+origin="$(printf '%s' "$input" | sed -n 's/.*"source"[[:space:]]*:[[:space:]]*"\([A-Za-z]*\)".*/\1/p' | head -n 1)"
+
 # ---------------------------------------------------------------- probe ----
 # Tolerant on purpose: the profile is the author's file and they edit it by
-# hand — indentation, **bold**, case drift or a dropped "v" must not read as
-# "not seeded" (that would trigger onboarding over a live newsletter).
-voice="$(sed -n 's/^[[:space:]]*[*_]*[Vv]oice [Vv]ersion[*_]*:[*_[:space:]]*v\{0,1\}\([0-9][0-9.]*\).*/v\1/p' ./voice/profile.md 2>/dev/null | head -n 1)"
+# hand. Any of these must read as the version, never as "not seeded" (that
+# would trigger onboarding over a live newsletter):
+#   Voice version: v0.3        **Voice version:** v0.3     - Voice version: 0.3
+#   ## Voice version: v0.3     > Voice version: v0.3       | Voice version | v0.3 |
+#   Versión de voz: v0.3       VERSION DE VOZ: 0.3         (CRLF, a UTF-8 BOM)
+# Byte-wise (LC_ALL=C) and lowercased first, so case drift and the accent need
+# no locale. The BOM and the accented letters are built with printf octal
+# escapes because BSD sed (macOS) has no hex escapes.
+bom="$(printf '\357\273\277')"
+o_acute="$(printf '\303\263')"
+O_acute="$(printf '\303\223')"
+voice="$(LC_ALL=C sed "1s/^${bom}//" ./voice/profile.md 2>/dev/null \
+  | LC_ALL=C tr -d '\r' | LC_ALL=C tr 'A-Z' 'a-z' \
+  | LC_ALL=C sed -E -n "s/^[[:space:]>|*#_-]*(voice[[:space:]]+version|versi(o|${o_acute}|${O_acute})n[[:space:]]+de[[:space:]]+voz)[*_[:space:]]*(:|[|])[*_[:space:]]*v?([0-9][0-9.]*).*/v\4/p" \
+  | head -n 1)"
+voice="${voice%.}"
 
 missing=""
 note_missing() { missing="${missing:+$missing, }$1"; }
@@ -39,14 +69,31 @@ n_issues="$(count_in ./issues -type d)"
 n_published="$(count_in ./published -type d)"
 n_archive="$(count_in ./voice/archive -name '*.md')"
 
+# Has this newsletter already produced work? A lost or blanked profile over
+# real work is damage to repair, not a new author to onboard. The journal
+# template has no "## " line; a logged entry does.
+has_work=""
+if [ "$n_archive" -gt 0 ] || [ "$n_issues" -gt 0 ] || [ "$n_published" -gt 0 ] \
+   || grep -q '^## ' ./voice/journal.md 2>/dev/null; then
+  has_work="yes"
+fi
+
+# What the folder needs from the machine. bash is implied — this script is
+# running — so only curl is left: the importer reads posts verbatim with it.
+needs=""
+command -v curl >/dev/null 2>&1 || needs="curl"
+
 # Engine v3.x and earlier kept memory in cervantes/ — one-time migration.
+# Only a folder that really is the old layout counts, not any ./cervantes.
 legacy=""
-if [ ! -f "./voice/profile.md" ] && [ -d "./cervantes" ]; then
+if [ ! -f "./voice/profile.md" ] && { [ -f "./cervantes/profile.md" ] || [ -d "./cervantes/engine" ]; }; then
   legacy="yes"
 fi
 
 # ---------------------------------------------------------------- state ----
 header="Cervantes — this folder's session-start hook checked the newsletter's state before you saw a message. This check is authoritative: do NOT stat these paths again and do NOT re-run it."
+work="${n_issues} issue folder(s), ${n_published} published, ${n_archive} archived post(s)"
+continuing=""
 
 if [ -n "$legacy" ]; then
   state="STATE: legacy layout — the memory sits in cervantes/ (engine v3.x); this kit reads it from voice/.
@@ -57,15 +104,35 @@ elif [ -f "./voice/profile.md" ] && [ "$voice" != "v0.0" ] && { [ -z "$voice" ] 
   # up but damaged (hand-edited header, missing file). Repair — never onboard.
   state="STATE: half-built — voice profile ${voice:-present but its Voice version line is unreadable}${missing:+; missing: $missing}.
 ACTION: run the cervantes skill (Repair). Heal the structure per the memory schema without touching the author's content — do NOT onboard, this newsletter is already set up. Then continue with whatever the author asks."
+  continuing="yes"
+
+elif { [ ! -f "./voice/profile.md" ] || [ "$voice" = "v0.0" ]; } && [ -n "$has_work" ]; then
+  # No usable profile, but the newsletter has a record: the profile was lost
+  # or blanked over a live newsletter. Rebuild it from the work — never onboard.
+  state="STATE: half-built — voice profile ${voice:-absent}, but this newsletter already has work (${work}${missing:+; missing: $missing}).
+ACTION: run the cervantes skill (Repair → Re-seed). Rebuild the profile from the existing archive; do NOT greet the author as new and do NOT re-import. Never touch voice/journal.md, voice/archive/, issues/ or published/. Then continue with whatever the author asks."
+  continuing="yes"
 
 elif [ -z "$voice" ] || [ "$voice" = "v0.0" ] || [ -n "$missing" ]; then
   state="STATE: not seeded — voice profile ${voice:-absent}${missing:+; missing: $missing}.
 ACTION: run the cervantes skill NOW, without waiting to be asked. Greet the author and onboard them: newsletter URL or writing sample, archive import, voice fingerprint, preferences wizard, cover style. This is why they opened this folder. Never write in their name from an unseeded profile."
+  continuing="yes"
 
 else
-  state="STATE: ready — voice profile ${voice}, ${n_issues} issue folder(s), ${n_published} published, ${n_archive} archived post(s).
+  state="STATE: ready — voice profile ${voice}, ${work}.
 ACTION: none. CLAUDE.md governs this folder; go straight to what the author asks for."
 fi
+
+# A compacted, resumed or forked conversation may already hold the onboarding
+# or repair in progress. The hook fires again; the author must not be greeted
+# twice or walked back to the top of the checklist. startup/clear: unchanged.
+case "$origin" in
+  compact|resume|fork)
+    if [ -n "$continuing" ]; then
+      state="${state} If onboarding (or the repair) is already under way in this conversation, continue from where it stands — do not greet again or restart the checklist."
+    fi
+    ;;
+esac
 
 # --------------------------------------------------------------- output ----
 escape_for_json() {
@@ -77,6 +144,11 @@ escape_for_json() {
   s="${s//$'\t'/\\t}"
   printf '%s' "$s"
 }
+
+if [ -n "$needs" ]; then
+  state="${state}
+REQUIREMENTS: missing ${needs} — run the cervantes skill (Requirements) once this turn's ACTION is done."
+fi
 
 context="$(escape_for_json "<cervantes>
 ${header}

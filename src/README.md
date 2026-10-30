@@ -13,12 +13,13 @@ Cervantes turns any folder into a personal editorial workspace. It learns your v
 - **It learns your voice first — from evidence.** Give it your newsletter URL and it downloads your published archive, extracts a voice fingerprint (rhythm, signature phrases, humor, openings — each with quoted proof), and shows it to you for corrections before writing a word in your name.
 - **It knows the craft.** Every workspace ships with a writing engine: hook formulas, open-loop and rhythm techniques, issue skeletons, subject-line archetypes, and a hard **anti-slop** rule set that bans the patterns that make text smell like AI ("It's not X, it's Y", "What if I told you…", inflated adjectives, unearned morals). A quality checklist runs before anything is handed back.
 - **It plans before it writes.** For anything longer than a short note, Cervantes writes the brief first — angle, promise, the outline with a word budget per section, and *what material feeds each section* — and you approve it before a single paragraph exists. Correcting an outline costs you one line; correcting 2.000 written words costs the whole draft. Then it writes section by section against that plan, so the middle doesn't sag and the piece comes out the length you asked for. The brief is also why a long issue survives a closed laptop: it resumes exactly where it stopped.
+- **A reader who has never heard of you.** Before the editor sees the draft, a separate reader gets nothing but the text — no profile, no plan, no idea who you are — and reports what it thinks the piece is about, the story it followed, and exactly where it got lost or stopped caring. Those are the holes every real subscriber falls into and that anyone who knows what you meant reads straight past.
 - **A second pair of eyes that didn't write it.** Nothing reaches you until an independent editor pass grades the finished text cold. It *counts* every AI tic across the whole issue (a device that appears once per section is a tic, even when no single section overused it), checks that the hook's promise actually gets paid off, and flags the passages where the prose drifted into competent-but-neutral — the one thing no writer catches in their own work. On a polish pass it never touches your sentences: what it finds in your hand comes to you as a suggestion.
 - **Your edits are sacred — and it learns from them.** Cervantes distinguishes its text from yours. Polishing fixes typos in your passages, never your opinions. Then it diffs what you changed, logs the lesson to a journal, and updates your voice profile — so the next draft needs less fixing.
 - **It closes the loop after you hit send.** When you publish, Cervantes records the version that actually went out (often not the polished one), archives it as fresh voice ground-truth, and learns from that final diff too. Bring the numbers later — opens, replies, the winning subject — and it promotes what worked into your profile, so the next issue's angle and subject start from what your list has already rewarded.
 - **One issue becomes a week of social.** Ask it to repurpose and it atomizes the issue into native posts for LinkedIn, X, or Substack Notes — in your voice, with the same anti-slop bar, nothing invented beyond what the issue earned.
 - **Nothing invented, ever.** Your facts, quotes, and anecdotes come only from your material. Outside context is gathered by a separate research agent that only reports what it actually read — verified claims with links it actually opened, plus an explicit list of what it *couldn't* confirm, including anything in your own notes it found contradicted. Where only YOUR detail would land harder, it asks you one short, specific question — drawn from the actual gaps in the outline, never a generic questionnaire — or leaves a deletable `[[enrich:]]` note. It never writes the answer for you, not even as a suggestion.
-- **It lives in your folder, not in your way.** The folder *is* the workspace: the engine, the workflows and the agents ship inside it, ready from the first session. Nothing to install, nothing to copy, and nothing Cervantes-specific loads when you open your other projects.
+- **It lives in your folder, not in your way.** The folder *is* the workspace: the engine, the workflows and the agents ship inside it, ready from the first session. Nothing to copy, and nothing Cervantes-specific loads when you open your other projects. If your computer is missing something it needs, Cervantes installs it for you.
 - **You write anywhere.** Issues are plain Markdown in your folder. Edit in VS Code, Obsidian, Notepad — Cervantes works on the same files when you call it.
 - **Consistent covers.** One fixed visual style, defined once; every issue's cover looks like the same publication.
 - **Any language.** The engine is English; Cervantes detects your newsletter's language and writes everything in it.
@@ -26,7 +27,8 @@ Cervantes turns any folder into a personal editorial workspace. It learns your v
 ## Requirements
 
 - [Claude Code](https://claude.com/claude-code) (CLI or desktop app)
-- Nothing else — no install, no plugin, no terminal, no account to create
+- On Windows, Git for Windows: a small free program the start-up check needs. You don't have to look for it. If it's missing, Cervantes notices the first time you open the folder and installs it for you; you only accept the Windows permission window.
+- Nothing else — no plugin, no terminal, no account to create
 
 ## Getting started
 
@@ -46,9 +48,9 @@ The first session asks you once to approve the folder's session-start check — 
 2. Open **the new folder** in Claude Code.
 3. Say: *"bring my work over from my old folder"* — and tell it where that folder is.
 
-Cervantes moves your `voice/`, `issues/` and `published/` across, checks whether the new engine expects anything new in your profile (and asks before adding it), and gets back to work. **Your old folder is left exactly as it was**, so it's your backup until you're sure.
+Cervantes copies your `voice/`, `issues/` and `published/` across, checks that every file arrived, checks whether the new engine expects anything new in your profile (and asks before adding it), and gets back to work. **Your old folder is left intact** — nothing is moved out of it — so it stays a complete working backup until you're sure.
 
-Nothing of yours is ever rewritten: your voice, your learning log, your archive and your drafts move as they are. And if a copy of Cervantes ever gets damaged, the fix is the same three steps — your work was never the part that broke.
+Nothing of yours is ever rewritten: your voice, your learning log, your archive and your drafts are copied as they are. And if a copy of Cervantes ever gets damaged, the fix is the same three steps — your work was never the part that broke.
 
 ## The workflow — you just talk
 
@@ -62,11 +64,14 @@ Nothing of yours is ever rewritten: your voice, your learning log, your archive 
 A typical issue:
 
 ```
-"draft this from my notes"   →  angles offered → hooks offered → brief with the
-                                outline, for you to approve (a line, not a form)
+"draft this from my notes"   →  first checks what's already live on your site
+                                → the story in five sentences → angles and hooks
+                                → brief with the outline, for you to approve
+                                (a line, not a form)
                                 → any question only you can answer
-                                → written section by section, then checked by
-                                an editor that didn't write it
+                                → written section by section, then read cold by
+                                a stranger and checked by an editor, neither of
+                                which wrote it
                                 → complete draft in issues/012-your-topic/draft.md
         ↓
 you edit the draft by hand, in any editor, on your own time
@@ -110,12 +115,13 @@ your-newsletter/
 └── .claude/
     ├── skills/                ← cervantes (setup) · draft · polish · headlines · cover · ship · repurpose
     ├── agents/                ← researcher (verifies sources) · importer (imports your archive)
-    │                            interviewer (finds the questions) · editor (judges the draft)
+    │                            interviewer (finds the questions) · reader (a stranger's read)
+    │                            editor (judges the draft)
     ├── settings.json          ← registers the session-start check (the one you approve on day one)
-    └── settings.local.json    ← created at setup: your statusline (per-machine)
+    └── settings.local.json    ← created at setup: your statusline and permission choices (per-machine)
 ```
 
-The three at the top are yours and only exist here — those move when you update, and so does `settings.local.json`, which setup created for you. Everything else below the gap came in the ZIP and is identical for every author, so losing it costs you nothing.
+The three at the top are yours and only exist here — those are copied when you update, and so is `settings.local.json`, which setup created for you. Everything else below the gap came in the ZIP and is identical for every author, so losing it costs you nothing.
 
 The last two start with a dot, which means your computer hides them: on a Mac, Finder won't show them; on Windows, the Explorer won't either. That's on purpose — there is nothing in there for you to open. You never have to find them, and Cervantes never asks you to.
 

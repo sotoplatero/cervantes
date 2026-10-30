@@ -12,8 +12,12 @@
 # else, so packaging is "copy src/, name it cervantes, zip it". The checks below
 # are cheap insurance against that invariant being broken, not a filter.
 #
-# --test also unzips the result into .testing/<version>/, which is where the
-# eval suite in dev/SCENARIOS.md runs. Evals never run against src/ itself.
+# --test also unzips the result into ~/cervantes-testing/<version>/ (override
+# with CERVANTES_TESTING=<dir>), which is where the eval suite in
+# dev/SCENARIOS.md runs. Evals never run against src/ itself, and never inside
+# this repo either: Claude Code loads every CLAUDE.md above the folder it opens,
+# so a copy under the workshop would inherit the workshop's instructions
+# ("never onboard an author here") and its git repo — things no subscriber has.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -84,11 +88,11 @@ for h in session-start run-hook.cmd; do
   [ -x "$f" ] || chmod +x "$f"
 done
 
-# The seven skills and four agents are what make the folder work at all.
+# The seven skills and five agents are what make the folder work at all.
 for s in cervantes draft polish headlines cover ship repurpose; do
   [ -f "${DEST}/.claude/skills/${s}/SKILL.md" ] || { echo "ABORT: missing skill ${s}" >&2; exit 1; }
 done
-for a in researcher importer interviewer editor; do
+for a in researcher importer interviewer reader editor; do
   [ -f "${DEST}/.claude/agents/${a}.md" ] || { echo "ABORT: missing agent ${a}" >&2; exit 1; }
 done
 for e in STRUCTURE WRITING-CRAFT HOOK-FORMULAS ANTI-SLOP TEMPLATES QUALITY-CHECKLIST MEMORY-SCHEMA; do
@@ -180,9 +184,31 @@ fi
 echo "→ dist/cervantes-${VERSION}.zip  ($(unzip -Z1 "$OUT" | grep -vc '/$') files)"
 
 if [ -n "$TEST_UNZIP" ]; then
-  TESTDIR="${ROOT}/.testing/${VERSION}"
+  TESTROOT="${CERVANTES_TESTING:-${HOME}/cervantes-testing}"
+  mkdir -p "$TESTROOT"
+  TESTROOT="$(cd "$TESTROOT" && pwd)"
+  case "$TESTROOT/" in
+    "$ROOT"/*) echo "ABORT: ${TESTROOT} is inside the repo — evals must run outside it" >&2; exit 1 ;;
+  esac
+  # Anything above the test copy that Claude Code or git would pick up turns the
+  # eval into a test of something the subscriber doesn't have.
+  d="$TESTROOT"
+  while :; do
+    for m in CLAUDE.md .git; do
+      if [ -e "${d}/${m}" ]; then
+        echo "ABORT: ${d}/${m} sits above the test copy and would leak into the evals" >&2
+        echo "       pick another folder with CERVANTES_TESTING=<dir>" >&2
+        exit 1
+      fi
+    done
+    [ "$d" = "/" ] || [ "$d" = "$(dirname "$d")" ] && break
+    d="$(dirname "$d")"
+  done
+  TESTDIR="${TESTROOT}/${VERSION}"
   rm -rf "$TESTDIR"
   mkdir -p "$TESTDIR"
   unzip -q "$OUT" -d "$TESTDIR"
-  echo "→ .testing/${VERSION}/cervantes  (open this in Claude Code; suite: dev/SCENARIOS.md)"
+  SHOW="${TESTDIR}/cervantes"
+  command -v cygpath >/dev/null 2>&1 && SHOW="$(cygpath -w "$SHOW")"
+  echo "→ ${SHOW}  (open this in Claude Code; suite: dev/SCENARIOS.md)"
 fi

@@ -3,6 +3,8 @@
 Voice version: v0.0
 
 <!--
+Keep the line above exactly as `Voice version: vX.Y`, in English, even when the
+rest of this profile is in the author's language: the start-up check reads it.
 Cervantes' single source of truth about the author. Every skill reads it before
 writing a word. Seeded by onboarding (v0.0 → v0.1); maintained continuously per
 .cervantes/engine/MEMORY-SCHEMA.md. The author may edit anything here by hand.
@@ -28,7 +30,9 @@ v0.0 means UNSEEDED: never write in the author's name until seeding completes.
 
 ## Voice fingerprint
 
-<!-- Filled ONLY from observed real text (archive/sample). Each row cites a short example. -->
+<!-- Filled ONLY from observed real text (archive/sample). Each row cites a short example.
+     If the archive uses no subheads, the Recurring moves row says "letter-style, no subheads":
+     that switches subheads off (.cervantes/engine/STRUCTURE.md §5). -->
 
 | Dimension | Observed | Example (quoted) |
 |---|---|---|
@@ -53,14 +57,18 @@ v0.0 means UNSEEDED: never write in the author's name until seeding completes.
 
 <!-- Patterns from .cervantes/engine/ANTI-SLOP.md that ARE this author's real voice, each with a quoted example from published text. Empty = no exceptions. -->
 
+## Anti-slop forms in {LANGUAGE}
+
+<!-- Only when the language is not Spanish or English: this language's equivalents of each ANTI-SLOP.md device, one line each with its [flat]/[freq] tag. Derived once; every sweep reads them from here. Empty for ES/EN. -->
+
 ## Standing preferences (from chat)
 
-<!-- Dated instructions given in conversation. Re-read before every issue. -->
+<!-- Dated instructions given in conversation. Re-read before every issue. No duplicates; a newer preference that contradicts an older one replaces it, dated. -->
 
 ## Things I NEVER do when writing as you
 
-<!-- Hard constraints from explicit corrections, with dates. -->
+<!-- Hard constraints from explicit corrections, with dates. No duplicates. -->
 
 ## Your phrases & turns (voice bank)
 
-<!-- Quotes from real published text only. -->
+<!-- Quotes from real published text, or lines the author wrote by hand marked (from edit, YYYY-MM-DD). Never Cervantes' lines. ~15 at most: a new one replaces the weakest. -->

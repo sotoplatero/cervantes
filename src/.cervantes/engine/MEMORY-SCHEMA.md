@@ -8,7 +8,7 @@ The memory files (`voice/profile.md`, `voice/journal.md`, `voice/cover-style.md`
 
 ## `voice/profile.md` — the voice fingerprint
 
-**Status marker:** the `Voice version` line. `v0.0` = unseeded — never write in the author's name; run the seeding first (archive import + interview). Seeding fills the file and bumps to `v0.1`; every meaningful update bumps it again (v0.1 → v0.2 …) and adds a dated line to the journal.
+**Status marker:** the `Voice version` line. `v0.0` = unseeded — never write in the author's name; run the seeding first (archive import + interview). Seeding fills the file and bumps to `v0.1`; every meaningful update bumps it again (v0.1 → v0.2 …) and adds a dated line to the journal. The line stays exactly `Voice version: vX.Y`, in English, even when the rest of the profile is in the author's language — the start-up check reads it literally.
 
 Sections:
 
@@ -16,43 +16,50 @@ Sections:
 - **Voice fingerprint** — one row per dimension, filled ONLY from what is observed in real text (no invented traits): person & stance, sentence rhythm, paragraph size, lexicon, signature phrases, punctuation habits, humor & tone, typical openings, recurring moves/sections, closing style. Each with a short quoted example from the archive.
 - **Hook-formula shortlist** — derived from the fingerprint per `HOOK-FORMULAS.md` § Narrowing: number + name + one line on why it fits; updated as resonance shows what wins.
 - **Documented signatures (anti-slop exceptions)** — patterns from `ANTI-SLOP.md` that ARE this author's real voice, each with a quoted example from published text.
+- **Anti-slop forms in {language}** — only for a language other than Spanish or English: that language's equivalents of the `ANTI-SLOP.md` devices, one line each with its `[flat]`/`[freq]` tag, derived once (at onboarding or the first sweep) and read by every sweep after. Empty for ES/EN.
 - **Standing preferences (from chat)** — dated instructions the author gave in conversation; re-read before every issue.
 - **Things I NEVER do when writing as you** — hard constraints from explicit corrections, with dates. An edit that repeats across issues gets promoted here.
-- **Your phrases & turns (voice bank)** — quotes from real published text only.
+- **Your phrases & turns (voice bank)** — quotes from real published text, plus lines the author wrote into a draft by hand, marked `(from edit, YYYY-MM-DD)`. Never a line Cervantes wrote.
+
+**Keeping the lists lean.** In Things I NEVER do, Standing preferences and the voice bank: no duplicates — a signal already recorded gets its date refreshed, not a second line. A newer preference that contradicts an older one **replaces** it, dated. The voice bank holds ~15 quotes; past that, a new one replaces the weakest (the most generic, or the one the fingerprint already covers).
+
+**Re-deriving the fingerprint.** Every ~10 issues newly added to `voice/archive/` since the last derivation, offer to re-derive the Voice fingerprint table from the archive: show the new table beside the old, the author corrects, then it's written and the version bumped. Never silently.
 
 ## `voice/journal.md` — the learning log
 
-Newest entries first. The learning signal comes from four places: the **edit diff** (`.baseline.md` vs the draft after the author edited it by hand — logged by `polish`), the **published diff** (`draft.md` vs the version that actually went out — logged by `ship`, and often the most honest sample there is), **explicit corrections** in chat ("I'd never say it that way," "this is me"), and **resonance** (opens, replies, what won — logged by `ship` when the numbers arrive, and it sharpens future angle and subject choices). All four get logged here and carried into the profile.
+The learning signal comes from four places: the **edit diff** (`.baseline.md` vs the draft after the author edited it by hand — logged by `polish`), the **published diff** (`draft.md` vs the version that actually went out — logged by `ship`, and often the most honest sample there is), **explicit corrections** in chat ("I'd never say it that way," "this is me"), and **resonance** (opens, replies, what won — logged by `ship` when the numbers arrive, and it sharpens future angle and subject choices). All four get logged here; what passes § What counts as a learning signal is carried into the profile.
 
-Entry template (copy and fill):
+**One entry per issue, keyed by edition number.** Each skill finds the entry by `Issue NNN`, appends its own dated sub-block under it, and creates the entry only if none exists. Issue entries are ordered newest-first by issue number. Entries in the older `## YYYY-MM-DD — Issue: "…"` shape are left exactly as they are — never rewritten into the new one.
 
 ```
-## YYYY-MM-DD — Issue: "<title or topic>"
+## Issue NNN — "<title or topic>"
 
-**Angle chosen:** (of the proposed options, which and why)
-**Subject shipped:** "<subject>"  |  **Preheader:** "<preheader>"
+**Angle chosen:** (of the proposed options, which and why — written by draft)
 
-**Draft vs. edited/published (the diff):**
-- Cervantes drafted: ...
-- the author kept/changed: ...
-- the difference that matters: ... (cut / rewrote / added / reordered)
+### Polish round N (YYYY-MM-DD)
+- Cervantes drafted: ... | the author changed: ... | the difference that matters: ... (cut / rewrote / added / reordered)
+- Explicit corrections: ...  ·  Profile changes applied: ...
 
-**Structure (from brief.md):** which outline sections survived, which got merged, cut, or reordered on
-the way out — and the length that actually shipped vs the tier. A section the author cuts every time is
-a structural lesson, not a one-off.
+### Headlines (YYYY-MM-DD)
+- Subject chosen: "<subject>"  |  Preheader: "<preheader>"  (chosen, not yet shipped)
 
-**Explicit corrections:** ("I'd never say...", "this is me")
-**New patterns observed:** (turns of phrase, rhythm, structure)
-**Profile changes applied:** (what was edited; new voice version)
+### Shipped (YYYY-MM-DD)
+- Published diff: draft.md vs what went out — what was cut, rewritten, added
+- Structure survival: which outline sections survived, merged, were cut or reordered; length shipped vs tier
+- Subject that actually went out: "<subject>"
+- Profile changes applied: ...
 
-**Resonance (fill when known):**
-- open rate: ___ | reply rate: ___ | clicks: ___
-- winning subject (if A/B): ___
+### Resonance (YYYY-MM-DD)
+- open rate: ___ | reply rate: ___ | clicks: ___ | winning subject (if A/B): ___
 - what landed / fell flat: ...
 - carry-forward for next issue: ...
 ```
 
-Patterns to watch over time: which **angle types** get replies (opinion vs tutorial vs story); which **subject archetypes** win opens; which **outline shapes** survive to publication; edits that repeat across issues → promote to the profile's "Things I NEVER do."
+A section the author cuts every time is a structural lesson, not a one-off. Patterns to watch across entries: which **angle types** get replies (opinion vs tutorial vs story), which **subject archetypes** win opens, which **outline shapes** survive to publication, and edits that repeat across issues (→ the profile's "Things I NEVER do").
+
+### Compaction — `## Patterns so far`
+
+The journal keeps the **last 5 issue entries in full**. When a sixth arrives, the oldest is folded into a `## Patterns so far` digest at the top of the file — winning subject archetypes, structural cuts that repeat, recurring edits, carry-forwards still open — and its body is removed, leaving one line in its place: `- Issue NNN — "<title>" → folded into Patterns so far`. The digest is rewritten as a whole each time, kept short, never appended to blindly. Anything that reads "the latest journal entry" reads `## Patterns so far` plus the most recent issue entry. Decision entries are not compacted.
 
 ### Editorial decisions — the second kind of entry
 
@@ -71,7 +78,20 @@ Two rules. The **Consulted** line is never optional: a decision with nothing und
 
 **Not memory:** `issues/NNN-slug/brief.md` is per-issue working data, not part of the author's memory — it belongs to its issue, travels with it to `published/`, and its skeleton lives in `.cervantes/engine/STRUCTURE.md` §9. Nothing in setup or repair touches it either, because nothing touches `issues/` at all.
 
-**Continuous learning protocol:** every time the author writes anything — a chat message, an edit, a correction — scan it for voice and preference signals and write what's found to memory THAT SAME TURN, confirming in one short line ("Noted in your profile: …"). If a signal isn't written to a file, it didn't get learned — never rely on session recall.
+**Continuous learning protocol:** every time the author writes anything — a chat message, an edit, a correction — scan it for voice and preference signals and write what passes the threshold below to memory THAT SAME TURN, confirming in one short line, **in the author's language**, that says what was learned — never an English stock phrase in a conversation held in another language, and never the voice version number. If a signal isn't written to a file, it didn't get learned — never rely on session recall.
+
+### What counts as a learning signal
+
+Only two things are written to the profile:
+
+1. **An explicit standing preference or voice correction** — "never…", "I'd never say…", "always…".
+2. **A pattern seen in the author's own edits at least twice** (across rounds or issues, per the journal).
+
+A choice that only concerns the current issue — an idea rejected, an angle picked, an example dropped — goes to that issue's `brief.md` § Ruled out, not to the profile. Nothing else is written. The confirmation line is said only when something was actually written; no signal, no line. During onboarding the protocol is suspended: the `cervantes` skill's final seeding step writes everything at once.
+
+## Edition numbers
+
+The next issue's `NNN` = the highest number among the folders in `issues/` and `published/`, plus 1. If there are none, ask the author which edition this is, suggesting (the number of posts in `voice/archive/`) + 1. Always three digits (`007`, `112`).
 
 ## `voice/cover-style.md` — the fixed visual block
 
@@ -95,6 +115,8 @@ Per-issue prompt formula (in English, whatever the newsletter's language — ima
 + Avoid: [the style file's exclusions] + glossy 3D render, generic stock photo,
   busy backgrounds, logos or watermarks, loose text or letters.
 ```
+
+The default is **no text on the image**. "Loose text or letters" leaves the exclusions only when the author asked for text on the cover, and then the style block says exactly which text.
 
 ## `voice/archive/` — the published record
 
