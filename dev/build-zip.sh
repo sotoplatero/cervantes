@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-# Packages src/ as the Cervantes ZIP that goes out to subscribers.
+# Packages cervantes/ as the Cervantes ZIP that goes out to subscribers.
 #
 #   bash dev/build-zip.sh [version] [--test]
 #
 # The version only names the file. Omit it and dev/VERSION is used, which is
 # what CI does — one number in one place. Note where that file lives: the
 # workshop tracks a version, the product does not carry one. Nothing writes it
-# into src/, and nothing in the ZIP mentions it.
+# into cervantes/, and nothing in the ZIP mentions it.
 #
-# There is no exclusion list, on purpose: src/ contains the product and nothing
-# else, so packaging is "copy src/, name it cervantes, zip it". The checks below
+# There is no exclusion list, on purpose: cervantes/ contains the product and nothing
+# else, so packaging is "copy cervantes/, zip it" — the folder already carries the name the author sees. The checks below
 # are cheap insurance against that invariant being broken, not a filter.
 #
 # --test also unzips the result into ~/cervantes-testing/<version>/ (override
 # with CERVANTES_TESTING=<dir>), which is where the eval suite in
-# dev/SCENARIOS.md runs. Evals never run against src/ itself, and never inside
+# dev/SCENARIOS.md runs. Evals never run against cervantes/ itself, and never inside
 # this repo either: Claude Code loads every CLAUDE.md above the folder it opens,
 # so a copy under the workshop would inherit the workshop's instructions
 # ("never onboard an author here") and its git repo — things no subscriber has.
@@ -49,39 +49,39 @@ STAGE="$(mktemp -d)"
 trap 'rm -rf "$STAGE"' EXIT
 DEST="${STAGE}/cervantes"
 
-[ -d "${ROOT}/src" ] || { echo "ABORT: no src/ — is this the Cervantes repo?" >&2; exit 1; }
+[ -d "${ROOT}/cervantes" ] || { echo "ABORT: no cervantes/ — is this the Cervantes repo?" >&2; exit 1; }
 git -C "$ROOT" rev-parse --git-dir >/dev/null 2>&1 || {
   echo "ABORT: not a git checkout — the strays check below needs git" >&2; exit 1
 }
 # An in-repo test copy carries a CLAUDE.md and skills that leak into every
 # workshop session. --test puts copies outside the repo; this one is stale.
 [ ! -e "${ROOT}/.testing" ] || { echo "ABORT: ${ROOT}/.testing is a stale in-repo test copy — delete it" >&2; exit 1; }
-if [ -n "$(git -C "$ROOT" status --porcelain -- src/ 2>/dev/null)" ]; then
-  echo "WARN: src/ has uncommitted changes — this ZIP is not what's on main" >&2
+if [ -n "$(git -C "$ROOT" status --porcelain -- cervantes/ 2>/dev/null)" ]; then
+  echo "WARN: cervantes/ has uncommitted changes — this ZIP is not what's on main" >&2
 fi
 # Lint the product before packaging it (dev/test.sh: cross-file references,
 # frontmatter, JSON, line endings, secrets).
 bash "${ROOT}/dev/test.sh" --lint || { echo "ABORT: dev/test.sh --lint failed" >&2; exit 1; }
 
 # The packager copies the working tree, so anything untracked or git-ignored
-# inside src/ would ship to every subscriber. Abort until src/ is clean in
+# inside cervantes/ would ship to every subscriber. Abort until cervantes/ is clean in
 # git's eyes (.DS_Store excepted — it's deleted from the stage below).
-strays="$(git -C "$ROOT" status --porcelain --ignored -- src/ | grep -E '^(\?\?|!!)' | grep -v '\.DS_Store' || true)"
+strays="$(git -C "$ROOT" status --porcelain --ignored -- cervantes/ | grep -E '^(\?\?|!!)' | grep -v '\.DS_Store' || true)"
 if [ -n "$strays" ]; then
-  echo "ABORT: untracked or ignored files inside src/ would ship in the ZIP:" >&2
+  echo "ABORT: untracked or ignored files inside cervantes/ would ship in the ZIP:" >&2
   echo "$strays" >&2
   exit 1
 fi
 
-cp -R "${ROOT}/src" "$DEST"
+cp -R "${ROOT}/cervantes" "$DEST"
 find "$DEST" -name '.DS_Store' -delete
 
 # --- invariants --------------------------------------------------------------
-# An author's newsletter must never be in the package. src/ has no business
+# An author's newsletter must never be in the package. cervantes/ has no business
 # holding one, so finding one means somebody ran onboarding in the source tree.
 for leak in voice issues published .git .gitignore .claude/settings.local.json; do
   if [ -e "${DEST}/${leak}" ]; then
-    echo "ABORT: ${leak} ended up in the package — src/ is polluted" >&2
+    echo "ABORT: ${leak} ended up in the package — cervantes/ is polluted" >&2
     exit 1
   fi
 done
@@ -121,11 +121,13 @@ grep -q 'run-hook\.cmd' "${DEST}/.claude/settings.json" || {
   echo "ABORT: .claude/settings.json no longer registers run-hook.cmd" >&2; exit 1
 }
 
-# Paths inside the product are relative to the author's folder. A "src/" in
-# there is a path that got broken while moving files around.
-if grep -rlqE 'src/' "$DEST"; then
-  echo "ABORT: a src/ path leaked into the product:" >&2
-  grep -rnE 'src/' "$DEST" >&2
+# Paths inside the product are relative to the author's folder. A workshop
+# prefix in front of one (cervantes/.claude/…, src/voice/…) is a path that got
+# broken while moving files around. dev/test.sh documents the pattern.
+LEAK='(^|[^.A-Za-z0-9_-])(src|cervantes)/(\.cervantes|\.claude|voice/|issues/|published/|CLAUDE\.md|README\.md)'
+if grep -rlqE "$LEAK" "$DEST"; then
+  echo "ABORT: a workshop-prefixed path leaked into the product:" >&2
+  grep -rnE "$LEAK" "$DEST" >&2
   exit 1
 fi
 
@@ -133,9 +135,10 @@ fi
 mkdir -p "${ROOT}/dist"
 rm -f "$OUT"
 
-# Reproducible: every entry gets the time of the last commit that touched src/,
-# and entries go in byte order, so the same src/ always gives the same bytes.
-EPOCH="$(git -C "$ROOT" log -1 --format=%ct -- src)"
+# Reproducible: every entry gets the time of the last commit that touched cervantes/,
+# and entries go in byte order, so the same cervantes/ always gives the same bytes.
+EPOCH="$(git -C "$ROOT" log -1 --format=%ct -- cervantes)"
+[ -n "$EPOCH" ] || EPOCH="$(git -C "$ROOT" log -1 --format=%ct)"  # folder not committed yet
 find "$STAGE" -exec touch -h -d "@${EPOCH}" {} + 2>/dev/null || find "$STAGE" -exec touch -d "@${EPOCH}" {} +
 
 # Info-ZIP is the reference packager. Where it's missing — a stock Git for

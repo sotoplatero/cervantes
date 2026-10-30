@@ -3,8 +3,8 @@ name: build
 # Two jobs.
 #
 # `build` runs on every push and pull request: dev/test.sh (hook fixtures and a
-# cross-file lint of src/), then the packager, whose aborts and ZIP assertions
-# catch a leaked voice/, a CRLF hook, a missing skill or a src/-prefixed path the
+# cross-file lint of cervantes/), then the packager, whose aborts and ZIP assertions
+# catch a leaked voice/, a CRLF hook, a missing skill or a cervantes/-prefixed path the
 # moment the commit lands. It only reads the repo.
 #
 # `publish` runs only for pushes to main, and only after `build` is green. It
@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # The packager stamps every entry with the last commit time of src/,
+          # The packager stamps every entry with the last commit time of cervantes/,
           # which needs the history that touched it.
           fetch-depth: 0
 
@@ -115,7 +115,7 @@ jobs:
       # build. So publishing is overwriting that one file.
       #
       # Whether the site needs it is decided by what the site holds, not by
-      # this push: static/cervantes.zip.sha records the tree of src/ the ZIP was
+      # this push: static/cervantes.zip.sha records the tree of cervantes/ the ZIP was
       # built from. A sync that failed (say, an expired token) therefore retries
       # on the next push, whatever that push touched.
       - name: Sync the ZIP into the site
@@ -146,10 +146,10 @@ jobs:
             *) fail_token "was rejected by GitHub (expired or revoked)" ;;
           esac
 
-          SRC_TREE="$(git rev-parse HEAD:src)"
+          SRC_TREE="$(git rev-parse HEAD:cervantes)"
           sitegit clone --depth 1 --branch master https://github.com/sotoplatero/damian.git site
           if [ "$(cat site/static/cervantes.zip.sha 2>/dev/null)" = "$SRC_TREE" ]; then
-            echo "::notice::the site already has the build of this src/ — nothing to push."
+            echo "::notice::the site already has the build of this cervantes/ — nothing to push."
             exit 0
           fi
 

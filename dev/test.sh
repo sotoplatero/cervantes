@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # The workshop's automated checks. They gate the build and, in CI, publishing.
 #
-#   bash dev/test.sh                  # hook tests + lint over src/
+#   bash dev/test.sh                  # hook tests + lint over cervantes/
 #   bash dev/test.sh <zip>            # the same, plus the ZIP assertions
 #   bash dev/test.sh --lint           # lint only (dev/build-zip.sh runs this before zipping)
 #   bash dev/test.sh --hooks          # hook tests only
@@ -17,7 +17,7 @@ set -uo pipefail
 
 cd "$(dirname "$0")/.."
 ROOT="$(pwd)"
-SRC="${ROOT}/src"
+SRC="${ROOT}/cervantes"
 HOOK="${SRC}/.cervantes/hooks/session-start"
 LAUNCHER="${SRC}/.cervantes/hooks/run-hook.cmd"
 
@@ -181,8 +181,8 @@ fi
 
 # =============================================================== lint ======
 if [ -n "$DO_LINT" ]; then
-  echo "── lint over src/"
-  [ -d "$SRC" ] || { fail "no src/"; }
+  echo "── lint over cervantes/"
+  [ -d "$SRC" ] || { fail "no cervantes/"; }
 
   # frontmatter FIELD FILE → the value of FIELD in the leading --- block.
   frontmatter() {
@@ -198,21 +198,24 @@ if [ -n "$DO_LINT" ]; then
     ' "$2"
   }
 
-  # 1. Paths inside the product are author-relative; "src/" is always a broken one.
-  hits="$(grep -rnE 'src/' "$SRC" 2>/dev/null || true)"
-  if [ -n "$hits" ]; then fail "a 'src/' string inside src/:"; echo "$hits" >&2; else pass; fi
+  # 1. Paths inside the product are author-relative. A workshop prefix in front
+  #    of a product path (cervantes/.claude/…, src/voice/…) got broken while
+  #    moving files. Bare cervantes/profile.md etc. is the legacy v3.x layout
+  #    the Migrate path talks about, and .cervantes/ is the kit itself: both fine.
+  hits="$(grep -rnE '(^|[^.A-Za-z0-9_-])(src|cervantes)/(\.cervantes|\.claude|voice/|issues/|published/|CLAUDE\.md|README\.md)' "$SRC" 2>/dev/null || true)"
+  if [ -n "$hits" ]; then fail "a workshop-prefixed path inside cervantes/:"; echo "$hits" >&2; else pass; fi
 
-  # 2. Agents: frontmatter name = filename, and src/CLAUDE.md knows about each.
+  # 2. Agents: frontmatter name = filename, and cervantes/CLAUDE.md knows about each.
   for f in "$SRC"/.claude/agents/*.md; do
     a="$(basename "$f" .md)"
     n="$(frontmatter name "$f")"
     [ "$n" = "$a" ] && pass || fail "agent ${a}.md: frontmatter name is '${n}'"
-    grep -qF "\`${a}\`" "$SRC/CLAUDE.md" && pass || fail "agent ${a} is not mentioned in src/CLAUDE.md"
+    grep -qF "\`${a}\`" "$SRC/CLAUDE.md" && pass || fail "agent ${a} is not mentioned in cervantes/CLAUDE.md"
   done
 
   # 3. Every subagent_type: "x" names an agent that ships.
   for a in $(grep -rhoE 'subagent_type:[[:space:]]*"[^"]+"' "$SRC" | sed -E 's/.*"([^"]+)"/\1/' | sort -u); do
-    [ -f "$SRC/.claude/agents/${a}.md" ] && pass || fail "subagent_type \"${a}\" has no src/.claude/agents/${a}.md"
+    [ -f "$SRC/.claude/agents/${a}.md" ] && pass || fail "subagent_type \"${a}\" has no cervantes/.claude/agents/${a}.md"
   done
 
   # 4. Skills: frontmatter name = directory, description present.
@@ -232,17 +235,17 @@ if [ -n "$DO_LINT" ]; then
     case "$p" in *'*'*|*'<'*|*'{'*|*NNN*) continue ;; esac
     p="${p%% *}"
     case "$p" in .claude/settings.local.json) continue ;; esac
-    [ -e "$SRC/$p" ] && pass || fail "path \`${p}\` is referenced in src/ but does not exist"
+    [ -e "$SRC/$p" ] && pass || fail "path \`${p}\` is referenced in cervantes/ but does not exist"
   done <<< "$refs"
 
   # 6. settings.json registers the hook, so it has to parse.
   if [ -n "$PY" ]; then
-    json_ok < "$SRC/.claude/settings.json" && pass || fail "src/.claude/settings.json is not valid JSON"
+    json_ok < "$SRC/.claude/settings.json" && pass || fail "cervantes/.claude/settings.json is not valid JSON"
   fi
 
   # 7. Nothing that looks like a credential.
   hits="$(grep -rnE 'ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-ant-[A-Za-z0-9_-]{10,}|AKIA[0-9A-Z]{16}|xox[bp]-[A-Za-z0-9-]{10,}' "$SRC" 2>/dev/null || true)"
-  if [ -n "$hits" ]; then fail "possible secret in src/:"; echo "$hits" | cut -c1-160 >&2; else pass; fi
+  if [ -n "$hits" ]; then fail "possible secret in cervantes/:"; echo "$hits" | cut -c1-160 >&2; else pass; fi
 
   # 8. LF only. .gitattributes pins every file (hooks included) to eol=lf, so
   #    there is no CRLF exception. A CR here means the working tree was checked

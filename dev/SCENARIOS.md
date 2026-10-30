@@ -2,16 +2,16 @@
 
 Manual for now: run each scenario in a fresh Claude Code session, observe against expected behavior. A release ships only when all pass.
 
-**Where these run.** Never against `src/`. Build the package and open the unzipped copy:
+**Where these run.** Never against `cervantes/`. Build the package and open the unzipped copy:
 
 ```
 bash dev/build-zip.sh <version> --test
 cd ~/cervantes-testing/<version>/cervantes      # ← open THIS in Claude Code
 ```
 
-`src/` is the source tree; the ZIP is what a subscriber actually receives, and only the unzipped folder exercises the real thing — its `.claude/settings.json` at the project root, its skills registered, its hook firing before the first message. A scenario that passes in `src/` can still be broken in the package. "A freshly unzipped folder" below always means a fresh `--test` build.
+`cervantes/` is the source tree; the ZIP is what a subscriber actually receives, and only the unzipped folder exercises the real thing — its `.claude/settings.json` at the project root, its skills registered, its hook firing before the first message. A scenario that passes in `cervantes/` can still be broken in the package. "A freshly unzipped folder" below always means a fresh `--test` build.
 
-Scenarios 2 and 3 need a second folder (an older or seeded workspace) to migrate or move from: build it by hand under `~/cervantes-testing/fixtures/` — a `--test` build wipes only `~/cervantes-testing/<version>/`, so fixtures there survive rebuilds — and never point them at `src/` or anywhere inside this repo.
+Scenarios 2 and 3 need a second folder (an older or seeded workspace) to migrate or move from: build it by hand under `~/cervantes-testing/fixtures/` — a `--test` build wipes only `~/cervantes-testing/<version>/`, so fixtures there survive rebuilds — and never point them at `cervantes/` or anywhere inside this repo.
 
 ## 1. A fresh copy starts itself
 **Setup:** a freshly unzipped folder — no `voice/`, no `issues/`, no `published/`. **Prompt:** none. Just open it.
@@ -195,7 +195,7 @@ Scenarios 2 and 3 need a second folder (an older or seeded workspace) to migrate
 
 ## Regression guards (from v0.1.x field testing)
 - The kit is read-only: nothing ever writes inside `.cervantes/` or `.claude/` except `settings.local.json`. No engine copies, no skill copies, no generated `CLAUDE.md`.
-- The workshop is not the product: nothing in `src/` may reference `src/`, and no eval is ever run against `src/` in place. The packager enforces the first; this suite enforces the second.
+- The workshop is not the product: nothing in `cervantes/` may reference `cervantes/`, and no eval is ever run against `cervantes/` in place. The packager enforces the first; this suite enforces the second.
 - The author is never a developer: no `git`, no terminal command, no "copy this path over that one", and never a request to find or drag a folder whose name starts with a dot. If a file has to move, Cervantes moves it.
 - Never work silently: announce before reading/fetching/analyzing.
 - The setup checklist never changes shape mid-onboarding: seven lines, full labels, `[x]`/`[ ]` only, same translated strings, no invented markers.

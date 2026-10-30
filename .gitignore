@@ -8,16 +8,16 @@
 
 # ---------------------------------------------------------------------------
 # Safety net, not a workspace. This repo is the workshop: an author's newsletter
-# has no business here, and src/ must never hold one — the packager aborts if it
+# has no business here, and cervantes/ must never hold one — the packager aborts if it
 # finds one. These stay ignored so an onboarding run by accident in the source
 # tree can't be committed.
 # ---------------------------------------------------------------------------
 /voice/
 /issues/
 /published/
-/src/voice/
-/src/issues/
-/src/published/
+/cervantes/voice/
+/cervantes/issues/
+/cervantes/published/
 
 # This repo's own per-machine settings.
 /.claude/settings.local.json
