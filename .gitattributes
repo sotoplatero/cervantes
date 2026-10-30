@@ -1,3 +1,11 @@
+# Everything is LF, in the repo and in every checkout. The packager zips the
+# working tree, so a Windows checkout with core.autocrlf=true would otherwise
+# ship mixed CRLF/LF files, and local builds would differ from CI.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.zip binary
+
 # The hook launcher and its script must stay LF-only on every platform.
 # A CRLF checkout breaks them under bash ("bad interpreter: \r"), and the folder
 # they ship in gets unzipped on Windows machines where core.autocrlf=true is the
