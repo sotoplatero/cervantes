@@ -55,7 +55,7 @@ bash dev/test.sh                   # hook fixtures + lint of cervantes/ (the pac
 
 **Adding or removing a file in `cervantes/` means updating `dev/MANIFEST`** (`git ls-files cervantes | sed 's#^cervantes/##' | LC_ALL=C sort > dev/MANIFEST`), or the packager aborts.
 
-CI runs `dev/test.sh` and the packager on every push; on `main`, once both are green, it refreshes the single release tagged `latest` and syncs the ZIP into the site. Those checks are this repo's only automated ones; **CI proves the package is well formed, never that Cervantes behaves.**
+CI runs `dev/test.sh` and the packager on every push; on `main`, once both are green, it refreshes the single release tagged `latest`, which is where damiansoto.me downloads from (`releases/latest/download/cervantes.zip`). Those checks are this repo's only automated ones; **CI proves the package is well formed, never that Cervantes behaves.**
 
 **Evals never run against `cervantes/`.** They run against an unzipped build in `~/cervantes-testing/<v>/` (override with `CERVANTES_TESTING=<dir>`), because that is the artifact the subscriber gets: `dev/SCENARIOS.md` holds the suite, and a release ships only when all of it passes. Testing `cervantes/` in place would pass on things the ZIP doesn't actually contain. The copy lives **outside this repo** on purpose: Claude Code loads every `CLAUDE.md` above the folder it opens, so a copy inside the workshop would inherit this file and its git repo. `--test` aborts if it finds a `CLAUDE.md` or `.git` above the target.
 

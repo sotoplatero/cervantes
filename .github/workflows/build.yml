@@ -8,8 +8,9 @@ name: build
 # moment the commit lands. It only reads the repo.
 #
 # `publish` runs only for pushes to main, and only after `build` is green. It
-# refreshes the single release tagged "latest" and syncs the ZIP into the site.
-# It is the only job with write access.
+# refreshes the single release tagged "latest", and that release IS the download:
+# damiansoto.me links releases/latest/download/cervantes.zip, so nothing is copied
+# into the site. It is the only job with write access.
 #
 # What this does NOT verify is behaviour. The eval suite in dev/SCENARIOS.md
 # needs a human driving Claude Code inside an unzipped folder; a green run here
@@ -108,58 +109,3 @@ jobs:
               --title "Cervantes — latest build" \
               --notes-file "$RUNNER_TEMP/notes.md"
           fi
-
-      # sotoplatero/damian serves the download at /cervantes.zip, from
-      # static/cervantes.zip, and the delivery email points a versionless URL at
-      # it on purpose — a link mailed months ago has to keep giving the latest
-      # build. So publishing is overwriting that one file.
-      #
-      # Whether the site needs it is decided by what the site holds, not by
-      # this push: static/cervantes.zip.sha records the tree of cervantes/ the ZIP was
-      # built from. A sync that failed (say, an expired token) therefore retries
-      # on the next push, whatever that push touched.
-      - name: Sync the ZIP into the site
-        env:
-          SITE_TOKEN: ${{ secrets.SITE_REPO_TOKEN }}
-        run: |
-          fail_token() {
-            echo "::error::SITE_REPO_TOKEN $1. Rotate it: a fine-grained PAT with Contents: Read and write on sotoplatero/damian only, then 'gh secret set SITE_REPO_TOKEN --repo sotoplatero/cervantes'. The site still serves the previous ZIP."
-            exit 1
-          }
-          [ -n "$SITE_TOKEN" ] || fail_token "is not set"
-
-          # The token goes in a header, never in a URL that git would store in
-          # site/.git/config for the rest of the job.
-          AUTH="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$SITE_TOKEN" | base64 -w0)"
-          echo "::add-mask::$(printf 'x-access-token:%s' "$SITE_TOKEN" | base64 -w0)"
-          sitegit() { git -c http.extraheader="$AUTH" "$@"; }
-
-          # Check the token before doing anything with it. ls-remote on a
-          # public repo succeeds without auth, so test the push permission
-          # through the API instead.
-          perm="$(curl -fsS -H "Authorization: Bearer ${SITE_TOKEN}" \
-            https://api.github.com/repos/sotoplatero/damian \
-            | python3 -c 'import json,sys; print(json.load(sys.stdin).get("permissions",{}).get("push", False))' 2>/dev/null || true)"
-          case "$perm" in
-            True) ;;
-            False) fail_token "can read sotoplatero/damian but cannot push to it" ;;
-            *) fail_token "was rejected by GitHub (expired or revoked)" ;;
-          esac
-
-          SRC_TREE="$(git rev-parse HEAD:cervantes)"
-          sitegit clone --depth 1 --branch master https://github.com/sotoplatero/damian.git site
-          if [ "$(cat site/static/cervantes.zip.sha 2>/dev/null)" = "$SRC_TREE" ]; then
-            echo "::notice::the site already has the build of this cervantes/ — nothing to push."
-            exit 0
-          fi
-
-          cp "dist/cervantes-${VERSION}.zip" site/static/cervantes.zip
-          echo "$SRC_TREE" > site/static/cervantes.zip.sha
-          cd site
-          git config user.name "cervantes-ci"
-          git config user.email "cervantes-ci@users.noreply.github.com"
-          git add static/cervantes.zip static/cervantes.zip.sha
-          git commit -m "chore(recursos): sync Cervantes ${VERSION} from ${GITHUB_SHA:0:7}"
-          # The site gets its own pushes; one rebase covers a race with them.
-          sitegit push || { sitegit pull --rebase && sitegit push; }
-          echo "::notice::static/cervantes.zip updated in sotoplatero/damian."
